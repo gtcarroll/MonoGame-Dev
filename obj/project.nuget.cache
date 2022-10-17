@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "n3b2od4kmZ6fRglnc0rr0ZT1rCLRwWsEW30FYoqoyuRiPJ7xKmggs/1uoar+2LK1ANmzACaT3iM+P5WaV6yq5Q==",
+  "success": true,
+  "projectFilePath": "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj",
+  "expectedPackageFiles": [
+    "/Users/gacarr/.nuget/packages/monogame.content.builder.task/3.8.1.303/monogame.content.builder.task.3.8.1.303.nupkg.sha512",
+    "/Users/gacarr/.nuget/packages/monogame.framework.desktopgl/3.8.1.303/monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"
+  ],
+  "logs": []
+}
