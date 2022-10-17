@@ -6,13 +6,13 @@ namespace HexMap.HexMap
 {
     public struct HexTile
     {
-        public float Noise { get; set; }
+        public float Height { get; set; }
         public Color Color { get; set; }
 
         public HexTile() : this(0) { }
         public HexTile(float noise)
         {
-            Noise = noise;
+            Height = noise;
             Color = Color.White;
         }
     }

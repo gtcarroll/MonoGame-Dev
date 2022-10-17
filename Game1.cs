@@ -195,7 +195,7 @@ public class Game1 : Game
 
         if (!_isPaused)
         {
-            _hexGrid.Update();
+            _hexGrid.Update(gameTime);
         }
 
         base.Update(gameTime);
@@ -222,12 +222,12 @@ public class Game1 : Game
         //DrawModel(_prism, Matrix.CreateTranslation(new Vector3(0, 0, 0)) * Matrix.CreateScale(10f), _camera.View, _camera.Proj);
 
         Matrix scale = Matrix.CreateScale(10f) * Matrix.CreateRotationZ(MathHelper.Pi / 6f);
-        for (int r = 0; r < _hexGrid.Rows; r++)
+        for (int c = 0; c < _hexGrid.Cols; c++)
         {
-            for (int c = 0; c < _hexGrid.Cols; c++)
+            for (int r = 0; r < _hexGrid.Rows; r++)
             {
-                float value = (float)_hexGrid.GetTile(r, c).Noise;
-                Matrix translation = scale * Matrix.CreateTranslation(new Vector3(_hexGrid.GetTranslation(r, c), value * 30f));
+                float value = (float)_hexGrid.GetTile(c, r).Height;
+                Matrix translation = scale * Matrix.CreateTranslation(new Vector3(_hexGrid.GetTranslation(c, r), value * 62f));
                 if (_renderRGB)
                 {
                     //_polygons.DrawPolygonFill(_hexGrid.Hexagon, translation, _hexGrid.GetTile(r, c).Color);
@@ -256,7 +256,7 @@ public class Game1 : Game
             foreach (BasicEffect effect in mesh.Effects)
             {
                 effect.EnableDefaultLighting();
-                Color color = _hexGrid.GetTile(r, c).Color;
+                Color color = _hexGrid.GetTile(c, r).Color;
                 effect.AmbientLightColor = new Vector3(0.2f, 0.2f, 0.2f);
                 effect.EmissiveColor = new Vector3(color.R / 255f, color.G / 255f, color.B / 255f);
 
