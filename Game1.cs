@@ -222,12 +222,12 @@ public class Game1 : Game
         //DrawModel(_prism, Matrix.CreateTranslation(new Vector3(0, 0, 0)) * Matrix.CreateScale(10f), _camera.View, _camera.Proj);
 
         Matrix scale = Matrix.CreateScale(10f) * Matrix.CreateRotationZ(MathHelper.Pi / 6f);
-        for (int c = 0; c < _hexGrid.Cols; c++)
+        for (int c = _hexGrid.MinCols; c < _hexGrid.MinCols + _hexGrid.Cols; c++)
         {
             for (int r = 0; r < _hexGrid.Rows; r++)
             {
                 float value = (float)_hexGrid.GetTile(c, r).Height;
-                Matrix translation = scale * Matrix.CreateTranslation(new Vector3(_hexGrid.GetTranslation(c, r), value * 62f));
+                Matrix translation = scale * Matrix.CreateTranslation(new Vector3(_hexGrid.GetTranslation(c, r), value * 31f));
                 if (_renderRGB)
                 {
                     //_polygons.DrawPolygonFill(_hexGrid.Hexagon, translation, _hexGrid.GetTile(r, c).Color);
