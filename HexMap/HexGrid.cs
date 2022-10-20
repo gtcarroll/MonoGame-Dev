@@ -178,13 +178,13 @@ namespace HexMap.HexMap
             }
 
             SetColor(0, 0, Color.Yellow);
-            SetHeight(0, 0, -1);
+            SetHeight(0, 0, 0);
             SetColor(0, 1, Color.Blue);
-            SetHeight(0, 1, -1);
+            SetHeight(0, 1, 0);
             SetColor(1, 0, Color.Green);
-            SetHeight(1, 0, -1);
+            SetHeight(1, 0, 0);
             SetColor(-1, 0, Color.Green);
-            SetHeight(-1, 0, -1);
+            SetHeight(-1, 0, 0);
         }
 
         private void CheckBounds(int col, int row)
@@ -220,7 +220,7 @@ namespace HexMap.HexMap
             if (Stretch <= 0) Stretch = 1f;
             double noiseX = (col - Cols / 2) / Stretch;
             double noiseY = (row - Rows / 2) / Stretch;
-            double noiseZ = _time;
+            double noiseZ = _time / 10f;
             float noise = (float)_simplexNoise.Evaluate(noiseX, noiseY, noiseZ);
 
             return Normalize ? NormalizeNoise(noise) : noise; ;

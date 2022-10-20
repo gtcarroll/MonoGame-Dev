@@ -17,6 +17,13 @@ namespace HexMap.Graphics
         private Game _game;
         private Viewport _viewport;
 
+        private bool _isAnimating;
+        private float _travelTime;
+        private float _totalTime;
+        private Vector2 _vDestination;
+        private Vector2 _vDelta;
+        private Vector2 _vCurrent;
+
         private Vector2 _position;
         private float _z;
         private float _baseZ;
@@ -63,7 +70,7 @@ namespace HexMap.Graphics
             _zoom = 1;
 
             _position = new Vector2(0, 0);
-            _baseZ = GetZFromHeight(_viewport.Height);
+            _baseZ = GetZFromHeight(_viewport.Height / 2f);
             //_z = _baseZ;
 
             Reset();
@@ -71,17 +78,45 @@ namespace HexMap.Graphics
         public void Reset()
         {
             _z = _baseZ;
-            _tiltX = 0;
+            _tiltX = -MathHelper.Pi / 6f;
             _tiltY = 0;
             _pan = new Vector2(0, 0);
         }
 
+        public void Update(GameTime gameTime)
+        {
+            if (_isAnimating)
+            {
+                float timeScalar = gameTime.ElapsedGameTime.Milliseconds / _travelTime;
+                timeScalar = MathHelper.Clamp(timeScalar, 0, 1);
+                _totalTime += timeScalar;
+
+                Pan(_vDelta * timeScalar);
+
+                _isAnimating = _totalTime < 1;
+            }
+        }
+
+        public void PanTo(Vector2 position, float milliseconds)
+        {
+            _isAnimating = true;
+            _travelTime = milliseconds;
+            _totalTime = 0f;
+            _vCurrent = _pan;
+            _vDestination = position;
+            _vDelta = position - _pan;
+        }
+        public void PanTo(Vector2 position)
+        {
+            _pan = position;
+        }
+
         public void UpdateMatrices()
         {
-            _view = Matrix.CreateLookAt(new Vector3(0f, 0f, _z), Vector3.Zero, Vector3.Up)
+            _view = Matrix.CreateLookAt(new Vector3(_pan, _z), new Vector3(_pan, 0), Vector3.Up)
                 * Matrix.CreateRotationX(_tiltX)
-                * Matrix.CreateRotationY(_tiltY)
-                * Matrix.CreateTranslation(new Vector3(_pan, 0f));
+                * Matrix.CreateRotationY(_tiltY);
+                //* Matrix.CreateTranslation(new Vector3(_pan, 0f));
             _proj = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, MinZ, MaxZ);
         }
 
@@ -120,6 +155,10 @@ namespace HexMap.Graphics
         public void TiltY(float amount)
         {
             _tiltY += amount;
+        }
+        public void Pan(Vector2 amount)
+        {
+            _pan += amount;
         }
         public void PanX(float amount)
         {

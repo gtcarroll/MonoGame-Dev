@@ -72,6 +72,8 @@ public class Game1 : Game
         _sides = 3;
         _polygon = new Polygon2D(_sides, 10f);
         _flipped = false;
+        _camera.Pan(_hexGrid.GetTranslation(0, 0 - 10));
+        _camera.PanTo(_hexGrid.GetTranslation(0, 62 - 10), 3100);
 
         base.Initialize();
     }
@@ -138,19 +140,19 @@ public class Game1 : Game
 
         if (keyboard.IsKeyDown(Keys.Up) && !isShifted)
         {
-            _camera.PanY(-6);
+            _camera.PanY(6);
         }
         if (keyboard.IsKeyDown(Keys.Down) && !isShifted)
         {
-            _camera.PanY(6);
+            _camera.PanY(-6);
         }
         if (keyboard.IsKeyDown(Keys.Right) && !isShifted)
         {
-            _camera.PanX(-6);
+            _camera.PanX(6);
         }
         if (keyboard.IsKeyDown(Keys.Left) && !isShifted)
         {
-            _camera.PanX(6);
+            _camera.PanX(-6);
         }
 
         if (keyboard.IsKeyClicked(Keys.Up) && isShifted)
@@ -197,6 +199,8 @@ public class Game1 : Game
         {
             _hexGrid.Update(gameTime);
         }
+
+        _camera.Update(gameTime);
 
         base.Update(gameTime);
     }
