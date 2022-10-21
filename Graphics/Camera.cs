@@ -74,11 +74,12 @@ namespace HexMap.Graphics
             //_z = _baseZ;
 
             Reset();
+            UpdateMatrices();
         }
         public void Reset()
         {
             _z = _baseZ;
-            _tiltX = -MathHelper.Pi / 6f;
+            _tiltX = 0;//-MathHelper.Pi / 6f;
             _tiltY = 0;
             _pan = new Vector2(0, 0);
         }
