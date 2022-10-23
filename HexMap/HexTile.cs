@@ -17,23 +17,24 @@ namespace HexMap
         public Color Color { get; set; }
         public TileType Type { get; set; }
 
-        public HexTile() : this(TileType.Default) { }
-        public HexTile(TileType type)
+        public HexTile() : this(TileType.Default, 0) { }
+        public HexTile(TileType type) : this(type, 0) { }
+        public HexTile(TileType type, float height)
         {
             Type = type;
 
             if (type == TileType.Path)
             {
-                Height = 0f;
-                Color = Color.DarkSeaGreen;
+                Height = height + 0f;
+                Color = Color.Black;
             }
             else if (type == TileType.Wall)
             {
-                Height = 0.5f;
-                Color = Color.Brown;
+                Height = height + 0.5f;
+                Color = Color.Black;
             } else
             {
-                Height = 1f;
+                Height = height + 1f;
                 Color = Color.Black;
             }
         }

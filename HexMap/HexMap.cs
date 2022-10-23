@@ -28,13 +28,6 @@ namespace HexMap
 
             _basisQ = new Vector2(3f / 2f, MathF.Sqrt(3) / 2f);
             _basisR = new Vector2(0, MathF.Sqrt(3));
-
-            SetTiles(HexShapes.EventNode());
-            SetTiles(HexShapes.Path(HexPath.Up));
-        }
-        public HexMap(int cols, int rows) : base()
-        {
-            SetTiles(new Dictionary<HexCoord, HexTile>());
         }
 
         // returns the HexTile at the given HexCoord (if it exists)
@@ -46,14 +39,13 @@ namespace HexMap
         // returns the position vector of the given HexCoord
         public Vector2 GetTranslation(HexCoord coord)
         {
-            Vector2 result = coord.Q * _basisQ + coord.R * _basisR;
-            Console.WriteLine(result.X + ", " + result.Y);
             return coord.Q * _basisQ + coord.R * _basisR;
         }
 
         // stores the given HexTile at the given HexCoord
         public void SetTile(HexCoord coord, HexTile tile)
         {
+            // update if exists
             if (_tiles.ContainsKey(coord))
             {
                 // don't overwrite paths
@@ -62,6 +54,7 @@ namespace HexMap
                     _tiles[coord] = tile;
                 }
             }
+            // else add new entry
             else
             {
                 _tiles.Add(coord, tile);
@@ -82,8 +75,6 @@ namespace HexMap
         public void Update(GameTime gameTime)
         {
         }
-
-        
     }
 }
 

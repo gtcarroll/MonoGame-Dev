@@ -36,6 +36,11 @@ namespace HexMap
             => new HexCoord(a.Q / b, a.R / b);
         public static HexCoord operator /(int a, HexCoord b)
            => new HexCoord(b.Q / a, b.R / a);
+
+        public override string ToString()
+        {
+            return "(" + Q + ", " + R + ")";
+        }
     }
 }
 

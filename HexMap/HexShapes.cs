@@ -59,6 +59,21 @@ namespace HexMap
             };
         }
 
+        public static ReadOnlyDictionary<HexCoord, HexTile> Translate(HexCoord origin, ReadOnlyDictionary<HexCoord, HexTile> shape)
+        {
+            Dictionary<HexCoord,HexTile> translated = new Dictionary<HexCoord, HexTile>();
+
+            foreach (KeyValuePair<HexCoord, HexTile> entry in shape)
+            {
+                HexCoord coord = entry.Key;
+                HexTile tile = entry.Value;
+
+                translated.Add(origin + coord, tile);
+            }
+
+            return new ReadOnlyDictionary<HexCoord, HexTile>(translated);
+        }
+
         public static HexCoord[] Circle(int radius = 3)
         {
             // return cached result if it exists
@@ -68,7 +83,6 @@ namespace HexMap
             }
 
             HexCoord[] circle = new HexCoord[GetCircleSize(radius)];
-            Console.WriteLine(circle.Length);
 
             // walk {radius} steps in each HexDirection
             HexCoord hex = new HexCoord(radius, 0);
@@ -76,8 +90,7 @@ namespace HexMap
             {
                 for (int j = 0; j < radius; j++)
                 {
-                    Console.WriteLine("i = " + i + " j = " + j);
-                    circle[radius * i + j] = hex;
+                    circle[i * radius + j] = hex;
                     hex = GetNeighbor(hex, i);
                 }
             }
@@ -87,7 +100,7 @@ namespace HexMap
             return circle;
         }
 
-        public static ReadOnlyDictionary<HexCoord, HexTile> EventNode(int radius = 3)
+        public static ReadOnlyDictionary<HexCoord, HexTile> EventNode(float height = 0f, int radius = 3)
         {
             // return cached result if it exists
             if (_eventNodes.ContainsKey(radius))
@@ -100,7 +113,7 @@ namespace HexMap
             // set perimeter to Wall
             foreach (HexCoord coord in Circle(radius))
             {
-                eventNode.Add(coord, _tileTypes[TileType.Wall]);
+                eventNode.Add(coord, new HexTile(TileType.Wall, height));//_tileTypes[TileType.Wall]);
             }
 
             // set inner rings to Path
@@ -108,13 +121,13 @@ namespace HexMap
             {
                 foreach (HexCoord coord in Circle(r))
                 {
-                    eventNode.Add(coord, _tileTypes[TileType.Path]);
+                    eventNode.Add(coord, new HexTile(TileType.Path, height));//_tileTypes[TileType.Path]);
                 }
             }
 
             // cache result and return
             ReadOnlyDictionary<HexCoord,HexTile> result = new ReadOnlyDictionary<HexCoord, HexTile>(eventNode);
-            _eventNodes.Add(radius, result);
+            //_eventNodes.Add(radius, result);
             return result;
         }
 

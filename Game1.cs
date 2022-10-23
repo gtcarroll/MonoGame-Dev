@@ -41,7 +41,8 @@ public class Game1 : Game
 
         _hexMap = new HexMap();
 
-        _levelGen = new LevelGenerator(7);
+        _levelGen = new LevelGenerator(31);
+        _levelGen.WriteLevel(_hexMap);
 
         _angle = -MathHelper.PiOver2 - 1;
         _transform = Matrix.Identity;
@@ -93,11 +94,11 @@ public class Game1 : Game
         }
         if (keyboard.IsKeyDown(Keys.A))
         {
-            _camera.TiltY(-MathHelper.PiOver4 / 120);
+            //_camera.TiltY(-MathHelper.PiOver4 / 120);
         }
         if (keyboard.IsKeyDown(Keys.D))
         {
-            _camera.TiltY(MathHelper.PiOver4 / 120);
+            //_camera.TiltY(MathHelper.PiOver4 / 120);
         }
 
         bool isShifted = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
@@ -204,7 +205,7 @@ public class Game1 : Game
             {
                 effect.EnableDefaultLighting();
 
-                effect.AmbientLightColor = tile.Color.ToVector3();
+                effect.EmissiveColor = tile.Color.ToVector3();
 
                 effect.World = world;
                 effect.View = view;
