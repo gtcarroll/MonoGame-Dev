@@ -70,7 +70,7 @@ namespace HexMap.Graphics
             _zoom = 1;
 
             _position = new Vector2(0, 0);
-            _baseZ = GetZFromHeight(_viewport.Height / 2f);
+            _baseZ = 3;//GetZFromHeight(_viewport.Height / 2f);
             //_z = _baseZ;
 
             Reset();

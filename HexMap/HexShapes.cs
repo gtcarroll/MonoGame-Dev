@@ -133,11 +133,15 @@ namespace HexMap
 
         public static ReadOnlyDictionary<HexCoord, HexTile> Path(HexPath path)
         {
+            return Path(path, 0f);
+        }
+        public static ReadOnlyDictionary<HexCoord, HexTile> Path(HexPath path, float height)
+        {
             // return cached result if it exists
-            if (_paths.ContainsKey(path))
-            {
-                return _paths[path];
-            }
+            //if (_paths.ContainsKey(path))
+            //{
+            //    return _paths[path];
+            //}
 
             switch(path)
             {
@@ -145,13 +149,13 @@ namespace HexMap
                     return PathXLeft();
 
                 case HexPath.LeftY:
-                    return PathYLeft();
+                    return PathYLeft(height);
 
                 case HexPath.RightX:
                     return PathXRight();
 
                 case HexPath.RightY:
-                    return PathYRight();
+                    return PathYRight(height);
 
                 default:
                     return PathUp();
@@ -264,17 +268,17 @@ namespace HexMap
             return result;
         }
 
-        private static ReadOnlyDictionary<HexCoord, HexTile> PathYLeft()
+        private static ReadOnlyDictionary<HexCoord, HexTile> PathYLeft(float height)
         {
-            return PathY(true);
+            return PathY(height, true);
         }
-        private static ReadOnlyDictionary<HexCoord, HexTile> PathYRight()
+        private static ReadOnlyDictionary<HexCoord, HexTile> PathYRight(float height)
         {
-            return PathY(false);
+            return PathY(height, false);
         }
-        private static ReadOnlyDictionary<HexCoord, HexTile> PathY(bool isLeft)
+        private static ReadOnlyDictionary<HexCoord, HexTile> PathY(float height, bool isLeft)
         {
-            Dictionary<HexCoord, HexTile> pathX = new Dictionary<HexCoord, HexTile>();
+            Dictionary<HexCoord, HexTile> pathY = new Dictionary<HexCoord, HexTile>();
 
             int dirPath = (int)(isLeft ? HexDirection.UpLeft : HexDirection.UpRight);
             int dirOffset = (int)(isLeft ? HexDirection.UpRight : HexDirection.UpLeft);
@@ -285,8 +289,8 @@ namespace HexMap
             HexCoord bottomHex = GetNeighbor(dirBottom);
 
             // add bottom 2 HexTiles
-            pathX.Add(centerHex, _tileTypes[TileType.Path]);
-            pathX.Add(bottomHex, _tileTypes[TileType.Wall]);
+            pathY.Add(centerHex, new HexTile(TileType.Path, height));
+            //pathY.Add(bottomHex, new HexTile(TileType.Wall, height));
 
             centerHex = GetNeighbor(centerHex, dirPath);
             bottomHex = GetNeighbor(bottomHex, dirPath);
@@ -295,9 +299,9 @@ namespace HexMap
             // add rows of HexTiles moving along dirPath
             for (int i = 0; i < 3; i++)
             {
-                pathX.Add(topHex, _tileTypes[TileType.Wall]);
-                pathX.Add(centerHex, _tileTypes[TileType.Path]);
-                pathX.Add(bottomHex, _tileTypes[TileType.Wall]);
+                //pathY.Add(topHex, new HexTile(TileType.Wall, height));
+                pathY.Add(centerHex, new HexTile(TileType.Path, height));
+                //pathY.Add(bottomHex, new HexTile(TileType.Wall, height));
 
                 topHex = GetNeighbor(topHex, dirPath);
                 centerHex = GetNeighbor(centerHex, dirPath);
@@ -312,9 +316,9 @@ namespace HexMap
             // add rows of Hextiles moving up
             for (int i = 0; i < 2; i++)
             {
-                pathX.Add(topHex, _tileTypes[TileType.Wall]);
-                pathX.Add(centerHex, _tileTypes[TileType.Path]);
-                pathX.Add(bottomHex, _tileTypes[TileType.Wall]);
+                //pathY.Add(topHex, new HexTile(TileType.Wall, height));
+                pathY.Add(centerHex, new HexTile(TileType.Path, height));
+                //pathY.Add(bottomHex, new HexTile(TileType.Wall, height));
 
                 topHex = GetNeighbor(topHex, (int)HexDirection.Up);
                 centerHex = GetNeighbor(centerHex, (int)HexDirection.Up);
@@ -323,13 +327,13 @@ namespace HexMap
 
 
             // add top 2 HexTiles
-            pathX.Add(centerHex, _tileTypes[TileType.Path]);
-            pathX.Add(bottomHex, _tileTypes[TileType.Wall]);
+            pathY.Add(centerHex, new HexTile(TileType.Path, height));
+            //pathY.Add(bottomHex, new HexTile(TileType.Wall, height));
 
             // cache result and return
-            ReadOnlyDictionary<HexCoord, HexTile> result = new ReadOnlyDictionary<HexCoord, HexTile>(pathX);
-            if (isLeft) _paths.Add(HexPath.LeftX, result);
-            else _paths.Add(HexPath.RightX, result);
+            ReadOnlyDictionary<HexCoord, HexTile> result = new ReadOnlyDictionary<HexCoord, HexTile>(pathY);
+            //if (isLeft) _paths.Add(HexPath.LeftX, result);
+            //else _paths.Add(HexPath.RightX, result);
             return result;
         }
 

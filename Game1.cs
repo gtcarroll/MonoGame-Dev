@@ -17,14 +17,16 @@ public class Game1 : Game
 
     private Camera _camera;
 
-    private HexMap _hexMap;
+    //private HexMap _hexMap;
+    private LevelMap _levelMap;
 
-    private LevelGenerator _levelGen;
+    //private LevelGenerator _levelGen;
 
     private Model _prism;
 
     private float _angle;
     private Matrix _transform;
+    private Random _random;
 
     public Game1()
     {
@@ -39,10 +41,12 @@ public class Game1 : Game
 
         _camera = new Camera(this);
 
-        _hexMap = new HexMap();
+        _random = new Random();
 
-        _levelGen = new LevelGenerator(31);
-        _levelGen.WriteLevel(_hexMap);
+        _levelMap = new LevelMap(_random);
+
+        //_levelGen = new LevelGenerator(13);
+        //_levelGen.WriteLevel(_hexMap);
 
         _angle = -MathHelper.PiOver2 - 1;
         _transform = Matrix.Identity;
@@ -78,11 +82,11 @@ public class Game1 : Game
 
         if (keyboard.IsKeyDown(Keys.Q))
         {
-            _camera.MoveZ(-1);
+            _camera.MoveZ(-.1f);
         }
         if (keyboard.IsKeyDown(Keys.E))
         {
-            _camera.MoveZ(1);
+            _camera.MoveZ(.1f);
         }
         if (keyboard.IsKeyDown(Keys.W))
         {
@@ -94,35 +98,42 @@ public class Game1 : Game
         }
         if (keyboard.IsKeyDown(Keys.A))
         {
-            //_camera.TiltY(-MathHelper.PiOver4 / 120);
+            _camera.TiltY(-MathHelper.PiOver4 / 120);
         }
         if (keyboard.IsKeyDown(Keys.D))
         {
-            //_camera.TiltY(MathHelper.PiOver4 / 120);
+            _camera.TiltY(MathHelper.PiOver4 / 120);
         }
 
         bool isShifted = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
 
         if (keyboard.IsKeyClicked(Keys.Space) && isShifted)
         {
+            _levelMap = new LevelMap(_random);
+
+            //_levelGen = new LevelGenerator(13);
+            //_levelGen.WriteLevel(_hexMap);
+        }
+        if (keyboard.IsKeyClicked(Keys.Space) && !isShifted)
+        {
             _camera.Reset();
         }
 
         if (keyboard.IsKeyDown(Keys.Up) && !isShifted)
         {
-            _camera.PanY(1);
+            _camera.PanY(.1f);
         }
         if (keyboard.IsKeyDown(Keys.Down) && !isShifted)
         {
-            _camera.PanY(-1);
+            _camera.PanY(-.1f);
         }
         if (keyboard.IsKeyDown(Keys.Right) && !isShifted)
         {
-            _camera.PanX(1);
+            _camera.PanX(.1f);
         }
         if (keyboard.IsKeyDown(Keys.Left) && !isShifted)
         {
-            _camera.PanX(-1);
+            _camera.PanX(-.1f);
         }
 
         //if (keyboard.IsKeyClicked(Keys.Up) && isShifted)
@@ -141,15 +152,10 @@ public class Game1 : Game
         //{
         //    _hexGrid.Normalize = !_hexGrid.Normalize;
         //}
-        //if (keyboard.IsKeyClicked(Keys.Space) && !isShifted)
-        //{
-        //    _isPaused = !_isPaused;
-        //}
 
         _angle += MathHelper.PiOver2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        _transform = Matrix.CreateScale(10f)
-            * Matrix.CreateRotationY(_angle);
+        _transform = Matrix.CreateRotationY(_angle);
 
         //_camera.Update(gameTime);
         _camera.UpdateMatrices();
@@ -165,14 +171,17 @@ public class Game1 : Game
 
         Matrix rotate = Matrix.CreateRotationZ(MathHelper.Pi / 6f);
 
-        foreach (KeyValuePair<HexCoord, HexTile> entry in _hexMap.Tiles)
+        //foreach (KeyValuePair<HexCoord, HexTile> entry in _hexMap.Tiles)
+        foreach (KeyValuePair<HexCoord, LevelNode> entry in _levelMap.Nodes)
         {
             HexCoord coord = entry.Key;
-            HexTile tile = entry.Value;
+            //HexTile tile = entry.Value;
+            LevelNode node = entry.Value;
 
-            float height = (float)tile.Height;
-            Matrix translation = rotate * Matrix.CreateTranslation(new Vector3(_hexMap.GetTranslation(coord), height));
-            DrawModel(_prism, translation, _camera.View, _camera.Proj, tile);
+            //float height = (float)tile.Height;
+            //Matrix translation = Matrix.CreateScale(8f) * Matrix.CreateTranslation(_levelMap.GetWorldPosition(coord));
+            Matrix translation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_levelMap.GetWorldPosition(coord));
+            DrawModel(_prism, translation, _camera.View, _camera.Proj);
         }
 
         base.Draw(gameTime);
@@ -180,14 +189,17 @@ public class Game1 : Game
 
     private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
     {
-        foreach (ModelMesh mesh in model.Meshes)
+        foreach(ModelMesh mesh in model.Meshes)
         {
             foreach (BasicEffect effect in mesh.Effects)
             {
-                effect.EnableDefaultLighting();
+                effect.FogEnabled = true;
+                effect.FogColor = Color.Black.ToVector3(); // For best results, make this color whatever your background is.
+                effect.FogStart = 0f;
+                effect.FogEnd = 20f;
 
-                //effect.AmbientLightColor = new Vector3(0.2f, 0.2f, 0.2f);
-                effect.EmissiveColor = new Vector3(1f, 0f, 0f);
+                effect.EnableDefaultLighting();
+                effect.EmissiveColor = Color.Black.ToVector3(); //tile.Color.ToVector3();
 
                 effect.World = world;
                 effect.View = view;
@@ -203,8 +215,12 @@ public class Game1 : Game
         {
             foreach (BasicEffect effect in mesh.Effects)
             {
-                effect.EnableDefaultLighting();
+                effect.FogEnabled = true;
+                effect.FogColor = Color.Black.ToVector3(); // For best results, make this color whatever your background is.
+                effect.FogStart = 0f;
+                effect.FogEnd = 200f;
 
+                effect.EnableDefaultLighting();
                 effect.EmissiveColor = tile.Color.ToVector3();
 
                 effect.World = world;

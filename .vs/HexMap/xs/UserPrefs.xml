@@ -1,18 +1,21 @@
 ﻿<Properties StartupConfiguration="{E441C119-16CF-42D8-AFD6-F74F38020ECE}|Default">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.HexMap PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
+  <MonoDevelop.Ide.ItemProperties.HexMap PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics/Camera.cs">
     <Files>
-      <File FileName="Game1.cs" Line="56" Column="63" IsPinned="True" />
-      <File FileName="Graphics/Polygon2D.cs" Line="2" Column="34" />
-      <File FileName="HexMap/HexGrid.cs" Line="223" Column="41" />
-      <File FileName="HexMap/HexTile.cs" Line="10" Column="41" />
-      <File FileName="Program.cs" Line="3" Column="1" />
-      <File FileName="Graphics/Camera.cs" Line="111" Column="29" />
-      <File FileName="Content/Content.mgcb" Line="16" Column="43" />
-      <File FileName="Graphics/SimplexNoise.cs" Line="225" Column="39" />
-      <File FileName="Graphics/Animation.cs" Line="27" Column="1" />
+      <File FileName="Game1.cs" Line="199" Column="35" IsPinned="True" />
+      <File FileName="HexMap/HexMap.cs" Line="26" Column="1" />
+      <File FileName="HexMap/HexCoord.cs" Line="42" Column="45" />
+      <File FileName="HexMap/HexTile.cs" Line="1" Column="14" />
+      <File FileName="HexMap/LevelGenerator.cs" Line="178" Column="1" />
+      <File FileName="Graphics/Camera.cs" Line="72" Column="43" />
+      <File FileName="HexMap/LevelMapScreen.cs" Line="1" Column="1" />
+      <File FileName="HexMap/LevelMap.cs" Line="41" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -36,8 +39,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
