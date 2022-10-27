@@ -1,5 +1,6 @@
 ﻿using System;
-namespace HexMap
+
+namespace Levels
 {
     public class LevelNode
     {

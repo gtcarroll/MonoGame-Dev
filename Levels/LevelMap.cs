@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HexMap
+namespace Levels
 {
     public class LevelMap
     {
@@ -26,13 +26,15 @@ namespace HexMap
         private Vector3 _basisZ;
 
         /// <summary>
-        /// Constructor.
+        /// Constructor
         /// </summary>
-        public LevelMap(Random random)
+        /// <param name="random"> Random object used to generate level </param>
+        /// <param name="length"> Length of level (# of rows of nodes) </param>
+        public LevelMap(Random random, int length = 15)
         {
             _random = random;
 
-            _levelLength = 15;
+            _levelLength = length;
 
             _playerPosition = new HexCoord(0, 0);
 

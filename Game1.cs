@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using HexMap.Graphics;
 using HexMap.Input;
+using Levels;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -39,20 +40,11 @@ public class Game1 : Game
     {
         Viewport vp = GraphicsDevice.Viewport;
 
-        _camera = new Camera(this);
-
         _random = new Random();
 
+        _camera = new Camera(this);
+
         _levelMap = new LevelMap(_random);
-
-        //_levelGen = new LevelGenerator(13);
-        //_levelGen.WriteLevel(_hexMap);
-
-        _angle = -MathHelper.PiOver2 - 1;
-        _transform = Matrix.Identity;
-
-        //_camera.Pan(_hexGrid.GetTranslation(0, 0 - 10));
-        //_camera.PanTo(_hexGrid.GetTranslation(0, 62 - 10), 3100);
 
         base.Initialize();
     }
@@ -77,7 +69,8 @@ public class Game1 : Game
 
         if (keyboard.IsKeyClicked(Keys.F))
         {
-            Util.ToggleFullScreen(_graphics);
+            _graphics.IsFullScreen = !_graphics.IsFullScreen;
+            _graphics.ApplyChanges();
         }
 
         if (keyboard.IsKeyDown(Keys.Q))
@@ -110,9 +103,6 @@ public class Game1 : Game
         if (keyboard.IsKeyClicked(Keys.Space) && isShifted)
         {
             _levelMap = new LevelMap(_random);
-
-            //_levelGen = new LevelGenerator(13);
-            //_levelGen.WriteLevel(_hexMap);
         }
         if (keyboard.IsKeyClicked(Keys.Space) && !isShifted)
         {
@@ -136,28 +126,6 @@ public class Game1 : Game
             _camera.PanX(-.1f);
         }
 
-        //if (keyboard.IsKeyClicked(Keys.Up) && isShifted)
-        //{
-        //    _hexGrid.Stretch++;
-        //}
-        //if (keyboard.IsKeyClicked(Keys.Down) && isShifted)
-        //{
-        //    _hexGrid.Stretch--;
-        //}
-        //if (keyboard.IsKeyClicked(Keys.Right) && isShifted)
-        //{
-        //    _renderRGB = !_renderRGB;
-        //}
-        //if (keyboard.IsKeyClicked(Keys.Left) && isShifted)
-        //{
-        //    _hexGrid.Normalize = !_hexGrid.Normalize;
-        //}
-
-        _angle += MathHelper.PiOver2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        _transform = Matrix.CreateRotationY(_angle);
-
-        //_camera.Update(gameTime);
         _camera.UpdateMatrices();
 
         base.Update(gameTime);
@@ -169,17 +137,11 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
 
-        Matrix rotate = Matrix.CreateRotationZ(MathHelper.Pi / 6f);
-
-        //foreach (KeyValuePair<HexCoord, HexTile> entry in _hexMap.Tiles)
         foreach (KeyValuePair<HexCoord, LevelNode> entry in _levelMap.Nodes)
         {
             HexCoord coord = entry.Key;
-            //HexTile tile = entry.Value;
             LevelNode node = entry.Value;
 
-            //float height = (float)tile.Height;
-            //Matrix translation = Matrix.CreateScale(8f) * Matrix.CreateTranslation(_levelMap.GetWorldPosition(coord));
             Matrix translation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_levelMap.GetWorldPosition(coord));
             DrawModel(_prism, translation, _camera.View, _camera.Proj);
         }
@@ -199,29 +161,7 @@ public class Game1 : Game
                 effect.FogEnd = 20f;
 
                 effect.EnableDefaultLighting();
-                effect.EmissiveColor = Color.Black.ToVector3(); //tile.Color.ToVector3();
-
-                effect.World = world;
-                effect.View = view;
-                effect.Projection = projection;
-            }
-
-            mesh.Draw();
-        }
-    }
-    private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection, HexTile tile)
-    {
-        foreach (ModelMesh mesh in model.Meshes)
-        {
-            foreach (BasicEffect effect in mesh.Effects)
-            {
-                effect.FogEnabled = true;
-                effect.FogColor = Color.Black.ToVector3(); // For best results, make this color whatever your background is.
-                effect.FogStart = 0f;
-                effect.FogEnd = 200f;
-
-                effect.EnableDefaultLighting();
-                effect.EmissiveColor = tile.Color.ToVector3();
+                effect.EmissiveColor = Color.Black.ToVector3();
 
                 effect.World = world;
                 effect.View = view;

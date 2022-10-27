@@ -23,5 +23,4 @@
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/HexMap.pdb
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/HexMap.genruntimeconfig.cache
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/ref/HexMap.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/ball.xnb
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/hexagonal-prism.xnb

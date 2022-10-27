@@ -1,3 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"/Users/gacarr/Documents/game-dev/HexMap/Content/../../../models/hexagonal-prism.fbx","/Users/gacarr/Documents/game-dev/HexMap/Content/bin/DesktopGL/Content/hexagonal-prism.xnb","ModelProcessor","ModelContent",23548,2172,0.26376
-"/Users/gacarr/Documents/game-dev/HexMap/Content/ball.png","/Users/gacarr/Documents/game-dev/HexMap/Content/bin/DesktopGL/Content/ball.xnb","TextureProcessor","Texture2DContent",8368,16469,0.218584
+"/Users/gacarr/Documents/game-dev/HexMap/Content/hexagonal-prism.fbx","/Users/gacarr/Documents/game-dev/HexMap/Content/bin/DesktopGL/Content/hexagonal-prism.xnb","ModelProcessor","ModelContent",23548,2172,0.271145

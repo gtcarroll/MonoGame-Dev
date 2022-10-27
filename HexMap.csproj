@@ -15,7 +15,7 @@
     <None Remove="Icon.bmp" />
     <None Remove="Graphics\" />
     <None Remove="Input\" />
-    <None Remove="HexMap\" />
+    <None Remove="Screens\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -28,7 +28,7 @@
   <ItemGroup>
     <Folder Include="Graphics\" />
     <Folder Include="Input\" />
-    <Folder Include="HexMap\" />
+    <Folder Include="Screens\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

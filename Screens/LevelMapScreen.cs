@@ -1,5 +1,6 @@
 ﻿using System;
-namespace HexMap.HexMap
+
+namespace Screens
 {
     public class LevelMapScreen
     {
