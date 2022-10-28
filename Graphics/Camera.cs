@@ -170,6 +170,31 @@ namespace HexMap.Graphics
         {
             _tiltY += amount;
         }
+        //public void TiltXToward(Vector2 direction)
+        //{
+        //    Vector2 forward = new Vector2(0, 1);
+        //    float angle = MathF.Acos(Vector2.Dot(forward, direction));
+
+        //    Console.WriteLine(direction);
+        //    Console.WriteLine(MathHelper.ToDegrees(angle));
+
+        //    float sign = direction.Y > 0 ? -1f : 1f;
+
+        //    _tiltX = angle * sign;
+        //}
+        //public void TiltYToward(Vector2 direction)
+        //{
+        //    Vector2 forward = new Vector2(0, 1);
+        //    float angle = MathF.Acos(Vector2.Dot(forward, direction));
+
+        //    Console.WriteLine(direction);
+        //    Console.WriteLine(MathHelper.ToDegrees(angle));
+
+        //    float sign = direction.X < 0 ? -1f : 1f;
+
+        //    _tiltY = angle * sign;
+        //}
+
         public void Pan(Vector2 amount)
         {
             _pan += amount;

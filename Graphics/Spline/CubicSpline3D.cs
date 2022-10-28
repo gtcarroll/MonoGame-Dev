@@ -56,6 +56,19 @@ namespace HexMap.Graphics
             return Eval3D(new float[] { y }, debug)[0];
         }
 
+        public Vector2 GetSlopeVector(float y)
+        {
+            Vector2 tangent = new Vector2(EvalSlope(y), 1);
+            tangent.Normalize();
+
+            return tangent;
+        }
+
+        public float EvalSlope(float y, bool debug = false)
+        {
+            return spline.EvalSlope(new float[] { y }, debug)[0];
+        }
+
         /// <summary>
         /// Evaluate the spline at the specified y coordinates.
         /// This can extrapolate off the ends of the splines.

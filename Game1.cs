@@ -8,6 +8,7 @@ using HexMap.Input;
 using Levels;
 using System.Reflection;
 using System.Collections.Generic;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HexMap;
 
@@ -111,11 +112,16 @@ public class Game1 : Game
 
         if (keyboard.IsKeyDown(Keys.Up) && !isShifted)
         {
-            _camera.PanY(.07f);
+            Vector2 tangent = _spline3D.GetSlopeVector(_camera.Y);
+            _camera.PanY(tangent.Y / 20);
+
+            //_camera.TiltYToward(tangent);
+            //_camera.TiltXToward(tangent);
         }
         if (keyboard.IsKeyDown(Keys.Down) && !isShifted)
         {
-            _camera.PanY(-.07f);
+            float speed = _spline3D.GetSlopeVector(_camera.Y).Y;
+            _camera.PanY(-speed / 20);
         }
         if (keyboard.IsKeyDown(Keys.Right) && !isShifted)
         {
