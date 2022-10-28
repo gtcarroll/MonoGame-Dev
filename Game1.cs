@@ -16,18 +16,15 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    private Random _random;
+
     private Camera _camera;
 
-    //private HexMap _hexMap;
+    private CubicSpline3D _spline3D;
+
     private LevelMap _levelMap;
 
-    //private LevelGenerator _levelGen;
-
-    private Model _prism;
-
-    private float _angle;
-    private Matrix _transform;
-    private Random _random;
+    private Model _prism; 
 
     public Game1()
     {
@@ -44,7 +41,9 @@ public class Game1 : Game
 
         _camera = new Camera(this);
 
-        _levelMap = new LevelMap(_random);
+        _levelMap = new LevelMap(_random, 100);
+
+        _spline3D = new CubicSpline3D(_levelMap.CameraPositions);
 
         base.Initialize();
     }
@@ -102,7 +101,8 @@ public class Game1 : Game
 
         if (keyboard.IsKeyClicked(Keys.Space) && isShifted)
         {
-            _levelMap = new LevelMap(_random);
+            _levelMap = new LevelMap(_random, 100);
+            _spline3D = new CubicSpline3D(_levelMap.CameraPositions);
         }
         if (keyboard.IsKeyClicked(Keys.Space) && !isShifted)
         {
@@ -111,11 +111,11 @@ public class Game1 : Game
 
         if (keyboard.IsKeyDown(Keys.Up) && !isShifted)
         {
-            _camera.PanY(.1f);
+            _camera.PanY(.07f);
         }
         if (keyboard.IsKeyDown(Keys.Down) && !isShifted)
         {
-            _camera.PanY(-.1f);
+            _camera.PanY(-.07f);
         }
         if (keyboard.IsKeyDown(Keys.Right) && !isShifted)
         {
@@ -127,6 +127,10 @@ public class Game1 : Game
         }
 
         _camera.UpdateMatrices();
+
+        //float t = (float)gameTime.TotalGameTime.TotalSeconds;// % _levelMap.CameraPositions.Length;
+        Vector3 camPos = _spline3D.Eval3D(_camera.Y);//_levelMap.CameraPositions[t];
+        _camera.PanTo(camPos);
 
         base.Update(gameTime);
     }

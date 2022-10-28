@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +14,8 @@ namespace Levels
         private static readonly HexCoord RightDelta = new HexCoord(1, 1);
         private static readonly HexCoord SiblingDelta = new HexCoord(1, 0);
 
+        private static readonly Vector3 CameraOffset = new Vector3(0, 0.3f, 3f);
+
         private readonly Random _random;
 
         private readonly int _levelLength;
@@ -20,6 +24,7 @@ namespace Levels
         public HexCoord PlayerPosition { get { return _playerPosition; } }
 
         public Dictionary<HexCoord, LevelNode> Nodes;
+        public Vector3[] CameraPositions;
 
         private Vector3 _basisQ;
         private Vector3 _basisR;
@@ -100,6 +105,43 @@ namespace Levels
 
             return coord.Q * _basisQ + coord.R * _basisR + z * _basisZ;
         }
+        /// <summary>
+        /// Gets the position of the given HexCoord in the World matrix
+        /// </summary>
+        /// <param name="q">Q coordinate as a float value</param>
+        /// <param name="r">R coordinate as a float value</param>
+        /// <param name="r">Z coordinate as a float value</param>
+        /// <returns>
+        /// Vector3 position of the given HexCoord in the World matrix
+        /// </returns>
+        public Vector3 GetWorldPosition(float q, float r, float z)
+        {
+            return q * _basisQ + r * _basisR + z * _basisZ;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
+        private Vector3 GetCameraPosition(HexCoord[] coords)
+        {
+            float z = Nodes.ContainsKey(coords[0]) ? Nodes[coords[0]].Z : 0f;
+            float sumQ = 0;
+            float sumR = 0;
+
+            for (int i = 0; i < coords.Length; i++)
+            {
+                sumQ += coords[i].Q;
+                sumR += coords[i].R;
+            }
+
+            float n = (float)coords.Length;
+            float avgQ = sumQ / n;
+            float avgR = sumR / n;
+
+            return GetWorldPosition(avgQ, avgR, z) + CameraOffset;
+        }
 
         /// <summary>
         /// Generates a new level map
@@ -107,13 +149,18 @@ namespace Levels
         private void Generate()
         {
             Nodes = new Dictionary<HexCoord, LevelNode>();
+            CameraPositions = new Vector3[_levelLength];
 
             // add starting node
-            Nodes.Add(new HexCoord(0, 0), new LevelNode(0));
+            HexCoord start = new HexCoord(0, 0);
+            Nodes.Add(start, new LevelNode(0));
+            CameraPositions[0] = GetCameraPosition(new HexCoord[] { start });
 
             // add second row of nodes
-            Nodes.Add(LeftDelta, new LevelNode(1));
-            Nodes.Add(RightDelta, new LevelNode(1));
+            HexCoord[] secondRow = new HexCoord[] { LeftDelta, RightDelta };
+            Nodes.Add(secondRow[0], new LevelNode(1));
+            Nodes.Add(secondRow[1], new LevelNode(1));
+            CameraPositions[1] = GetCameraPosition(secondRow);
 
             // add remaining rows of nodes randomly
             int prevWidth = 2;
@@ -128,6 +175,8 @@ namespace Levels
                 {
                     Nodes.Add(rowCoords[i], new LevelNode(z));
                 }
+
+                CameraPositions[z] = GetCameraPosition(rowCoords);
 
                 rowStart = rowCoords[0] + LeftDelta;
                 prevWidth = rowWidth;

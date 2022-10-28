@@ -47,6 +47,14 @@ namespace HexMap.Graphics
         {
             get { return _z; }
         }
+        public float X
+        {
+            get { return _pan.X; }
+        }
+        public float Y
+        {
+            get { return _pan.Y; }
+        }
         public float Zoom
         {
             get { return _zoom; }
@@ -79,9 +87,9 @@ namespace HexMap.Graphics
         public void Reset()
         {
             _z = _baseZ;
-            _tiltX = 0;//-MathHelper.Pi / 6f;
+            _tiltX = -MathHelper.Pi / 6f;
             _tiltY = 0;
-            _pan = new Vector2(0, 0);
+            _pan = new Vector2(0, 0.3f);
         }
 
         public void Update(GameTime gameTime)
@@ -111,10 +119,15 @@ namespace HexMap.Graphics
         {
             _pan = position;
         }
+        public void PanTo(Vector3 position)
+        {
+            _pan = new Vector2(position.X, position.Y);
+            _z = position.Z;
+        }
 
         public void UpdateMatrices()
         {
-            _view = Matrix.CreateLookAt(new Vector3(_pan, _z), new Vector3(_pan, 0), Vector3.Up)
+            _view = Matrix.CreateLookAt(new Vector3(_pan, _z), new Vector3(_pan, _z - 1), Vector3.Up)
                 * Matrix.CreateRotationX(_tiltX)
                 * Matrix.CreateRotationY(_tiltY);
                 //* Matrix.CreateTranslation(new Vector3(_pan, 0f));

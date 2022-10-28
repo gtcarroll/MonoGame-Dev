@@ -1,21 +1,10 @@
 ﻿<Properties StartupConfiguration="{E441C119-16CF-42D8-AFD6-F74F38020ECE}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.HexMap PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics/Camera.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
     <Files>
-      <File FileName="Game1.cs" Line="199" Column="35" IsPinned="True" />
-      <File FileName="HexMap/HexMap.cs" Line="26" Column="1" />
-      <File FileName="HexMap/HexCoord.cs" Line="42" Column="45" />
-      <File FileName="HexMap/HexTile.cs" Line="1" Column="14" />
-      <File FileName="HexMap/LevelGenerator.cs" Line="178" Column="1" />
-      <File FileName="Graphics/Camera.cs" Line="72" Column="43" />
-      <File FileName="HexMap/LevelMapScreen.cs" Line="1" Column="1" />
-      <File FileName="HexMap/LevelMap.cs" Line="41" Column="50" />
+      <File FileName="Game1.cs" Line="42" Column="43" IsPinned="True" />
+      <File FileName="Levels/HexCoord.cs" Line="1" Column="1" />
+      <File FileName="Levels/LevelMap.cs" Line="1" Column="1" />
+      <File FileName="Levels/LevelNode.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,8 +17,10 @@
               </Node>
               <Node name="Content" expanded="True" />
               <Node name="Graphics" expanded="True" />
-              <Node name="HexMap" expanded="True" />
               <Node name="Input" expanded="True" />
+              <Node name="Levels" expanded="True" />
+              <Node name="Screens" expanded="True" />
+              <Node name="Game1.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -39,4 +30,11 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.HexMap PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
