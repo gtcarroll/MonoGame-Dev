@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using HexMap.Graphics;
+using EverythingUnder.Graphics;
 
-namespace HexMap.Input
+namespace EverythingUnder.Input
 {
     public sealed class FlatMouse
     {

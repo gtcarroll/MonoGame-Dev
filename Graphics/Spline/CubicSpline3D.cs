@@ -3,7 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HexMap.Graphics
+namespace EverythingUnder.Graphics
 {
     public class CubicSpline3D
     {

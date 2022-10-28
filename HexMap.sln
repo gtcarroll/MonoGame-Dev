@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1703.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexMap", "HexMap.csproj", "{E441C119-16CF-42D8-AFD6-F74F38020ECE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverythingUnder", "EverythingUnder.csproj", "{E441C119-16CF-42D8-AFD6-F74F38020ECE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

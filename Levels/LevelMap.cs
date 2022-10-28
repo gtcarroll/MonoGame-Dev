@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Levels
+namespace EverythingUnder.Levels
 {
     public class LevelMap
     {

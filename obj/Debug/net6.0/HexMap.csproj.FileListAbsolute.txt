@@ -29,3 +29,4 @@
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Graphics.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Tiled.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Input.dll

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace HexMap.Input
+namespace EverythingUnder.Input
 {
     public sealed class FlatKeyboard
     {

@@ -4,253 +4,82 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HexMap.Graphics
+namespace EverythingUnder.Graphics
 {
-    public sealed class Camera
+    public class Camera
     {
-        public readonly static float MinZ = 1f;
-        public readonly static float MaxZ = 2048f;
+        // Directional vector camera faces if no target is set
+        public static readonly Vector3 DefaultTarget =
+            new Vector3(0f, 1f, -MathF.Sqrt(3f));
 
-        public readonly static float MinZoom = 1;
-        public readonly static float MaxZoom = 6;
+        // Draw plane bounds
+        private static readonly float NearPlane = 1f;
+        private static readonly float FarPlane = 1024f;
 
-        private Game _game;
-        private Viewport _viewport;
+        // Camera initialization values
+        private readonly float _aspectRatio;
+        private readonly float _fieldOfView;
 
-        private bool _isAnimating;
-        private float _travelTime;
-        private float _totalTime;
-        private Vector2 _vDestination;
-        private Vector2 _vDelta;
-        private Vector2 _vCurrent;
+        // Camera state vectors
+        private Vector3 _position;
+        private Vector3? _target;
 
-        private Vector2 _position;
-        private float _z;
-        private float _baseZ;
-
-        private float _aspectRatio;
-        private float _fieldOfView;
-        private float _zoom;
-
-        private float _tiltX;
-        private float _tiltY;
-        private Vector2 _pan;
-
-        private Matrix _view;
-        private Matrix _proj;
-
-        public Vector2 Position
+        public Vector3 Position
         {
             get { return _position; }
-        }
-        public float Z
-        {
-            get { return _z; }
+            set { _position = value; }
         }
         public float X
         {
-            get { return _pan.X; }
+            get { return _position.X; }
+            set { _position.X = value; }
         }
         public float Y
         {
-            get { return _pan.Y; }
+            get { return _position.Y; }
+            set { _position.Y = value; }
         }
-        public float Zoom
+        public float Z
         {
-            get { return _zoom; }
+            get { return _position.Z; }
+            set { _position.Z = value; }
         }
-        public Matrix View
+        public Vector3? Target
         {
-            get { return _view; }
+            get { return _target; }
+            set { _target = value; }
         }
-        public Matrix Proj
-        {
-            get { return _proj; }
-        }
+
+        // Matrices for 3D rendering
+        private Matrix _view;
+        private Matrix _projection;
+
+        public Matrix View { get { return _view; } }
+        public Matrix Projection { get { return _projection; } }
 
         public Camera(Game game)
         {
-            _game = game;
-            _viewport = _game.GraphicsDevice.Viewport;
-
-            _aspectRatio = (float)_viewport.AspectRatio;
+            _aspectRatio = (float)game.GraphicsDevice.Viewport.AspectRatio;
             _fieldOfView = MathHelper.PiOver2;
-            _zoom = 1;
-
-            _position = new Vector2(0, 0);
-            _baseZ = 3;//GetZFromHeight(_viewport.Height / 2f);
-            //_z = _baseZ;
 
             Reset();
             UpdateMatrices();
         }
+
         public void Reset()
         {
-            _z = _baseZ;
-            _tiltX = -MathHelper.Pi / 6f;
-            _tiltY = 0;
-            _pan = new Vector2(0, 0.3f);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            if (_isAnimating)
-            {
-                float timeScalar = gameTime.ElapsedGameTime.Milliseconds / _travelTime;
-                timeScalar = MathHelper.Clamp(timeScalar, 0, 1);
-                _totalTime += timeScalar;
-
-                Pan(_vDelta * timeScalar);
-
-                _isAnimating = _totalTime < 1;
-            }
-        }
-
-        public void PanTo(Vector2 position, float milliseconds)
-        {
-            _isAnimating = true;
-            _travelTime = milliseconds;
-            _totalTime = 0f;
-            _vCurrent = _pan;
-            _vDestination = position;
-            _vDelta = position - _pan;
-        }
-        public void PanTo(Vector2 position)
-        {
-            _pan = position;
-        }
-        public void PanTo(Vector3 position)
-        {
-            _pan = new Vector2(position.X, position.Y);
-            _z = position.Z;
+            _position = Vector3.Zero;
+            _target = null;
         }
 
         public void UpdateMatrices()
         {
-            _view = Matrix.CreateLookAt(new Vector3(_pan, _z), new Vector3(_pan, _z - 1), Vector3.Up)
-                * Matrix.CreateRotationX(_tiltX)
-                * Matrix.CreateRotationY(_tiltY);
-                //* Matrix.CreateTranslation(new Vector3(_pan, 0f));
-            _proj = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, MinZ, MaxZ);
-        }
+            Vector3 target = _target == null
+                ? _position + DefaultTarget
+                : (Vector3)_target;
 
-        public float GetZFromHeight(float height)
-        {
-            return (0.5f * height) / MathF.Tan(0.5f * _fieldOfView);
-        }
-        public float GetHeightFromZ()
-        {
-            return _z * MathF.Tan(0.5f * _fieldOfView) * 2f;
-        }
-
-        public void MoveZ(float amount)
-        {
-            _z += amount;
-            _z = MathHelper.Clamp(_z, MinZ, MaxZ);
-        }
-        public void ResetZ()
-        {
-            _z = _baseZ;
-        }
-
-        public void Move(Vector2 amount)
-        {
-            _position += amount;
-        }
-        public void MoveTo(Vector2 position)
-        {
-            _position = position;
-        }
-
-        public void TiltX(float amount)
-        {
-            _tiltX += amount;
-        }
-        public void TiltY(float amount)
-        {
-            _tiltY += amount;
-        }
-        //public void TiltXToward(Vector2 direction)
-        //{
-        //    Vector2 forward = new Vector2(0, 1);
-        //    float angle = MathF.Acos(Vector2.Dot(forward, direction));
-
-        //    Console.WriteLine(direction);
-        //    Console.WriteLine(MathHelper.ToDegrees(angle));
-
-        //    float sign = direction.Y > 0 ? -1f : 1f;
-
-        //    _tiltX = angle * sign;
-        //}
-        //public void TiltYToward(Vector2 direction)
-        //{
-        //    Vector2 forward = new Vector2(0, 1);
-        //    float angle = MathF.Acos(Vector2.Dot(forward, direction));
-
-        //    Console.WriteLine(direction);
-        //    Console.WriteLine(MathHelper.ToDegrees(angle));
-
-        //    float sign = direction.X < 0 ? -1f : 1f;
-
-        //    _tiltY = angle * sign;
-        //}
-
-        public void Pan(Vector2 amount)
-        {
-            _pan += amount;
-        }
-        public void PanX(float amount)
-        {
-            _pan.X += amount;
-        }
-        public void PanY(float amount)
-        {
-            _pan.Y += amount;
-        }
-
-        public void ZoomIn()
-        {
-            _zoom++;
-            UpdateZoom();
-        }
-        public void ZoomOut()
-        {
-            _zoom--;
-            UpdateZoom();
-        }
-        public void SetZoom(float zoom)
-        {
-            _zoom = zoom;
-            UpdateZoom();
-        }
-        private void UpdateZoom()
-        {
-            _zoom = MathHelper.Clamp(_zoom, MinZoom, MaxZoom);
-            _z = _baseZ / _zoom;
-        }
-
-        public void GetExtents(out float width, out float height)
-        {
-            height = GetHeightFromZ();
-            width = height * _aspectRatio;
-        }
-
-        public void GetExtents(out float left, out float right, out float bottom, out float top)
-        {
-            GetExtents(out float width, out float height);
-
-            left = _position.X - (width / 2f);
-            right = _position.X + (width / 2f);
-            top = _position.Y - (height / 2f);
-            bottom = _position.Y + (height / 2f);
-        }
-
-        public void GetExtents(out Vector2 min, out Vector2 max)
-        {
-            GetExtents(out float left, out float right, out float bottom, out float top);
-
-            min = new Vector2(left, top);
-            max = new Vector2(right, bottom);
+            _view = Matrix.CreateLookAt(_position, target, Vector3.Up);
+            _projection = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, NearPlane, FarPlane);
         }
     }
 }

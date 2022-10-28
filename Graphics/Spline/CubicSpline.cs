@@ -27,7 +27,7 @@
 //
 using System;
 
-namespace HexMap.Graphics
+namespace EverythingUnder.Graphics
 {
     /// <summary>
 	/// Cubic spline interpolation.

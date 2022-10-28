@@ -1,3 +1,3 @@
 ﻿
-using var game = new HexMap.Game1();
+using var game = new EverythingUnder.Game1();
 game.Run();

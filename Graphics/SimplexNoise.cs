@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace HexMap.Graphics
+namespace EverythingUnder.Graphics
 {
     public class SimplexNoise
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Levels
+namespace EverythingUnder.Levels
 {
     public enum NodeType
     {

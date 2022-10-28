@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HexMap.Graphics
+namespace EverythingUnder.Graphics
 {
     public class PolygonBatch
     {
@@ -72,7 +72,7 @@ namespace HexMap.Graphics
             {
                 camera.UpdateMatrices();
                 _effect.View = camera.View;
-                _effect.Projection = camera.Proj;
+                _effect.Projection = camera.Projection;
             }
             _camera = camera;
 
@@ -119,10 +119,10 @@ namespace HexMap.Graphics
 
             EnsureSpace(shapeVertexCount, shapeIndexCount);
 
-            if (_camera != null)
-            {
-                lineWidth /= _camera.Zoom;
-            }
+            //if (_camera != null)
+            //{
+            //    lineWidth /= _camera.Zoom;
+            //}
             float halfThickness = lineWidth / 2f;
 
             float e1x = bx - ax;

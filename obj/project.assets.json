@@ -5,14 +5,10 @@
       "Autofac/5.2.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.1/Autofac.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.1/Autofac.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.1/Autofac.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.1/Autofac.dll": {}
         }
       },
       "MonoGame.Content.Builder.Task/3.8.1.303": {
@@ -179,6 +175,18 @@
           "lib/netstandard2.0/MonoGame.Extended.Graphics.dll": {}
         }
       },
+      "MonoGame.Extended.Input/3.8.0": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Extended": "3.8.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.Input.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.Input.dll": {}
+        }
+      },
       "MonoGame.Extended.Tiled/3.8.0": {
         "type": "package",
         "dependencies": {
@@ -241,14 +249,10 @@
       "Newtonsoft.Json/12.0.3": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       }
     }
@@ -378,6 +382,18 @@
         "monogame.extended.graphics.nuspec"
       ]
     },
+    "MonoGame.Extended.Input/3.8.0": {
+      "sha512": "90RtzI6N+RCGHolI/yTwGT47vqSyr+IEe+yKxzm4/euc8rDVnbAwz4lRifkAEdHx29X3apD0Ui5ve0C/7yO7wQ==",
+      "type": "package",
+      "path": "monogame.extended.input/3.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/MonoGame.Extended.Input.dll",
+        "monogame.extended.input.3.8.0.nupkg.sha512",
+        "monogame.extended.input.nuspec"
+      ]
+    },
     "MonoGame.Extended.Tiled/3.8.0": {
       "sha512": "lXE+Ysvep5FCozHlj862kqIG6TWCmjNgjF7xWbJ4ZDkqG+Khi9VrG5G8Pdj80TMRpDhZOz3PICinVZElZU639g==",
       "type": "package",
@@ -449,6 +465,7 @@
       "MonoGame.Content.Builder.Task >= 3.8.1.303",
       "MonoGame.Extended >= 3.8.0",
       "MonoGame.Extended.Content.Pipeline >= 3.8.0",
+      "MonoGame.Extended.Input >= 3.8.0",
       "MonoGame.Framework.DesktopGL >= 3.8.1.303"
     ]
   },
@@ -458,9 +475,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj",
+      "projectUniqueName": "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj",
       "projectName": "HexMap",
-      "projectPath": "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj",
+      "projectPath": "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj",
       "packagesPath": "/Users/gacarr/.nuget/packages/",
       "outputPath": "/Users/gacarr/Documents/game-dev/HexMap/obj/",
       "projectStyle": "PackageReference",
@@ -471,7 +488,6 @@
         "net6.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -502,6 +518,10 @@
             "target": "Package",
             "version": "[3.8.0, )"
           },
+          "MonoGame.Extended.Input": {
+            "target": "Package",
+            "version": "[3.8.0, )"
+          },
           "MonoGame.Framework.DesktopGL": {
             "target": "Package",
             "version": "[3.8.1.303, )"
@@ -523,7 +543,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.401/RuntimeIdentifierGraph.json"
       }
     }
   }

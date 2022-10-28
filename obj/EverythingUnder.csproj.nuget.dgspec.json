@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj": {}
+    "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj": {}
   },
   "projects": {
-    "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj": {
+    "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj",
+        "projectUniqueName": "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj",
         "projectName": "HexMap",
-        "projectPath": "/Users/gacarr/Documents/game-dev/HexMap/HexMap.csproj",
+        "projectPath": "/Users/gacarr/Documents/game-dev/HexMap/EverythingUnder.csproj",
         "packagesPath": "/Users/gacarr/.nuget/packages/",
         "outputPath": "/Users/gacarr/Documents/game-dev/HexMap/obj/",
         "projectStyle": "PackageReference",
