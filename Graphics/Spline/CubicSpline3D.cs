@@ -8,7 +8,7 @@ namespace EverythingUnder.Graphics
     public class CubicSpline3D
     {
         // CubicSpline being wrapped
-        private CubicSpline spline;
+        private readonly CubicSpline spline;
 
         // Variables used for calculating Z value
         private float z0;
@@ -16,6 +16,11 @@ namespace EverythingUnder.Graphics
 
         private float y0;
         private float dy;
+
+        public float[] Ys
+        {
+            get { return spline.yOrig; }
+        }
 
         public CubicSpline3D(Vector3[] points, float startSlope = float.NaN, float endSlope = float.NaN, bool debug = false)//float[] x, float[] y, float z0, float dz, float startSlope = float.NaN, float endSlope = float.NaN, bool debug = false)
         {

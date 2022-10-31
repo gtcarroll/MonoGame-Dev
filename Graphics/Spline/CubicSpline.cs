@@ -55,8 +55,8 @@ namespace EverythingUnder.Graphics
         private float[] b;
 
         // Save the original x and y for Eval
-        private float[] xOrig;
-        private float[] yOrig;
+        public float[] xOrig;
+        public float[] yOrig;
 
         #endregion
 

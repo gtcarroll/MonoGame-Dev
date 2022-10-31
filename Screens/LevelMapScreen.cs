@@ -13,10 +13,11 @@ namespace EverythingUnder.Screens
 {
     public class LevelMapScreen : GameScreen
     {
-        private Game _game;
+        private readonly Game _game;
+        private readonly Random _random;
+        private readonly SplineCamera _camera;
+
         private Model _prism;
-        private Random _random;
-        private SplineCamera _camera;
         private LevelMap _level;
 
         public LevelMapScreen(Game game) : base(game)
@@ -39,23 +40,87 @@ namespace EverythingUnder.Screens
         {
             KeyboardStateExtended keyboard = KeyboardExtended.GetState();
 
+            // re-generate level
             if (keyboard.WasKeyJustUp(Keys.Space))
             {
                 _level = new LevelMap(_random, 100);
                 _camera.LoadPoints(_level.CameraPositions);
             }
 
-            // pan camera w UP/DOWN/LEFT/RIGHT
-            if (keyboard.IsKeyDown(Keys.Up))
+            // progress left or right
+            HexCoord?[] nextCoords = _level.GetNextCoords();
+            if (keyboard.WasKeyJustUp(Keys.A))
+            {
+                MoveLeft();
+            }
+            if (keyboard.WasKeyJustUp(Keys.D))
+            {
+                MoveRight();
+            }
+
+            // move camera forward or backward
+            if (keyboard.IsKeyDown(Keys.W))
             {
                 _camera.MoveForward(gameTime);
             }
-            if (keyboard.IsKeyDown(Keys.Down))
+            if (keyboard.IsKeyDown(Keys.S))
             {
                 _camera.MoveBackward(gameTime);
             }
 
-            _camera.Update();
+            // return camera to home position
+            if (keyboard.WasKeyJustUp(Keys.Q))
+            {
+                _camera.Return();
+            }
+
+            _camera.Update(gameTime);
+        }
+
+        private void MoveLeft()
+        {
+            if (_camera.IsReturned)
+            {
+                MoveToNextNode(true);
+            }
+            else
+            {
+                _camera.Return();
+            }
+        }
+        private void MoveRight()
+        {
+            if (_camera.IsReturned)
+            {
+                MoveToNextNode(false);
+            }
+            else
+            {
+                _camera.Return();
+            }
+        }
+
+        private bool MoveToNextNode(bool isLeft)
+        {
+            // get next HexCoord
+            int nextIndex = isLeft ? 0 : 1;
+            HexCoord? next = _level.GetNextCoords()[nextIndex];
+
+            // update camera positions
+            if (next == null
+                || _camera.IsAnimating
+                || _level.MoveToNode((HexCoord)next) == null)
+            {
+                return false;
+            }
+
+            // load new spline points
+            _camera.LoadPoints(_level.CameraPositions);
+
+            // animate camera moving forward to next Y value
+            _camera.AnimateTo(_level.GetCameraPosition((HexCoord)next).Y);
+
+            return true;
         }
 
         public override void Draw(GameTime gameTime)

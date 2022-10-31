@@ -21,6 +21,11 @@ public class Game1 : Game
         Components.Add(_screenManager);
 
         _graphics = new GraphicsDeviceManager(this);
+
+        // Set fullscreen
+        //_graphics.IsFullScreen = true;
+        //_graphics.ApplyChanges();
+
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -29,9 +34,6 @@ public class Game1 : Game
     {
         Viewport vp = GraphicsDevice.Viewport;
 
-        // Set fullscreen
-        _graphics.IsFullScreen = true;
-        _graphics.ApplyChanges();
 
         base.Initialize();
     }

@@ -10,10 +10,10 @@ namespace EverythingUnder.Graphics
     {
         // Directional vector camera faces if no target is set
         public static readonly Vector3 DefaultTarget =
-            new Vector3(0f, 1f, -MathF.Sqrt(3f));
+            new Vector3(0f, 1f, -1f);//-MathF.Sqrt(3f));
 
         // Draw plane bounds
-        private static readonly float NearPlane = 1f;
+        private static readonly float NearPlane = .1f;
         private static readonly float FarPlane = 1024f;
 
         // Camera initialization values
@@ -46,8 +46,8 @@ namespace EverythingUnder.Graphics
         }
         public Vector3? Target
         {
-            get { return _target; }
-            set { _target = value; }
+            get { return _target - DefaultTarget; }
+            set { _target = value + DefaultTarget; }
         }
 
         // Matrices for 3D rendering

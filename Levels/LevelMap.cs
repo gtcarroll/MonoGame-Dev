@@ -14,21 +14,23 @@ namespace EverythingUnder.Levels
         private static readonly HexCoord RightDelta = new HexCoord(1, 1);
         private static readonly HexCoord SiblingDelta = new HexCoord(1, 0);
 
-        private static readonly Vector3 CameraOffset = new Vector3(0, 0.3f, 3f);
+        private static readonly Vector3 CameraOffset = new Vector3(0, 0.3f, 1.8f);
+
+        private static readonly Vector3 _basisQ = new Vector3(MathF.Sqrt(3), 0, 0);
+        private static readonly Vector3 _basisR = new Vector3(-MathF.Sqrt(3) / 2f, 3f / 2f, 0);
+        private static readonly Vector3 _basisZ = new Vector3(0, 0, -MathF.Sqrt(3) / 2f);
 
         private readonly Random _random;
 
         private readonly int _levelLength;
 
         private HexCoord _playerPosition;
+        private int _playerPositionIndex;
         public HexCoord PlayerPosition { get { return _playerPosition; } }
+
 
         public Dictionary<HexCoord, LevelNode> Nodes;
         public Vector3[] CameraPositions;
-
-        private Vector3 _basisQ;
-        private Vector3 _basisR;
-        private Vector3 _basisZ;
 
         /// <summary>
         /// Constructor
@@ -42,10 +44,7 @@ namespace EverythingUnder.Levels
             _levelLength = length;
 
             _playerPosition = new HexCoord(0, 0);
-
-            _basisQ = new Vector3(MathF.Sqrt(3), 0, 0);
-            _basisR = new Vector3(-MathF.Sqrt(3) / 2f, 3f / 2f, 0);
-            _basisZ = new Vector3(0, 0, -MathF.Sqrt(3) / 2f);
+            _playerPositionIndex = 0;
 
             Generate();
         }
@@ -53,22 +52,27 @@ namespace EverythingUnder.Levels
         /// <summary>
         /// Gets the HexCoords of the next LevelNodes the player can travel to
         /// </summary>
-        public HexCoord[] GetNextCoords()
+        public HexCoord?[] GetNextCoords()
         {
-            List<HexCoord> nextCoords = new List<HexCoord>();
+            //List<HexCoord> nextCoords = new List<HexCoord>();
+            HexCoord?[] nextCoords = new HexCoord?[2];
             HexCoord left = PlayerPosition + LeftDelta;
             HexCoord right = PlayerPosition + RightDelta;
 
-            if (Nodes.ContainsKey(left))
-            {
-                nextCoords.Add(left);
-            }
-            if (Nodes.ContainsKey(right))
-            {
-                nextCoords.Add(right);
-            }
 
-            return nextCoords.ToArray();
+            nextCoords[0] = Nodes.ContainsKey(left) ? left : null;
+            nextCoords[1] = Nodes.ContainsKey(right) ? right : null;
+
+            //if (Nodes.ContainsKey(left))
+            //{
+            //    nextCoords.Add(left);
+            //}
+            //if (Nodes.ContainsKey(right))
+            //{
+            //    nextCoords.Add(right);
+            //}
+
+            return nextCoords;//nextCoords.ToArray();
         }
 
         /// <summary>
@@ -82,6 +86,10 @@ namespace EverythingUnder.Levels
             if (Nodes.ContainsKey(target))
             {
                 _playerPosition = target;
+                _playerPositionIndex++;
+
+                CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
+
                 return Nodes[target];
             }
 
@@ -141,6 +149,10 @@ namespace EverythingUnder.Levels
             float avgR = sumR / n;
 
             return GetWorldPosition(avgQ, avgR, z) + CameraOffset;
+        }
+        public Vector3 GetCameraPosition(HexCoord coord)
+        {
+            return GetWorldPosition(coord) + CameraOffset;
         }
 
         /// <summary>
