@@ -32,6 +32,8 @@ namespace EverythingUnder.Levels
         public Dictionary<HexCoord, LevelNode> Nodes;
         public Vector3[] CameraPositions;
 
+        public HexCoord?[] NextCoords;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,16 +45,27 @@ namespace EverythingUnder.Levels
 
             _levelLength = length;
 
+            Generate();
+
             _playerPosition = new HexCoord(0, 0);
             _playerPositionIndex = 0;
+            NextCoords = GetNextCoords();
+        }
 
-            Generate();
+        private void UpdatePlayerPosition(HexCoord target)
+        {
+            _playerPosition = target;
+            _playerPositionIndex++;
+
+            CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
+
+            NextCoords = GetNextCoords();
         }
 
         /// <summary>
         /// Gets the HexCoords of the next LevelNodes the player can travel to
         /// </summary>
-        public HexCoord?[] GetNextCoords()
+        private HexCoord?[] GetNextCoords()
         {
             //List<HexCoord> nextCoords = new List<HexCoord>();
             HexCoord?[] nextCoords = new HexCoord?[2];
@@ -85,10 +98,12 @@ namespace EverythingUnder.Levels
         {
             if (Nodes.ContainsKey(target))
             {
-                _playerPosition = target;
-                _playerPositionIndex++;
+                //_playerPosition = target;
+                //_playerPositionIndex++;
 
-                CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
+                //CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
+
+                UpdatePlayerPosition(target);
 
                 return Nodes[target];
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using EverythingUnder.Graphics;
 using EverythingUnder.Levels;
 using Microsoft.Xna.Framework;
@@ -18,7 +19,10 @@ namespace EverythingUnder.Screens
         private readonly SplineCamera _camera;
 
         private Model _prism;
+        private Model _sphere;
         private LevelMap _level;
+
+        private List<HexCoord> _highlighted;
 
         public LevelMapScreen(Game game) : base(game)
         {
@@ -27,6 +31,8 @@ namespace EverythingUnder.Screens
             _random = new Random();
             _level = new LevelMap(_random);
             _camera = new SplineCamera(game, _level.CameraPositions);
+
+            _highlighted = new List<HexCoord>();
         }
 
         public override void LoadContent()
@@ -34,10 +40,49 @@ namespace EverythingUnder.Screens
             base.LoadContent();
 
             _prism = _game.Content.Load<Model>("hexagonal-prism");
+            _sphere = _game.Content.Load<Model>("sphere");
         }
 
         public override void Update(GameTime gameTime)
         {
+            _highlighted = new List<HexCoord>();
+            Viewport viewport = this.GraphicsDevice.Viewport;
+
+            MouseStateExtended mouse = MouseExtended.GetState();
+            Vector2 mouseLocation = new Vector2(mouse.X, mouse.Y);
+
+            HexCoord? left = _level.NextCoords[0];
+            HexCoord? right = _level.NextCoords[1];
+
+            Vector3 topDelta = new Vector3(0, 0, 1);
+
+            if (left != null)
+            {
+                Vector3 pos = _level.GetWorldPosition((HexCoord)left);
+
+                if (ModelHelper.IntersectsHex(mouseLocation, pos, _camera.View, _camera.Projection, viewport))
+                {
+                    _highlighted.Add((HexCoord)left);
+                    if (mouse.WasButtonJustUp(MouseButton.Left))
+                    {
+                        MoveLeft();
+                    }
+                }
+            }
+            if (right != null)
+            {
+                Vector3 pos = _level.GetWorldPosition((HexCoord)right);
+
+                if (ModelHelper.IntersectsHex(mouseLocation, pos, _camera.View, _camera.Projection, viewport))
+                {
+                    _highlighted.Add((HexCoord)right);
+                    if (mouse.WasButtonJustUp(MouseButton.Left))
+                    {
+                        MoveRight();
+                    }
+                }
+            }
+
             KeyboardStateExtended keyboard = KeyboardExtended.GetState();
 
             // re-generate level
@@ -48,7 +93,7 @@ namespace EverythingUnder.Screens
             }
 
             // progress left or right
-            HexCoord?[] nextCoords = _level.GetNextCoords();
+            HexCoord?[] nextCoords = _level.NextCoords;
             if (keyboard.WasKeyJustUp(Keys.A))
             {
                 MoveLeft();
@@ -77,13 +122,31 @@ namespace EverythingUnder.Screens
             _camera.Update(gameTime);
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            _game.GraphicsDevice.Clear(Color.Black);
+            _game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            foreach (KeyValuePair<HexCoord, LevelNode> entry in _level.Nodes)
+            {
+                HexCoord coord = entry.Key;
+                LevelNode node = entry.Value;
+
+                Matrix translation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_level.GetWorldPosition(coord));
+                ModelHelper.DrawModel(_prism, translation, _camera.View, _camera.Projection, _highlighted.Contains(coord));
+
+                //Matrix sphereTranslation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_level.GetWorldPosition(coord) + topDelta);
+                //ModelHelper.DrawModel(_sphere, sphereTranslation, _camera.View, _camera.Projection);
+            }
+        }
+
         private void MoveLeft()
         {
             if (_camera.IsReturned)
             {
                 MoveToNextNode(true);
             }
-            else
+            else if (!_camera.IsAnimating)
             {
                 _camera.Return();
             }
@@ -94,7 +157,7 @@ namespace EverythingUnder.Screens
             {
                 MoveToNextNode(false);
             }
-            else
+            else if (!_camera.IsAnimating)
             {
                 _camera.Return();
             }
@@ -104,11 +167,10 @@ namespace EverythingUnder.Screens
         {
             // get next HexCoord
             int nextIndex = isLeft ? 0 : 1;
-            HexCoord? next = _level.GetNextCoords()[nextIndex];
+            HexCoord? next = _level.NextCoords[nextIndex];
 
             // update camera positions
             if (next == null
-                || _camera.IsAnimating
                 || _level.MoveToNode((HexCoord)next) == null)
             {
                 return false;
@@ -121,44 +183,6 @@ namespace EverythingUnder.Screens
             _camera.AnimateTo(_level.GetCameraPosition((HexCoord)next).Y);
 
             return true;
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            _game.GraphicsDevice.Clear(Color.Black);
-            _game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-            foreach (KeyValuePair<HexCoord, LevelNode> entry in _level.Nodes)
-            {
-                HexCoord coord = entry.Key;
-                LevelNode node = entry.Value;
-
-                Matrix translation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_level.GetWorldPosition(coord));
-                DrawModel(_prism, translation, _camera.View, _camera.Projection);
-            }
-        }
-
-        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.FogEnabled = true;
-                    effect.FogColor = Color.Black.ToVector3(); // For best results, make this color whatever your background is.
-                    effect.FogStart = 0f;
-                    effect.FogEnd = 20f;
-
-                    effect.EnableDefaultLighting();
-                    effect.EmissiveColor = Color.Black.ToVector3();
-
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
-                }
-
-                mesh.Draw();
-            }
         }
     }
 }

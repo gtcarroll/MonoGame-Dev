@@ -19,7 +19,8 @@ namespace EverythingUnder.Graphics
         private bool _isAnimating;
         private bool _isTargetAhead;
         private float _targetY;
-        private float _animSpeed;
+        private float _animSpeedFactor;
+
         public bool IsAnimating
         {
             get { return _isAnimating; }
@@ -67,7 +68,7 @@ namespace EverythingUnder.Graphics
             _isAnimating = true;
             _isTargetAhead = targetY > Y;
             _targetY = targetY;
-            _animSpeed = _speed * speedFactor;
+            _animSpeedFactor = speedFactor;
 
             _yHome = targetY;
         }
@@ -76,12 +77,12 @@ namespace EverythingUnder.Graphics
         {
             if (_isTargetAhead)
             {
-                MoveForward(time);
+                MoveForward(time, _animSpeedFactor);
                 if (Y >= _targetY) { EndAnimate(); }
             }
             else
             {
-                MoveBackward(time);
+                MoveBackward(time, _animSpeedFactor);
                 if (Y <= _targetY) { EndAnimate(); }
             }
             
@@ -93,21 +94,20 @@ namespace EverythingUnder.Graphics
             _isAnimating = false;
         }
 
-        public void MoveForward(GameTime time)
+        public void MoveForward(GameTime time, float speedFactor = 1)
         {
-            Y += GetMoveAmount(time);
+            Y += GetMoveAmount(time, speedFactor);
         }
 
-        public void MoveBackward(GameTime time)
+        public void MoveBackward(GameTime time, float speedFactor = 1)
         {
-            Y -= GetMoveAmount(time);
+            Y -= GetMoveAmount(time, speedFactor);
         }
 
-        private float GetMoveAmount(GameTime time)
+        private float GetMoveAmount(GameTime time, float speedFactor = 1)
         {
             Vector2 tangent = _spline.GetSlopeVector(Y);
-            float speed = _isAnimating ? _animSpeed : _speed;
-            return tangent.Y * speed * time.ElapsedGameTime.Milliseconds;
+            return tangent.Y * (_speed * speedFactor) * time.ElapsedGameTime.Milliseconds;
         }
 
         public void JumpTo(float y)
