@@ -12,13 +12,7 @@
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap.runtimeconfig.json
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap.pdb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Autofac.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Graphics.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Input.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Extended.Tiled.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/MonoGame.Framework.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Newtonsoft.Json.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/runtimes/linux-x64/native/libSDL2-2.0.so.0
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/runtimes/linux-x64/native/libopenal.so.1
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/runtimes/osx/native/libSDL2.dylib

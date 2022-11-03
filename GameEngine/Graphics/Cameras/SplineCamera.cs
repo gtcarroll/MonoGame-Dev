@@ -6,6 +6,9 @@ namespace EverythingUnder.Graphics
 {
     public class SplineCamera : Camera
     {
+        // constants
+        private const float StartOffset = 4f;
+
         // spline properties
         private CubicSpline3D _spline;
         private Vector3 _min;
@@ -14,6 +17,8 @@ namespace EverythingUnder.Graphics
         // camera properties
         private float _speed;
         private float _yHome;
+
+        public float T { get; set; }
 
         // animation properties
         private bool _isAnimating;
@@ -33,10 +38,14 @@ namespace EverythingUnder.Graphics
         public SplineCamera(Game game, Vector3[] points) : base(game)
         {
             LoadPoints(points);
-            Position = _min;
 
-            _speed = 1f / 320f;
-            _yHome = Y;
+            _speed = 1f / 360f;
+            _yHome = _min.Y;
+
+            // setup opening zoom shot
+            T = _min.Y - StartOffset;
+            Position = _spline.Eval3D(T);
+            Return(1f);
         }
 
         public void LoadPoints(Vector3[] points)
@@ -50,23 +59,35 @@ namespace EverythingUnder.Graphics
         {
             if (_isAnimating) UpdateAnimate(time);
 
-            if (Y < _min.Y) { Target = _min; }
-            else if (Y > _max.Y) { Target = _max; }
-            else { Target = null; }
+            Position = _spline.Eval3D(T);
 
-            Position = _spline.Eval3D(Y);
+            if (T < _min.Y)
+            {
+                Position = new Vector3(_min.X, Y, Z + Math.Abs(_min.X - Position.X));
+                Target = _min;
+            }
+            else if (T > _max.Y)
+            {
+                Position = new Vector3(_max.X, Y, Z - Math.Abs(_max.X - Position.X));
+                Target = _max;
+            }
+            else
+            {
+                Target = null;
+            }
+
             UpdateMatrices();
         }
 
-        public void Return()
+        public void Return(float speedFactor = 2f)
         {
-            AnimateTo(_yHome, 2);
+            AnimateTo(_yHome, speedFactor);
         }
 
         public void AnimateTo(float targetY, float speedFactor = 1)
         {
             _isAnimating = true;
-            _isTargetAhead = targetY > Y;
+            _isTargetAhead = targetY > T;
             _targetY = targetY;
             _animSpeedFactor = speedFactor;
 
@@ -78,41 +99,41 @@ namespace EverythingUnder.Graphics
             if (_isTargetAhead)
             {
                 MoveForward(time, _animSpeedFactor);
-                if (Y >= _targetY) { EndAnimate(); }
+                if (T >= _targetY) { EndAnimate(); }
             }
             else
             {
                 MoveBackward(time, _animSpeedFactor);
-                if (Y <= _targetY) { EndAnimate(); }
+                if (T <= _targetY) { EndAnimate(); }
             }
-            
         }
 
         private void EndAnimate()
         {
-            Y = _targetY;
+            T = _targetY;
             _isAnimating = false;
         }
 
         public void MoveForward(GameTime time, float speedFactor = 1)
         {
-            Y += GetMoveAmount(time, speedFactor);
+            T += GetMoveAmount(time, speedFactor);
         }
 
         public void MoveBackward(GameTime time, float speedFactor = 1)
         {
-            Y -= GetMoveAmount(time, speedFactor);
+            T -= GetMoveAmount(time, speedFactor);
         }
 
         private float GetMoveAmount(GameTime time, float speedFactor = 1)
         {
-            Vector2 tangent = _spline.GetSlopeVector(Y);
-            return tangent.Y * (_speed * speedFactor) * time.ElapsedGameTime.Milliseconds;
+            Vector2 tangent = _spline.GetSlopeVector(T);
+            float yComponent = Math.Max(tangent.Y, 0.25f);
+            return yComponent * (_speed * speedFactor) * time.ElapsedGameTime.Milliseconds;
         }
 
         public void JumpTo(float y)
         {
-            Y = y;
+            T = y;
         }
     }
 }

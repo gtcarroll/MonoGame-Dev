@@ -1,27 +1,13 @@
 ﻿<Properties StartupConfiguration="{E441C119-16CF-42D8-AFD6-F74F38020ECE}|Default">
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Screens/LevelMapScreen.cs">
-    <Files>
-      <File FileName="Game1.cs" Line="25" Column="26" IsPinned="True" />
-      <File FileName="Screens/LevelMapScreen.cs" Line="221" Column="28" />
-      <File FileName="Levels/LevelMap.cs" Line="15" Column="76" />
-      <File FileName="Content/Content.mgcb" Line="28" Column="28" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HexMap" expanded="True">
             <Node name="EverythingUnder" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
-                <Node name="PackageDependencies" expanded="True" />
-              </Node>
               <Node name="Content" expanded="True" />
-              <Node name="Graphics" expanded="True" />
-              <Node name="Levels" expanded="True" />
-              <Node name="Screens" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="GameEngine" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -31,8 +17,11 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
 </Properties>

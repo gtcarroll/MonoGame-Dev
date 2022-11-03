@@ -14,29 +14,14 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
-    <None Remove="Graphics\" />
-    <None Remove="Input\" />
-    <None Remove="Screens\" />
-    <None Remove="Graphics\Spline\" />
-    <None Remove="Graphics\Polygon\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Extended" Version="3.8.0" />
-    <PackageReference Include="MonoGame.Extended.Content.Pipeline" Version="3.8.0" />
-    <PackageReference Include="MonoGame.Extended.Input" Version="3.8.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Graphics\" />
-    <Folder Include="Input\" />
-    <Folder Include="Screens\" />
-    <Folder Include="Graphics\Spline\" />
-    <Folder Include="Graphics\Polygon\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

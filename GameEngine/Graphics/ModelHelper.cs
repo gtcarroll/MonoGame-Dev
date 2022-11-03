@@ -49,7 +49,7 @@ namespace EverythingUnder.Graphics
         }
 
         public static void DrawModel(Model model, Matrix world,
-            Matrix view, Matrix projection, bool selected = false)
+            Matrix view, Matrix projection, float fogDepth, bool selected = false)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -58,7 +58,7 @@ namespace EverythingUnder.Graphics
                     effect.FogEnabled = true;
                     effect.FogColor = Color.Black.ToVector3(); // For best results, make this color whatever your background is.
                     effect.FogStart = 0f;
-                    effect.FogEnd = 15f;
+                    effect.FogEnd = fogDepth;
 
                     effect.EnableDefaultLighting();
                     effect.EmissiveColor = selected ? Color.Yellow.ToVector3() : Color.Black.ToVector3();

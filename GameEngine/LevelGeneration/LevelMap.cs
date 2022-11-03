@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using EverythingUnder.Screens;
 
 namespace EverythingUnder.Levels
 {
@@ -20,6 +18,7 @@ namespace EverythingUnder.Levels
         private static readonly Vector3 _basisR = new Vector3(-MathF.Sqrt(3) / 2f, 3f / 2f, 0);
         private static readonly Vector3 _basisZ = new Vector3(0, 0, -MathF.Sqrt(3) / 2f);
 
+        private readonly GameManager _game;
         private readonly Random _random;
 
         private readonly int _levelLength;
@@ -39,9 +38,10 @@ namespace EverythingUnder.Levels
         /// </summary>
         /// <param name="random"> Random object used to generate level </param>
         /// <param name="length"> Length of level (# of rows of nodes) </param>
-        public LevelMap(Random random, int length = 15)
+        public LevelMap(GameManager game, int length = 15)
         {
-            _random = random;
+            _game = game;
+            _random = game.Random;
 
             _levelLength = length;
 
@@ -67,7 +67,6 @@ namespace EverythingUnder.Levels
         /// </summary>
         private HexCoord?[] GetNextCoords()
         {
-            //List<HexCoord> nextCoords = new List<HexCoord>();
             HexCoord?[] nextCoords = new HexCoord?[2];
             HexCoord left = PlayerPosition + LeftDelta;
             HexCoord right = PlayerPosition + RightDelta;
@@ -76,16 +75,7 @@ namespace EverythingUnder.Levels
             nextCoords[0] = Nodes.ContainsKey(left) ? left : null;
             nextCoords[1] = Nodes.ContainsKey(right) ? right : null;
 
-            //if (Nodes.ContainsKey(left))
-            //{
-            //    nextCoords.Add(left);
-            //}
-            //if (Nodes.ContainsKey(right))
-            //{
-            //    nextCoords.Add(right);
-            //}
-
-            return nextCoords;//nextCoords.ToArray();
+            return nextCoords;
         }
 
         /// <summary>
@@ -98,14 +88,13 @@ namespace EverythingUnder.Levels
         {
             if (Nodes.ContainsKey(target))
             {
-                //_playerPosition = target;
-                //_playerPositionIndex++;
-
-                //CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
-
                 UpdatePlayerPosition(target);
 
-                return Nodes[target];
+                LevelNode node = Nodes[target];
+
+                //_game.ScreenManager.LoadScreen(new EventScreen(_game), new FadeTransition(_game.GraphicsDevice, Color.CornflowerBlue));
+
+                return node;
             }
 
             return null;
