@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace EverythingUnder.ScreenManagement
 {
-    public enum MouseButton
+    public enum MouseButtons
     {
         Left,
         Middle,
@@ -40,14 +40,6 @@ namespace EverythingUnder.ScreenManagement
 
         public InputState()
         {
-            //CurrMouseState = Mouse.GetState();
-            //PrevMouseState = CurrMouseState;
-
-            //CurrKeyboardState = Keyboard.GetState();
-            //PrevKeyboardState = CurrKeyboardState;
-
-            //TouchState = TouchPanel.GetState();
-
             CurrGamePadStates = new GamePadState[MaxPlayerCount];
             PrevGamePadStates = new GamePadState[MaxPlayerCount];
             IsGamePadConnected = new bool[MaxPlayerCount];
@@ -57,7 +49,7 @@ namespace EverythingUnder.ScreenManagement
 
         #endregion
 
-        #region Rendering Methods
+        #region Game Cycle Methods
 
         public void Update()
         {
@@ -90,90 +82,203 @@ namespace EverythingUnder.ScreenManagement
 
         #region General Input Methods
 
-        public bool IsUp(int player = -1)
+        public bool IsUpPressed(int player = -1)
         {
-            return WasKeyJustDown(Keys.W)
-                || WasKeyJustDown(Keys.Up)
-                || WasButtonJustDown(Buttons.DPadUp, player)
-                || WasButtonJustDown(Buttons.LeftThumbstickUp, player)
-                || WasButtonJustDown(Buttons.RightThumbstickUp, player);
+            return IsPressed(Keys.W)
+                || IsPressed(Keys.Up)
+                || IsPressed(Buttons.DPadUp, player)
+                || IsPressed(Buttons.LeftThumbstickUp, player)
+                || IsPressed(Buttons.RightThumbstickUp, player);
         }
-        public bool IsDown(int player = -1)
+        public bool WasUpPressed(int player = -1)
         {
-            return WasKeyJustDown(Keys.S)
-                || WasKeyJustDown(Keys.Down)
-                || WasButtonJustDown(Buttons.DPadDown, player)
-                || WasButtonJustDown(Buttons.LeftThumbstickDown, player)
-                || WasButtonJustDown(Buttons.RightThumbstickDown, player);
+            return WasPressed(Keys.W)
+                || WasPressed(Keys.Up)
+                || WasPressed(Buttons.DPadUp, player)
+                || WasPressed(Buttons.LeftThumbstickUp, player)
+                || WasPressed(Buttons.RightThumbstickUp, player);
         }
-        public bool IsLeft(int player = -1)
+        public bool WasUpReleased(int player = -1)
         {
-            return WasKeyJustDown(Keys.A)
-                || WasKeyJustDown(Keys.Left)
-                || WasButtonJustDown(Buttons.DPadLeft, player)
-                || WasButtonJustDown(Buttons.LeftThumbstickLeft, player)
-                || WasButtonJustDown(Buttons.RightThumbstickLeft, player);
+            return WasReleased(Keys.W)
+                || WasReleased(Keys.Up)
+                || WasReleased(Buttons.DPadUp, player)
+                || WasReleased(Buttons.LeftThumbstickUp, player)
+                || WasReleased(Buttons.RightThumbstickUp, player);
         }
-        public bool IsRight(int player = -1)
+
+        public bool IsDownPressed(int player = -1)
         {
-            return WasKeyJustDown(Keys.D)
-                || WasKeyJustDown(Keys.Right)
-                || WasButtonJustDown(Buttons.DPadRight, player)
-                || WasButtonJustDown(Buttons.LeftThumbstickRight, player)
-                || WasButtonJustDown(Buttons.RightThumbstickRight, player);
+            return IsPressed(Keys.S)
+                || IsPressed(Keys.Down)
+                || IsPressed(Buttons.DPadDown, player)
+                || IsPressed(Buttons.LeftThumbstickDown, player)
+                || IsPressed(Buttons.RightThumbstickDown, player);
         }
-        public bool IsSelect(int player = -1)
+        public bool WasDownPressed(int player = -1)
         {
-            return WasKeyJustDown(Keys.Space)
-                || WasKeyJustDown(Keys.Enter)
-                || WasButtonJustDown(Buttons.A, player)
-                || WasButtonJustDown(Buttons.RightTrigger, player);
+            return WasPressed(Keys.S)
+                || WasPressed(Keys.Down)
+                || WasPressed(Buttons.DPadDown, player)
+                || WasPressed(Buttons.LeftThumbstickDown, player)
+                || WasPressed(Buttons.RightThumbstickDown, player);
         }
-        public bool IsCancel(int player = -1)
+        public bool WasDownReleased(int player = -1)
         {
-            return WasKeyJustDown(Keys.Back)
-                || WasKeyJustDown(Keys.Escape)
-                || WasButtonJustDown(Buttons.B, player)
-                || WasButtonJustDown(Buttons.LeftTrigger, player);
+            return WasReleased(Keys.S)
+                || WasReleased(Keys.Down)
+                || WasReleased(Buttons.DPadDown, player)
+                || WasReleased(Buttons.LeftThumbstickDown, player)
+                || WasReleased(Buttons.RightThumbstickDown, player);
         }
-        public bool IsPause(int player = -1)
+
+        public bool IsLeftPressed(int player = -1)
         {
-            return WasKeyJustDown(Keys.P)
-                || WasButtonJustDown(Buttons.Start, player);
+            return IsPressed(Keys.A)
+                || IsPressed(Keys.Left)
+                || IsPressed(Buttons.DPadLeft, player)
+                || IsPressed(Buttons.LeftThumbstickLeft, player)
+                || IsPressed(Buttons.RightThumbstickLeft, player);
+        }
+        public bool WasLeftPressed(int player = -1)
+        {
+            return WasPressed(Keys.A)
+                || WasPressed(Keys.Left)
+                || WasPressed(Buttons.DPadLeft, player)
+                || WasPressed(Buttons.LeftThumbstickLeft, player)
+                || WasPressed(Buttons.RightThumbstickLeft, player);
+        }
+        public bool WasLeftReleased(int player = -1)
+        {
+            return WasReleased(Keys.A)
+                || WasReleased(Keys.Left)
+                || WasReleased(Buttons.DPadLeft, player)
+                || WasReleased(Buttons.LeftThumbstickLeft, player)
+                || WasReleased(Buttons.RightThumbstickLeft, player);
+        }
+
+        public bool IsRightPressed(int player = -1)
+        {
+            return IsPressed(Keys.D)
+                || IsPressed(Keys.Right)
+                || IsPressed(Buttons.DPadRight, player)
+                || IsPressed(Buttons.LeftThumbstickRight, player)
+                || IsPressed(Buttons.RightThumbstickRight, player);
+        }
+        public bool WasRightPressed(int player = -1)
+        {
+            return WasPressed(Keys.D)
+                || WasPressed(Keys.Right)
+                || WasPressed(Buttons.DPadRight, player)
+                || WasPressed(Buttons.LeftThumbstickRight, player)
+                || WasPressed(Buttons.RightThumbstickRight, player);
+        }
+        public bool WasRightReleased(int player = -1)
+        {
+            return WasReleased(Keys.D)
+                || WasReleased(Keys.Right)
+                || WasReleased(Buttons.DPadRight, player)
+                || WasReleased(Buttons.LeftThumbstickRight, player)
+                || WasReleased(Buttons.RightThumbstickRight, player);
+        }
+
+        public bool IsSelectPressed(int player = -1)
+        {
+            return IsPressed(Keys.Space)
+                || IsPressed(Keys.Enter)
+                || IsPressed(Buttons.A, player)
+                || IsPressed(Buttons.RightTrigger, player);
+        }
+        public bool WasSelectPressed(int player = -1)
+        {
+            return WasPressed(Keys.Space)
+                || WasPressed(Keys.Enter)
+                || WasPressed(Buttons.A, player)
+                || WasPressed(Buttons.RightTrigger, player);
+        }
+        public bool WasSelectReleased(int player = -1)
+        {
+            return WasReleased(Keys.Space)
+                || WasReleased(Keys.Enter)
+                || WasReleased(Buttons.A, player)
+                || WasReleased(Buttons.RightTrigger, player);
+        }
+
+        public bool IsCancelPressed(int player = -1)
+        {
+            return IsPressed(Keys.Back)
+                || IsPressed(Keys.Escape)
+                || IsPressed(Buttons.B, player)
+                || IsPressed(Buttons.LeftTrigger, player);
+        }
+        public bool WasCancelPressed(int player = -1)
+        {
+            return WasPressed(Keys.Back)
+                || WasPressed(Keys.Escape)
+                || WasPressed(Buttons.B, player)
+                || WasPressed(Buttons.LeftTrigger, player);
+        }
+        public bool WasCancelReleased(int player = -1)
+        {
+            return WasReleased(Keys.Back)
+                || WasReleased(Keys.Escape)
+                || WasReleased(Buttons.B, player)
+                || WasReleased(Buttons.LeftTrigger, player);
+        }
+
+        public bool IsPausePressed(int player = -1)
+        {
+            return IsPressed(Keys.P)
+                || IsPressed(Buttons.Start, player);
+        }
+        public bool WasPausePressed(int player = -1)
+        {
+            return WasPressed(Keys.P)
+                || WasPressed(Buttons.Start, player);
+        }
+        public bool WasPauseReleased(int player = -1)
+        {
+            return WasReleased(Keys.P)
+                || WasReleased(Buttons.Start, player);
         }
 
         #endregion
 
         #region Mouse Input Methods
 
-        public bool WasMouseButtonJustUp(MouseButton button)
+        public Vector2 GetMousePosition()
         {
-            return IsMouseButtonDown(CurrMouseState, button)
-                && !IsMouseButtonDown(PrevMouseState, button);
-        }
-        public bool WasMouseButtonJustDown(MouseButton button)
-        {
-            return !IsMouseButtonDown(CurrMouseState, button)
-                && IsMouseButtonDown(PrevMouseState, button);
-        }
-        public bool IsMouseButtonDown(MouseButton button)
-        {
-            return IsMouseButtonDown(CurrMouseState, button);
+            return new Vector2(CurrMouseState.X, CurrMouseState.Y);
         }
 
-        private bool IsMouseButtonDown(MouseState state, MouseButton button)
+        public bool IsPressed(MouseButtons button)
+        {
+            return IsPressed(CurrMouseState, button);
+        }
+        public bool WasPressed(MouseButtons button)
+        {
+            return IsPressed(CurrMouseState, button)
+                && !IsPressed(PrevMouseState, button);
+        }
+        public bool WasReleased(MouseButtons button)
+        {
+            return !IsPressed(CurrMouseState, button)
+                && IsPressed(PrevMouseState, button);
+        }
+
+        private bool IsPressed(MouseState state, MouseButtons button)
         {
             return button switch
             {
-                MouseButton.Left =>
+                MouseButtons.Left =>
                     state.LeftButton == ButtonState.Pressed,
-                MouseButton.Middle =>
+                MouseButtons.Middle =>
                     state.MiddleButton == ButtonState.Pressed,
-                MouseButton.Right =>
+                MouseButtons.Right =>
                     state.RightButton == ButtonState.Pressed,
-                MouseButton.X1 =>
+                MouseButtons.X1 =>
                     state.XButton1 == ButtonState.Pressed,
-                MouseButton.X2 =>
+                MouseButtons.X2 =>
                     state.XButton2 == ButtonState.Pressed,
                 _ => false,
             };
@@ -183,26 +288,40 @@ namespace EverythingUnder.ScreenManagement
 
         #region Keyboard Input Methods
 
-        public bool WasKeyJustUp(Keys key)
+        public bool IsPressed(Keys key)
+        {
+            return CurrKeyboardState.IsKeyDown(key);
+        }
+        public bool WasPressed(Keys key)
         {
             return CurrKeyboardState.IsKeyDown(key)
                 && !PrevKeyboardState.IsKeyDown(key);
         }
-        public bool WasKeyJustDown(Keys key)
+        public bool WasReleased(Keys key)
         {
             return !CurrKeyboardState.IsKeyDown(key)
                 && PrevKeyboardState.IsKeyDown(key);
-        }
-        public bool IsKeyDown(Keys key)
-        {
-            return CurrKeyboardState.IsKeyDown(key);
         }
 
         #endregion
 
         #region GamePad Input Methods
 
-        public bool WasButtonJustUp(Buttons button, int player = -1)
+        public bool IsPressed(Buttons button, int player = -1)
+        {
+            bool isDown = false;
+
+            for (int i = 0; i < MaxPlayerCount; i++)
+            {
+                if (player == i || player < 0)
+                {
+                    isDown |= CurrGamePadStates[i].IsButtonDown(button);
+                }
+            }
+
+            return isDown;
+        }
+        public bool WasPressed(Buttons button, int player = -1)
         {
             bool wasJustUp = false;
 
@@ -217,7 +336,7 @@ namespace EverythingUnder.ScreenManagement
 
             return wasJustUp;
         }
-        public bool WasButtonJustDown(Buttons button, int player = -1)
+        public bool WasReleased(Buttons button, int player = -1)
         {
             bool wasJustDown = false;
 
@@ -231,20 +350,6 @@ namespace EverythingUnder.ScreenManagement
             }
 
             return wasJustDown;
-        }
-        public bool IsButtonDown(Buttons button, int player = -1)
-        {
-            bool isDown = false;
-
-            for (int i = 0; i < MaxPlayerCount; i++)
-            {
-                if (player == i || player < 0)
-                {
-                    isDown |= CurrGamePadStates[i].IsButtonDown(button);
-                }
-            }
-
-            return isDown;
         }
 
         #endregion

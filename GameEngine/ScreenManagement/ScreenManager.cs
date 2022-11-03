@@ -23,6 +23,7 @@ namespace EverythingUnder.ScreenManagement
 
         public ScreenManager(Game game) : base(game)
         {
+            InputState = new InputState();
             TouchPanel.EnabledGestures = GestureType.None;
         }
 
@@ -59,10 +60,12 @@ namespace EverythingUnder.ScreenManagement
 
         #endregion
 
-        #region Rendering Methods
+        #region Game Cycle Methods
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime time)
         {
+            InputState.Update();
+
             foreach (GameScreen screen in _screens)
             {
                 _updateStack.Push(screen);
@@ -77,22 +80,19 @@ namespace EverythingUnder.ScreenManagement
             {
                 GameScreen screen = _updateStack.Pop();
 
-                screen.Update(gameTime, isFocused, isCovered);
-
-                if (!screen.IsClosing)
+                // the topmost non-closing screen handles input
+                if (!screen.IsClosing && isFocused)
                 {
-                    // the topmost non-closing screen handles input
-                    if (isFocused)
-                    {
-                        screen.HandleInput(InputState);
-                        isFocused = false;
-                    }
+                    screen.HandleInput(time, InputState);
+                    isFocused = false;
+                }
 
-                    // any non-popup screen will cover the screens below
-                    if (!screen.IsPopUp)
-                    {
-                        isCovered = true;
-                    }
+                screen.Update(time, isFocused, isCovered);
+
+                // any non-popup screen will cover the screens below
+                if (!screen.IsClosing && !screen.IsPopUp)
+                {
+                    isCovered = true;
                 }
             }
         }
@@ -130,12 +130,12 @@ namespace EverythingUnder.ScreenManagement
             screen.UnloadContent();
 
             _screens.Remove(screen);
-            // should we remove from _updateStack as well?
 
             // set the enabled gestures to that of the new topmost screen
             if (_screens.Count > 0)
             {
-                TouchPanel.EnabledGestures = _screens[_screens.Count - 1].EnabledGestures;
+                TouchPanel.EnabledGestures =
+                    _screens[_screens.Count - 1].EnabledGestures;
             }
         }
 

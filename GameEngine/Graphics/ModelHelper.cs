@@ -34,12 +34,12 @@ namespace EverythingUnder.Graphics
             return mouseRay.Intersects(sphere);
         }
 
-        public static bool IntersectsHex(Vector2 mouseLocation, Vector3 pos,
+        public static bool IntersectsHex(Vector2 mousePos, Vector3 pos,
                     Matrix view, Matrix projection, Viewport viewport)
         {
             pos += new Vector3(0, 0, 1f);
             BoundingSphere sphere = new BoundingSphere(pos, 0.7f);
-            float? distance = IntersectDistance(sphere, mouseLocation, view, projection, viewport);
+            float? distance = IntersectDistance(sphere, mousePos, view, projection, viewport);
 
             if (distance != null)
             {

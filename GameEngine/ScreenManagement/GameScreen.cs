@@ -49,7 +49,7 @@ namespace EverythingUnder.ScreenManagement
 
         #endregion
 
-        #region Rendering Methods
+        #region Game Cycle Methods
 
         public virtual void Update(GameTime gameTime, bool isFocused,
                                                       bool isCovered)
@@ -59,6 +59,23 @@ namespace EverythingUnder.ScreenManagement
 
             UpdateTransition(gameTime);
         }
+
+        public virtual void HandleInput(GameTime time, InputState input) { }
+
+        public virtual void Draw(GameTime gameTime) { }
+
+        #endregion
+
+        #region State Methods
+
+        public void CloseScreen()
+        {
+            IsClosing = true;
+        }
+
+        #endregion
+
+        #region Helper Methods
 
         private bool UpdateTransition(GameTime gameTime)
         {
@@ -81,19 +98,6 @@ namespace EverythingUnder.ScreenManagement
             MathHelper.Clamp(TransitionProgress, 0f, 1f);
 
             return isTransitionComplete;
-        }
-
-        public virtual void HandleInput(InputState input) { }
-
-        public virtual void Draw(GameTime gameTime) { }
-
-        #endregion
-
-        #region State Methods
-
-        public void CloseScreen()
-        {
-            IsClosing = true;
         }
 
         #endregion

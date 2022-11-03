@@ -11,6 +11,8 @@ namespace EverythingUnder.Screens
 {
     public class LevelMapScreen : GameScreen
     {
+        #region Properties
+
         private readonly GameManager _game;
         private readonly Random _random;
         private readonly SplineCamera _camera;
@@ -21,7 +23,13 @@ namespace EverythingUnder.Screens
 
         private float _fogDepth = 12f;
 
-        private List<HexCoord> _highlighted;
+        private HexCoord? _highlighted;
+        private HexCoord?[] _nextCoords;
+        private bool _wasHoveredLastFrame;
+
+        #endregion
+
+        #region Constructors
 
         public LevelMapScreen(GameManager game) : base()
         {
@@ -31,8 +39,12 @@ namespace EverythingUnder.Screens
             _level = new LevelMap(game);
             _camera = new SplineCamera(game, _level.CameraPositions);
 
-            _highlighted = new List<HexCoord>();
+            _wasHoveredLastFrame = false;
         }
+
+        #endregion
+
+        #region Loading Methods
 
         public override void LoadContent()
         {
@@ -42,103 +54,82 @@ namespace EverythingUnder.Screens
             _sphere = _game.Content.Load<Model>("sphere");
         }
 
+        #endregion
+
+        #region Rendering Methods
+
+        public override void HandleInput(GameTime time, InputState input)
+        {
+            // clear _highlighted if using mouse input
+            if (_wasHoveredLastFrame) _highlighted = null;
+
+            // highlight selected hex if it exists
+            _nextCoords = _level.NextCoords;
+            if (_camera.IsReturned && !_camera.IsAnimating)
+            {
+                Viewport viewport = _game.GraphicsDevice.Viewport;
+                Vector2 mousePos = input.GetMousePosition();
+
+                HexCoord? left = _nextCoords[0];
+                HexCoord? right = _nextCoords[1];
+
+                bool isLeftHovered = IsHexHovered(left, mousePos, viewport);
+                bool isRightHovered = IsHexHovered(right, mousePos, viewport);
+
+                if (input.WasLeftPressed() || isLeftHovered)
+                {
+                    _highlighted = left;
+                }
+                else if (input.WasRightPressed() || isRightHovered)
+                {
+                    _highlighted = right;
+                }
+
+                if ((isLeftHovered || isRightHovered)
+                    && input.WasPressed(MouseButtons.Left))
+                {
+                    MoveToHighlighted();
+                }
+
+                _wasHoveredLastFrame = (isLeftHovered || isRightHovered);
+            }
+
+            // progress to highlighted hex
+            if (input.WasSelectPressed())
+            {
+                MoveToHighlighted();
+            }
+
+            // deselect highlighted hex
+            if (input.WasCancelPressed())
+            {
+                _highlighted = null;
+            }
+
+            // move camera forward or backward
+            if (input.IsUpPressed())
+            {
+                _camera.MoveForward(time);
+            }
+            if (input.IsDownPressed())
+            {
+                _camera.MoveBackward(time);
+            }
+
+            // re-generate level
+            if (input.WasPausePressed())
+            {
+                _level = new LevelMap(_game);
+                _camera.LoadPoints(_level.CameraPositions);
+
+                _camera.T = -4f;
+                _camera.Return(1f);
+            }
+        }
+
         public override void Update(GameTime gameTime, bool isFocused,
                                                        bool isCovered)
         {
-            _highlighted = new List<HexCoord>();
-            Viewport viewport = _game.GraphicsDevice.Viewport;
-
-            //InputState inputState = 
-
-            //MouseState mouse = Mouse.GetState();
-            //Vector2 mouseLocation = new Vector2(mouse.X, mouse.Y);
-
-            //HexCoord? left = _level.NextCoords[0];
-            //HexCoord? right = _level.NextCoords[1];
-
-            //Vector3 topDelta = new Vector3(0, 0, 1);
-
-            //if (_camera.IsReturned)
-            //{
-            //    if (left != null)
-            //    {
-            //        Vector3 pos = _level.GetWorldPosition((HexCoord)left);
-
-            //        if (ModelHelper.IntersectsHex(mouseLocation, pos, _camera.View, _camera.Projection, viewport))
-            //        {
-            //            _highlighted.Add((HexCoord)left);
-            //            //if (mouse.WasButtonJustUp(MouseButton.Left))
-            //            //{
-            //            //    MoveLeft();
-            //            //}
-            //        }
-            //    }
-            //    if (right != null)
-            //    {
-            //        Vector3 pos = _level.GetWorldPosition((HexCoord)right);
-
-            //        if (ModelHelper.IntersectsHex(mouseLocation, pos, _camera.View, _camera.Projection, viewport))
-            //        {
-            //            _highlighted.Add((HexCoord)right);
-            //            //if (mouse.WasButtonJustUp(MouseButton.Left))
-            //            //{
-            //            //    MoveRight();
-            //            //}
-            //        }
-            //    }
-            //}
-
-            //KeyboardStateExtended keyboard = KeyboardExtended.GetState();
-
-            //// re-generate level
-            //if (keyboard.WasKeyJustUp(Keys.Space))
-            //{
-            //    _level = new LevelMap(_game);
-            //    _camera.LoadPoints(_level.CameraPositions);
-
-            //    _camera.T = -4f;
-            //    _camera.Return(1f);
-            //}
-
-            //// progress left or right
-            //HexCoord?[] nextCoords = _level.NextCoords;
-            //if (keyboard.WasKeyJustUp(Keys.A))
-            //{
-            //    MoveLeft();
-            //}
-            //if (keyboard.WasKeyJustUp(Keys.D))
-            //{
-            //    MoveRight();
-            //}
-
-            //// move camera forward or backward
-            //if (keyboard.IsKeyDown(Keys.W))
-            //{
-            //    _camera.MoveForward(gameTime);
-            //}
-            //if (keyboard.IsKeyDown(Keys.S))
-            //{
-            //    _camera.MoveBackward(gameTime);
-            //}
-
-            //// return camera to home position
-            //if (keyboard.WasKeyJustUp(Keys.Q))
-            //{
-            //    _camera.Return();
-            //}
-
-            //// return camera to home position
-            //if (keyboard.WasKeyJustUp(Keys.Up))
-            //{
-            //    _fogDepth++;
-            //    Console.WriteLine(_fogDepth);
-            //}
-            //if (keyboard.WasKeyJustUp(Keys.Down))
-            //{
-            //    _fogDepth--;
-            //    Console.WriteLine(_fogDepth);
-            //}
-
             _camera.Update(gameTime);
         }
 
@@ -153,30 +144,62 @@ namespace EverythingUnder.Screens
                 LevelNode node = entry.Value;
 
                 Matrix translation = Matrix.CreateScale(0.7f) * Matrix.CreateTranslation(_level.GetWorldPosition(coord));
-                ModelHelper.DrawModel(_prism, translation, _camera.View, _camera.Projection, _fogDepth, _highlighted.Contains(coord));
+                ModelHelper.DrawModel(_prism, translation, _camera.View, _camera.Projection, _fogDepth, IsHexHighlighted(coord));
             }
         }
 
-        private void MoveLeft()
+        #endregion
+
+        #region Helper Methods
+
+        private bool IsHexHovered(HexCoord? target, Vector2 mousePos, Viewport viewport)
         {
-            MoveToNextNode(0);
+            if (target == null) return false;
+
+            Vector3 hexPos = _level.GetWorldPosition((HexCoord)target);
+
+            return ModelHelper.IntersectsHex(mousePos, hexPos, _camera.View,
+                                            _camera.Projection, viewport);
         }
-        private void MoveRight()
+
+        private bool IsHexHighlighted(HexCoord? coord)
         {
-            MoveToNextNode(1);
+            if (coord == null) return false;
+            return IsHexHighlighted((HexCoord)coord);
         }
+        private bool IsHexHighlighted(HexCoord coord)
+        {
+            if (_highlighted == null) return false;
+            else return ((HexCoord)_highlighted).Equals(coord);
+        }
+
+        private void MoveToHighlighted()
+        {
+            if (IsHexHighlighted(_nextCoords[0]))
+            {
+                MoveToNextNode(0);
+            }
+            else if (IsHexHighlighted(_nextCoords[1]))
+            {
+                MoveToNextNode(1);
+            }
+        }
+
         private bool MoveToNextNode(int index)
         {
             if (_camera.IsReturned)
             {
                 // get next HexCoord
-                HexCoord? next = _level.NextCoords[index];
+                HexCoord? next = _nextCoords[index];
 
                 // update camera positions
                 if (next == null || _level.MoveToNode((HexCoord)next) == null)
                 {
                     return false;
                 }
+
+                // clear _highlighted hex because it has been selected
+                _highlighted = null;
 
                 // load new spline points
                 _camera.LoadPoints(_level.CameraPositions);
@@ -193,6 +216,8 @@ namespace EverythingUnder.Screens
 
             return false;
         }
+
+        #endregion
     }
 }
 

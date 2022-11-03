@@ -8,6 +8,8 @@ namespace EverythingUnder.Levels
 {
     public class LevelMap
     {
+        #region Properties
+
         private static readonly HexCoord LeftDelta = new HexCoord(0, 1);
         private static readonly HexCoord RightDelta = new HexCoord(1, 1);
         private static readonly HexCoord SiblingDelta = new HexCoord(1, 0);
@@ -27,11 +29,14 @@ namespace EverythingUnder.Levels
         private int _playerPositionIndex;
         public HexCoord PlayerPosition { get { return _playerPosition; } }
 
-
         public Dictionary<HexCoord, LevelNode> Nodes;
         public Vector3[] CameraPositions;
 
         public HexCoord?[] NextCoords;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructor
@@ -52,31 +57,9 @@ namespace EverythingUnder.Levels
             NextCoords = GetNextCoords();
         }
 
-        private void UpdatePlayerPosition(HexCoord target)
-        {
-            _playerPosition = target;
-            _playerPositionIndex++;
+        #endregion
 
-            CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
-
-            NextCoords = GetNextCoords();
-        }
-
-        /// <summary>
-        /// Gets the HexCoords of the next LevelNodes the player can travel to
-        /// </summary>
-        private HexCoord?[] GetNextCoords()
-        {
-            HexCoord?[] nextCoords = new HexCoord?[2];
-            HexCoord left = PlayerPosition + LeftDelta;
-            HexCoord right = PlayerPosition + RightDelta;
-
-
-            nextCoords[0] = Nodes.ContainsKey(left) ? left : null;
-            nextCoords[1] = Nodes.ContainsKey(right) ? right : null;
-
-            return nextCoords;
-        }
+        #region State Methods
 
         /// <summary>
         /// Moves the player's position to the LevelNode at the given HexCoord.
@@ -136,7 +119,7 @@ namespace EverythingUnder.Levels
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        private Vector3 GetCameraPosition(HexCoord[] coords)
+        public Vector3 GetCameraPosition(HexCoord[] coords)
         {
             float z = Nodes.ContainsKey(coords[0]) ? Nodes[coords[0]].Z : 0f;
             float sumQ = 0;
@@ -157,6 +140,37 @@ namespace EverythingUnder.Levels
         public Vector3 GetCameraPosition(HexCoord coord)
         {
             return GetWorldPosition(coord) + CameraOffset;
+        }
+
+        #endregion
+
+
+        #region Helper Methods
+
+        private void UpdatePlayerPosition(HexCoord target)
+        {
+            _playerPosition = target;
+            _playerPositionIndex++;
+
+            CameraPositions[_playerPositionIndex] = GetWorldPosition(target) + CameraOffset;
+
+            NextCoords = GetNextCoords();
+        }
+
+        /// <summary>
+        /// Gets the HexCoords of the next LevelNodes the player can travel to
+        /// </summary>
+        private HexCoord?[] GetNextCoords()
+        {
+            HexCoord?[] nextCoords = new HexCoord?[2];
+            HexCoord left = PlayerPosition + LeftDelta;
+            HexCoord right = PlayerPosition + RightDelta;
+
+
+            nextCoords[0] = Nodes.ContainsKey(left) ? left : null;
+            nextCoords[1] = Nodes.ContainsKey(right) ? right : null;
+
+            return nextCoords;
         }
 
         /// <summary>
@@ -258,6 +272,8 @@ namespace EverythingUnder.Levels
 
             return rowCoords;
         }
+
+        #endregion
     }
 }
 
