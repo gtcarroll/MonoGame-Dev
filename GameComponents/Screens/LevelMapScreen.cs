@@ -182,6 +182,9 @@ namespace EverythingUnder.Screens
             else if (IsHexHighlighted(_nextCoords[1]))
             {
                 MoveToNextNode(1);
+            } else
+            {
+                _camera.Return();
             }
         }
 
@@ -207,6 +210,8 @@ namespace EverythingUnder.Screens
                 // animate camera moving forward to next Y value
                 _camera.AnimateTo(_level.GetCameraPosition((HexCoord)next).Y);
 
+                OpenNodeScreen(_level.Nodes[(HexCoord)next]);
+
                 return true;
             }
             else if (!_camera.IsAnimating)
@@ -215,6 +220,11 @@ namespace EverythingUnder.Screens
             }
 
             return false;
+        }
+
+        private void OpenNodeScreen(LevelNode node)
+        {
+            _game.ScreenManager.AddScreen(new CombatScreen(_game));
         }
 
         #endregion

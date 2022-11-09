@@ -73,11 +73,7 @@ namespace EverythingUnder.ScreenManagement
             IsClosing = true;
         }
 
-        #endregion
-
-        #region Helper Methods
-
-        private bool UpdateTransition(GameTime gameTime)
+        public bool UpdateTransition(GameTime gameTime)
         {
             float transitionDelta = 1f;
 

@@ -25,3 +25,5 @@
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/EverythingUnder.genruntimeconfig.cache
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/ref/HexMap.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/sphere.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/simple-hex.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/simple-circle.xnb

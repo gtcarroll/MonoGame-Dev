@@ -14,6 +14,16 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="GameEngine\Characters\" />
+    <None Remove="GameEngine\Events\" />
+    <None Remove="GameEngine\Cards\" />
+    <None Remove="GameComponents\Characters\" />
+    <None Remove="GameComponents\Characters\Enemies\" />
+    <None Remove="GameComponents\Characters\Players\" />
+    <None Remove="GameComponents\Cards\" />
+    <None Remove="GameComponents\Cards\Shrimp\" />
+    <None Remove="GameComponents\Cards\Enemy\" />
+    <None Remove="GameEngine\Combat\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -22,6 +32,18 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameEngine\Characters\" />
+    <Folder Include="GameEngine\Events\" />
+    <Folder Include="GameEngine\Cards\" />
+    <Folder Include="GameComponents\Characters\" />
+    <Folder Include="GameComponents\Characters\Enemies\" />
+    <Folder Include="GameComponents\Characters\Players\" />
+    <Folder Include="GameComponents\Cards\" />
+    <Folder Include="GameComponents\Cards\Shrimp\" />
+    <Folder Include="GameComponents\Cards\Enemy\" />
+    <Folder Include="GameEngine\Combat\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

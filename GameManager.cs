@@ -15,7 +15,7 @@ public class GameManager : Game
 
     public Random Random;
 
-    private readonly ScreenManager _screenManager;
+    public readonly ScreenManager ScreenManager;
 
     #endregion
 
@@ -36,8 +36,8 @@ public class GameManager : Game
 
         IsMouseVisible = true;
 
-        _screenManager = new ScreenManager(this);
-        Components.Add(_screenManager);
+        ScreenManager = new ScreenManager(this);
+        Components.Add(ScreenManager);
 
     }
 
@@ -49,7 +49,7 @@ public class GameManager : Game
     {
         base.LoadContent();
 
-        _screenManager.AddScreen(new LevelMapScreen(this));
+        ScreenManager.AddScreen(new LevelMapScreen(this));
     }
 
     #endregion
