@@ -6,7 +6,6 @@
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/HexMap.dll
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/refint/HexMap.dll
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/HexMap.pdb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/hexagonal-prism.xnb
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap.deps.json
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/HexMap.runtimeconfig.json
@@ -24,6 +23,11 @@
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/EverythingUnder.csproj.CopyComplete
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/EverythingUnder.genruntimeconfig.cache
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/ref/HexMap.dll
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/sphere.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/simple-hex.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/simple-circle.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Models/hexagonal-prism.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Models/sphere.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-circle.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-hex.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-rounded-square.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-square.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-squashed-hex.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/card-banner.xnb

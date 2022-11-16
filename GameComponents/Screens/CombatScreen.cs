@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 
 using EverythingUnder.Characters;
 using EverythingUnder.Combat;
+using EverythingUnder.GUI;
 using EverythingUnder.ScreenManagement;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,8 +16,10 @@ namespace EverythingUnder.Screens
         private GameManager _game;
 
         private CombatState _state;
-        private CombatDisplay _display;
+        //private CombatDisplay _display;
         private CombatController _controller;
+
+        private GUIGarden _garden;
 
         #endregion
 
@@ -36,7 +39,9 @@ namespace EverythingUnder.Screens
             };
             _state = new CombatState(Friendlies, Enemies);
 
-            _display = new CombatDisplay(game, Friendlies, Enemies);
+            //_display = new CombatDisplay(game, Friendlies, Enemies);
+
+            _garden = new CombatGarden(game);
 
             _controller = new CombatController();
 
@@ -51,7 +56,7 @@ namespace EverythingUnder.Screens
         {
             base.LoadContent();
 
-            _display.LoadContent();
+            _garden.LoadContent();
         }
 
         public override void UnloadContent()
@@ -72,7 +77,7 @@ namespace EverythingUnder.Screens
                 IsClosing = true;
             }
 
-            _display.HandleInput(input);
+            _garden.HandleInput(input);
         }
 
         public override void Update(GameTime gameTime, bool isFocused,
@@ -83,14 +88,14 @@ namespace EverythingUnder.Screens
                 _game.ScreenManager.RemoveScreen(this);
             }
 
-            _display.Update(gameTime);
+            _garden.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(Color.Black);
 
-            _display.DrawAllHighlighted();
+            _garden.Draw();
         }
 
         #endregion

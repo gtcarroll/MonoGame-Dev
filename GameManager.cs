@@ -1,8 +1,9 @@
 ﻿using System;
-using EverythingUnder.ScreenManagement;
-using EverythingUnder.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using EverythingUnder.ScreenManagement;
+using EverythingUnder.Screens;
 
 namespace EverythingUnder;
 
@@ -28,7 +29,7 @@ public class GameManager : Game
         _graphics = new GraphicsDeviceManager(this);
         //_graphics.GraphicsDevice.Viewport.AspectRatio 
 
-        // Set fullscreen
+         //Set fullscreen
         //_graphics.IsFullScreen = true;
         //_graphics.ApplyChanges();
 

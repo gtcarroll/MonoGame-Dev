@@ -50,8 +50,8 @@ namespace EverythingUnder.Screens
         {
             base.LoadContent();
 
-            _prism = _game.Content.Load<Model>("hexagonal-prism");
-            _sphere = _game.Content.Load<Model>("sphere");
+            _prism = _game.Content.Load<Model>("Models/hexagonal-prism");
+            _sphere = _game.Content.Load<Model>("Models/sphere");
         }
 
         #endregion

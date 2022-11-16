@@ -24,6 +24,13 @@
     <None Remove="GameComponents\Cards\Shrimp\" />
     <None Remove="GameComponents\Cards\Enemy\" />
     <None Remove="GameEngine\Combat\" />
+    <None Remove="GameEngine\GUI\" />
+    <None Remove="GameEngine\GUI\HighlightCursor\" />
+    <None Remove="GameEngine\GUI\GUIGarden\" />
+    <None Remove="GameEngine\GUI\GUIGarden\Plots\" />
+    <None Remove="GameEngine\GUI\GUIGarden\Nodes\" />
+    <None Remove="GameEngine\GUI\GUIGarden\Gardens\" />
+    <None Remove="GameEngine\GUI\SpriteGroups\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -44,6 +51,13 @@
     <Folder Include="GameComponents\Cards\Shrimp\" />
     <Folder Include="GameComponents\Cards\Enemy\" />
     <Folder Include="GameEngine\Combat\" />
+    <Folder Include="GameEngine\GUI\" />
+    <Folder Include="GameEngine\GUI\HighlightCursor\" />
+    <Folder Include="GameEngine\GUI\GUIGarden\" />
+    <Folder Include="GameEngine\GUI\GUIGarden\Plots\" />
+    <Folder Include="GameEngine\GUI\GUIGarden\Nodes\" />
+    <Folder Include="GameEngine\GUI\GUIGarden\Gardens\" />
+    <Folder Include="GameEngine\GUI\SpriteGroups\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
