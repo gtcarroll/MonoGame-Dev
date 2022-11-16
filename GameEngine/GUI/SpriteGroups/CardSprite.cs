@@ -35,11 +35,11 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-46, 50, 92, 0),
-                                new Rectangle(0, Sprites[0].Height, Sprites[0].Width, 0)));
+                new SpriteState(Sprites[0], new Rectangle(-46, 30, 92, 20),
+                                new Rectangle(0, Sprites[0].Height - 223, Sprites[0].Width, 223)));
 
             spriteStates.Add(
-                new SpriteState(Sprites[1], new Rectangle(-50, -30, 100, 100)));
+                new SpriteState(Sprites[1], new Rectangle(-50, -50, 100, 100)));
 
             return new GroupState(spriteStates, new Point(0,0));
         }
@@ -49,11 +49,11 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-46, -100, 92, 150),
-                                new Rectangle(0, Sprites[0].Height - 1670, Sprites[0].Width, 1670)));
+                new SpriteState(Sprites[0], new Rectangle(-46, -120, 92, 170),
+                                new Rectangle(0, Sprites[0].Height - 1893, Sprites[0].Width, 1893)));
 
             spriteStates.Add(
-                new SpriteState(Sprites[1], new Rectangle(-50, -180, 100, 100)));
+                new SpriteState(Sprites[1], new Rectangle(-50, -200, 100, 100)));
 
             return new GroupState(spriteStates, new Point(0, -75));
         }

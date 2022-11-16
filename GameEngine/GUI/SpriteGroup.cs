@@ -54,7 +54,7 @@ namespace EverythingUnder.GUI
             _style = SpriteStyle.Default;
             _center = center;
 
-            TransitionDuration = 100f;
+            TransitionDuration = 120f;
         }
 
         public virtual void BeginTransition(GroupState endState)
@@ -97,10 +97,10 @@ namespace EverythingUnder.GUI
             state.Draw(spriteBatch);
         }
 
-        public virtual GroupState GetBetweenState(GroupState prev, GroupState curr, float percentComplete)
-        {
-            throw new NotImplementedException();
-        }
+        //public virtual GroupState GetBetweenState(GroupState prev, GroupState curr, float percentComplete)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual GroupState GetHighlightState(int thickness = 5)
         {
