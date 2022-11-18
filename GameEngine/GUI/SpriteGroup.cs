@@ -89,7 +89,10 @@ namespace EverythingUnder.GUI
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Draw(spriteBatch, CurrentState);
+            if (CurrentState != null)
+            {
+                Draw(spriteBatch, CurrentState);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GroupState state)
@@ -97,10 +100,10 @@ namespace EverythingUnder.GUI
             state.Draw(spriteBatch);
         }
 
-        //public virtual GroupState GetBetweenState(GroupState prev, GroupState curr, float percentComplete)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public virtual GroupState GetBetweenState(GroupState prev, GroupState curr, float percentComplete)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual GroupState GetHighlightState(int thickness = 5)
         {

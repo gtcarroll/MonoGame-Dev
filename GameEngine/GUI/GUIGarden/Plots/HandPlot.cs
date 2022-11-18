@@ -11,32 +11,24 @@ namespace EverythingUnder.GUI
     {
         private const int MaxHandSize = 10;
 
-        public static Point Size = new Point(625, 175);
+        public static Point Size = new Point(770, 200);
 
         private Point _downGap;
         private Point _upGap;
 
-        public HandPlot(Point location) : base()
+        public List<CardSprite> Cards;
+
+        public HandPlot(GameManager game, Point location) : base(game)
         {
-            // initialize params
-            // Direction
-            // Alignment
-            // Gap (change to array?)
-
-            Direction = PlotDirection.Row;
-
+            // initialize HandPlot params
             _downGap = new Point(55, 90);
             _upGap = new Point(55, -90);
 
-            int width = 650;
-            int height = 200;
+            Cards = new List<CardSprite>();
 
-            ScreenSpace = new Rectangle(location, new Point(width, height));
-
-            // initialize graphics
-            // ScreenSpace
-            // Background
-
+            // initialize GUIPlot params
+            Direction = PlotDirection.Row;
+            ScreenSpace = new Rectangle(location, Size);
 
             // create and connect all nodes
             AddAllNodes();
@@ -47,13 +39,95 @@ namespace EverythingUnder.GUI
         {
             Point nodePosition = ScreenSpace.Location + _downGap;
 
-            for (int i = 0; i < MaxHandSize; i++)
+            for (int i = 0; i < MaxHandSize + 3; i++)
             {
                 Nodes.Add(new CardNode(nodePosition));
+
+                if (i >= 2 && i < 12)
+                {
+                    Nodes[i].RemoveSprite();
+                }
 
                 nodePosition += i % 2 == 0 ? _upGap : _downGap;
             }
         }
+
+        public override void Update(GameTime time)
+        {
+
+
+            base.Update(time);
+        }
+
+        public bool AddCard()
+        {
+            if (Cards.Count >= MaxHandSize) return false;
+
+            int i = 2 + Cards.Count;
+
+            CardSprite cardSprite = new CardSprite(Nodes[i].Center);
+            Cards.Add(cardSprite);
+
+            Nodes[i].AddSprite(cardSprite);
+            Nodes[i].LoadContent(Game);
+
+            return true;
+        }
+
+        public bool RemoveCard(int i)
+        {
+            if (Cards.Count <= i) return false;
+
+            Cards.RemoveAt(i);
+            Nodes[2 + i].RemoveSprite();
+
+            UpdateCardPositions();
+
+            return true;
+        }
+
+        private void UpdateCardPositions()
+        {
+            Point nodePosition = GetNodePosition(2);
+
+            for (int i = 0; i < Cards.Count; i++)
+            {
+                CardSprite cardSprite = Cards[i];
+
+                if (cardSprite.Center != nodePosition)
+                {
+                    cardSprite.Center = nodePosition;//CurrentState.GetCopyAt(nodePosition));
+                    Nodes[3 + i].RemoveSprite();
+                    Nodes[2 + i].AddSprite(cardSprite);
+                }
+
+                nodePosition += i % 2 == 0 ? _upGap : _downGap;
+            }
+        }
+
+        private Point GetNodePosition(int index)
+        {
+            Point nodePosition = ScreenSpace.Location + _downGap;
+
+            for (int i = 0; i < index; i++)
+            {
+                nodePosition += i % 2 == 0 ? _upGap : _downGap;
+            }
+
+            return nodePosition;
+        }
+
+        //private void UpdateCardSprites()
+        //{
+        //    Point nodePosition = ScreenSpace.Location + _downGap;
+
+        //    for (int i = 0; i < MaxHandSize; i++)
+        //    {
+        //        Nodes.Add(new CardNode(nodePosition));
+
+        //        nodePosition += i % 2 == 0 ? _upGap : _downGap;
+        //    }
+        //}
 
         private void ConnectAllNodes()
         {

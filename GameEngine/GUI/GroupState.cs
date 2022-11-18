@@ -93,6 +93,11 @@ namespace EverythingUnder.GUI
             return new GroupState(newStates, Color, Center + translate);
         }
 
+        public GroupState GetCopyAt(Point destination)
+        {
+            return GetTranslatedCopy(destination - Center);
+        }
+
         public GroupState GetTranslatedCopy(Point translate)
         {
             List<SpriteState> newStates = new List<SpriteState>();

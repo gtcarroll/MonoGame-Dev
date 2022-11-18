@@ -52,8 +52,8 @@ namespace EverythingUnder.GUI
         public void StartTransitionTo(SpriteGroup spriteGroup)
         {
             // set transition parameters
-
             Duration = spriteGroup.TransitionDuration;
+
             Start = Current;
             Delta = spriteGroup.TargetState.Center - Start;
             Distance = MathF.Sqrt(Delta.X * Delta.X + Delta.Y * Delta.Y);

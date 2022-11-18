@@ -25,6 +25,8 @@ namespace EverythingUnder.GUI
     {
         #region Properties
 
+        public GameManager Game;
+
         // connected plots
         public Dictionary<InputDirection, GUIPlot> Neighbors;
 
@@ -45,8 +47,10 @@ namespace EverythingUnder.GUI
 
         #region Constructors
 
-        public GUIPlot()
+        public GUIPlot(GameManager game)
         {
+            Game = game;
+
             Neighbors = new Dictionary<InputDirection, GUIPlot>();
 
             Nodes = new List<GUINode>();

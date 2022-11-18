@@ -57,25 +57,6 @@ namespace EverythingUnder.GUI
 
             return new GroupState(spriteStates, new Point(0, -75));
         }
-
-        //private GroupState GetHighlightStyle(int border = 5)
-        //{
-        //    List<SpriteState> spriteStates = new List<SpriteState>();
-
-        //    spriteStates.Add(
-        //        new SpriteState(Sprites[0], new Rectangle(-46 - border,
-        //                                                  -100 - border,
-        //                                                  92 + 2 * border,
-        //                                                  150 + 2 * border)));
-
-        //    spriteStates.Add(
-        //        new SpriteState(Sprites[1], new Rectangle(-50 - border,
-        //                                                  -180 - border,
-        //                                                  100 + 2 * border,
-        //                                                  100 + 2 * border)));
-
-        //    return new GroupState(spriteStates, new Point(0, -75));
-        //}
     }
 }
 

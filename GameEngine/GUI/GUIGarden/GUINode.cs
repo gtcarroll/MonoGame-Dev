@@ -40,14 +40,18 @@ namespace EverythingUnder.GUI
             set
             {
                 _isHovered = value;
-                Sprite.Style = _isHovered ? SpriteStyle.Hover
-                                          : SpriteStyle.Default;
+                if (_isActive && Sprite != null)
+                {
+                    Sprite.Style = _isHovered ? SpriteStyle.Hover
+                                              : SpriteStyle.Default;
+                }
             }
         }
 
         // node graphics
         public SpriteGroup Sprite;
         public Point Center;
+        public Rectangle ScreenSpace;
 
         #endregion
 
@@ -137,6 +141,9 @@ namespace EverythingUnder.GUI
                 if (neighbor.IsActive)
                 {
                     return neighbor;
+                } else
+                {
+                    return neighbor.GetNeighbor(direction);
                 }
             }
 

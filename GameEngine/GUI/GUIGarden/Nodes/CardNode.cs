@@ -9,11 +9,16 @@ namespace EverythingUnder.GUI
 {
     public class CardNode : GUINode
     {
+        private int width = 100;
+        private int height = 100;
+
         public CardNode(Point center) : base(center)
         {
-            // set OnSelected event listener
-            // load card image data?
             AddSprite(new CardSprite(center));
+
+            ScreenSpace = new Rectangle(center.X - width / 2,
+                                        center.Y - height / 2,
+                                        width, height);
         }
     }
 }

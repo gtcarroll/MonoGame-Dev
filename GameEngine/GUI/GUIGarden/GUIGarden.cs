@@ -113,7 +113,7 @@ namespace EverythingUnder.GUI
 
         #region Update Methods
 
-        public void HandleInput(InputState input)
+        public virtual void HandleInput(InputState input)
         {
             if (input.WasSelectPressed())
             {
@@ -149,7 +149,7 @@ namespace EverythingUnder.GUI
         {
             if (CurrNode.Neighbors.ContainsKey(direction))
             {
-                MoveToNode(CurrNode.Neighbors[direction]);
+                MoveToNode(CurrNode.GetNeighbor(direction));
             }
             else if (CurrPlot.Neighbors.ContainsKey(direction))
             {
