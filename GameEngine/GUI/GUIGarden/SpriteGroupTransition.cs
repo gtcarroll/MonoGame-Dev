@@ -13,36 +13,46 @@ namespace EverythingUnder.GUI
         public float Duration;
 
         // transition state
-        public bool IsAnimating;
+        public bool IsAnimating
+        {
+            get { return TimingFunction.IsAnimating; }
+        }
         public float PercentComplete;
 
         // transition parameters
         public GroupState Start;
         public GroupState Delta;
 
-        public SpriteGroupTransition(GroupState start, GroupState end, float duration)
+        // timing function
+        public ITimingFunction TimingFunction;
+
+        public SpriteGroupTransition(GroupState start, GroupState end, float duration, ITimingFunction timingFunction = null)
         {
             Current = start;
             Duration = duration;
 
-            IsAnimating = true;
             PercentComplete = 0f;
 
             Start = start;
             Delta = GetDelta(start, end);
+
+            TimingFunction = timingFunction == null ? new LinearFunction(duration) : timingFunction;
         }
 
         public void Update(GameTime time)
         {
             float deltaTime = time.ElapsedGameTime.Milliseconds;
 
-            // update transition state
-            PercentComplete += deltaTime / Duration;
-            if (PercentComplete >= 1f) IsAnimating = false;
-            PercentComplete = MathHelper.Clamp(PercentComplete, 0f, 1f);
+            //// update transition state
+            //PercentComplete += deltaTime / Duration;
+            //if (PercentComplete >= 1f) IsAnimating = false;
+            //PercentComplete = MathHelper.Clamp(PercentComplete, 0f, 1f);
+
+            TimingFunction.Update(time);
 
             // update SpriteGroup state
-            Current = GetUpdatedGroupState(PercentComplete);
+            //Current = GetUpdatedGroupState(PercentComplete);
+            Current = GetUpdatedGroupState(TimingFunction.AnimationPosition);
         }
 
         private GroupState GetUpdatedGroupState(float percentComplete)

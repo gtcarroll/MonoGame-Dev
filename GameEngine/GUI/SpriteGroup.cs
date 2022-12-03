@@ -46,7 +46,7 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public SpriteGroup(Point center)
+        public SpriteGroup(Point center, float transitionDuration = 120f)
         {
             Sprites = new List<Texture2D>();
             StyleStates = new Dictionary<SpriteStyle, GroupState>();
@@ -54,13 +54,13 @@ namespace EverythingUnder.GUI
             _style = SpriteStyle.Default;
             _center = center;
 
-            TransitionDuration = 120f;
+            TransitionDuration = transitionDuration;
         }
 
         public virtual void BeginTransition(GroupState endState)
         {
             TargetState = endState;
-            Transition = new SpriteGroupTransition(CurrentState, TargetState,
+            Transition = new SpriteGroupTransition(CurrentState, endState,
                                                    TransitionDuration);
         }
 

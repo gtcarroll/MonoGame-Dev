@@ -10,8 +10,8 @@ namespace EverythingUnder.GUI
 {
     public class CardSprite : SpriteGroup
     {
-        public CardSprite(Point center) : base(center) { }
-        public CardSprite(Card card, Point center) : base(center)
+        public CardSprite(Point center) : base(center, 600f) { }
+        public CardSprite(Card card, Point center) : base(center, 600f)
         {
 
         }
@@ -28,6 +28,13 @@ namespace EverythingUnder.GUI
             //StyleStates.Add(SpriteStyle.Highlight, GetHighlightStyle());
 
             CurrentState = GetNextState();
+        }
+
+        public override void BeginTransition(GroupState endState)
+        {
+            TargetState = endState;
+            Transition = new SpriteGroupTransition(CurrentState, endState,
+                                                   TransitionDuration, new BounceFunction(TransitionDuration));
         }
 
         private GroupState GetDefaultStyle()

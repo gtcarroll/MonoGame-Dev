@@ -4,46 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EverythingUnder.GUI
 {
-    public class TimingFunction
+    public interface ITimingFunction
     {
-        private float _animationPosition;
-        public float AnimationPosition
-        {
-            get { return _animationPosition; }
-        }
+        float Duration { get; }
+        float AnimationPosition { get; }
 
-        private float _duration;
-        public float Duration
-        {
-            get { return _duration; }
-        }
+        bool IsAnimating { get; }
 
-        private bool _isAnimating;
-        public bool IsAnimating
-        {
-            get { return _isAnimating; }
-        }
-
-        public TimingFunction(float duration = 120f)
-        {
-            _duration = duration;
-            _animationPosition = 0f;
-            _isAnimating = true;
-        }
-
-        public virtual void Update(GameTime time)
-        {
-            float deltaTime = time.ElapsedGameTime.Milliseconds;
-
-            // update animation position
-            _animationPosition += deltaTime / _duration;
-
-            // toggle animation off if complete
-            if (_animationPosition >= 1f) _isAnimating = false;
-
-            // clamp position
-            _animationPosition = MathHelper.Clamp(_animationPosition, 0f, 1f);
-        }
+        void Update(GameTime time);
     }
 }
 

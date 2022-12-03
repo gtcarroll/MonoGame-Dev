@@ -70,6 +70,11 @@ namespace EverythingUnder.GUI
             {
                 _handPlot.RemoveCard(5);
             }
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad6))
+            {
+                _handPlot.RemoveCard(0);
+                _handPlot.RemoveCard(0);
+            }
         }
     }
 }
