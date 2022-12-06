@@ -24,9 +24,10 @@ namespace EverythingUnder.GUI
         public GroupState Delta;
 
         // timing function
-        public ITimingFunction TimingFunction;
+        public TimingFunction TimingFunction;
 
-        public SpriteGroupTransition(GroupState start, GroupState end, float duration, ITimingFunction timingFunction = null)
+        public SpriteGroupTransition(GroupState start, GroupState end) : this(start, end, 128f, null) { }
+        public SpriteGroupTransition(GroupState start, GroupState end, float duration, TimingFunction timingFunction = null)
         {
             Current = start;
             Duration = duration;
@@ -39,32 +40,26 @@ namespace EverythingUnder.GUI
             TimingFunction = timingFunction == null ? new LinearFunction(duration) : timingFunction;
         }
 
-        public void Update(GameTime time)
+        public virtual void Update(GameTime time)
         {
             float deltaTime = time.ElapsedGameTime.Milliseconds;
-
-            //// update transition state
-            //PercentComplete += deltaTime / Duration;
-            //if (PercentComplete >= 1f) IsAnimating = false;
-            //PercentComplete = MathHelper.Clamp(PercentComplete, 0f, 1f);
 
             TimingFunction.Update(time);
 
             // update SpriteGroup state
-            //Current = GetUpdatedGroupState(PercentComplete);
-            Current = GetUpdatedGroupState(TimingFunction.AnimationPosition);
+            Current = GetUpdatedGroupState(TimingFunction.AnimationPosition, Start, Delta);
         }
 
-        private GroupState GetUpdatedGroupState(float percentComplete)
+        protected GroupState GetUpdatedGroupState(float percentComplete, GroupState start, GroupState delta)
         {
             List<SpriteState> newStates = new List<SpriteState>();
 
-            for (int i = 0; i < Delta.SpriteStates.Count; i++)
+            for (int i = 0; i < delta.SpriteStates.Count; i++)
             {
-                Texture2D sprite = Delta.SpriteStates[i].Sprite;
+                Texture2D sprite = delta.SpriteStates[i].Sprite;
 
-                Rectangle startDest = Start.SpriteStates[i].Destination;
-                Rectangle deltaDest = Delta.SpriteStates[i].Destination;
+                Rectangle startDest = start.SpriteStates[i].Destination;
+                Rectangle deltaDest = delta.SpriteStates[i].Destination;
                 Rectangle scaledDest = ScaleRectangle(deltaDest,
                                                       percentComplete);
                 Rectangle currDest = new Rectangle(
@@ -72,12 +67,12 @@ namespace EverythingUnder.GUI
                     startDest.Size + scaledDest.Size);
 
                 Rectangle? currSource = null;
-                if (Delta.SpriteStates[i].Source != null)
+                if (delta.SpriteStates[i].Source != null)
                 {
                     Rectangle startSource =
-                        (Rectangle)Start.SpriteStates[i].Source;
+                        (Rectangle)start.SpriteStates[i].Source;
                     Rectangle deltaSource =
-                        (Rectangle)Delta.SpriteStates[i].Source;
+                        (Rectangle)delta.SpriteStates[i].Source;
                     Rectangle scaledSource = ScaleRectangle(deltaSource,
                                                             percentComplete);
                     currSource = new Rectangle(
@@ -89,13 +84,13 @@ namespace EverythingUnder.GUI
             }
 
             Point scaledCenter = new Point(
-                (int)(Delta.Center.X * percentComplete),
-                (int)(Delta.Center.Y * percentComplete));
+                (int)(delta.Center.X * percentComplete),
+                (int)(delta.Center.Y * percentComplete));
 
             return new GroupState(newStates, Start.Center + scaledCenter);
         }
 
-        private GroupState GetDelta(GroupState start, GroupState end)
+        protected GroupState GetDelta(GroupState start, GroupState end)
         {
             List<SpriteState> deltaStates = new List<SpriteState>();
 
@@ -131,7 +126,7 @@ namespace EverythingUnder.GUI
             return new GroupState(deltaStates, end.Center - start.Center);
         }
 
-        private Rectangle ScaleRectangle(Rectangle rectangle, float scale)
+        protected Rectangle ScaleRectangle(Rectangle rectangle, float scale)
         {
             return new Rectangle(
                 (int)(rectangle.Location.X * scale),

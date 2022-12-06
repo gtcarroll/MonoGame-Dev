@@ -16,6 +16,8 @@ namespace EverythingUnder.GUI
 
     public abstract class SpriteGroup
     {
+        public GroupState DefaultState;
+
         public List<Texture2D> Sprites;
         public GroupState CurrentState;
         public Dictionary<SpriteStyle, GroupState> StyleStates;
@@ -23,6 +25,8 @@ namespace EverythingUnder.GUI
         public SpriteGroupTransition Transition;
         public float TransitionDuration;
         public GroupState TargetState;
+
+        public bool IsHovered;
 
         private SpriteStyle _style;
         public SpriteStyle Style
@@ -35,24 +39,26 @@ namespace EverythingUnder.GUI
             }
         }
 
-        private Point _center;
-        public Point Center
+        private Point _anchor;
+        public Point Anchor
         {
-            get { return _center; }
+            get { return _anchor; }
             set
             {
-                _center = value;
-                BeginTransition(GetNextState());
+                _anchor = value;
+                BeginRepositionAnimation(DefaultState.GetTranslatedCopy(_anchor));
             }
         }
 
-        public SpriteGroup(Point center, float transitionDuration = 120f)
+        public SpriteGroup(Point anchor, float transitionDuration = 120f)
         {
             Sprites = new List<Texture2D>();
             StyleStates = new Dictionary<SpriteStyle, GroupState>();
 
+            IsHovered = false;
+
             _style = SpriteStyle.Default;
-            _center = center;
+            _anchor = anchor;
 
             TransitionDuration = transitionDuration;
         }
@@ -64,10 +70,27 @@ namespace EverythingUnder.GUI
                                                    TransitionDuration);
         }
 
+        public virtual void BeginRepositionAnimation(GroupState endState)
+        {
+            TargetState = endState;
+            Transition = new SpriteGroupTransition(CurrentState, endState,
+                                                   TransitionDuration);
+        }
+
         public virtual void Update(GameTime time)
         {
             //float deltaTime = time.ElapsedGameTime.Milliseconds;
             //CurrentState.Rotation += deltaTime * 0.001f;
+
+            //if (IsHovered && _style == SpriteStyle.Default)
+            //{
+            //    Style = SpriteStyle.Hover;
+            //}
+            //else if (!IsHovered && _style == SpriteStyle.Hover)
+            //{
+            //    Style = SpriteStyle.Default;
+            //}
+
             if (Transition != null && Transition.IsAnimating)
             {
                 Transition.Update(time);
@@ -77,7 +100,7 @@ namespace EverythingUnder.GUI
 
         public GroupState GetNextState()
         {
-            return StyleStates[_style].GetTranslatedCopy(_center);
+            return StyleStates[_style].GetTranslatedCopy(_anchor);
         }
 
         //public GroupState GetHighlight()

@@ -8,6 +8,7 @@ namespace EverythingUnder.GUI
     {
         // cursor state
         private Point _position;
+        private Point _positionPrev;
         private Color _color;
         private int _thickness;
 
@@ -15,6 +16,7 @@ namespace EverythingUnder.GUI
         //private HighlightSprite _curr;
         //private HighlightSprite _prev;
         private HighlightSprite _cursor;
+        private HighlightSprite _cursorPrev;
         private GroupState _curr;
         private GroupState _prev;
         private SpriteGroup _target;
@@ -32,9 +34,10 @@ namespace EverythingUnder.GUI
             // set initial highlighted sprites
             // TODO: move load out of constructor
             Texture2D cursor = game.Content.Load<Texture2D>("Textures/simple-circle");
-            _curr = null; //new HighlightSprite(cursor, new Point(100));
-            _prev = null; // new HighlightSprite(cursor, new Point(100));
+            _curr = null;
+            _prev = null;
             _cursor = new HighlightSprite(cursor, new Point(100));
+            _cursorPrev = new HighlightSprite(cursor, new Point(100));
 
             // set highlight parameters
             _color = color;
@@ -42,21 +45,9 @@ namespace EverythingUnder.GUI
 
             // set initial highlight state
             _position = new Point(0, 0);
+            _positionPrev = new Point(0, 0);
             _transition = new CursorTransition(_position, 100f);
         }
-
-        //public void AnimateTo(SelectableSprite sprite)
-        //{
-        //    // begin transition
-        //    _transition.StartTransitionTo(sprite);
-
-        //    // update sprites
-        //    _prev = _curr;
-        //    _curr = sprite.GetHighlight();
-
-        //    // rotate cursor
-        //    _cursor.RotateTo(_transition.Delta);
-        //}
 
         public void AnimateTo(SpriteGroup spriteGroup)
         {
@@ -67,10 +58,10 @@ namespace EverythingUnder.GUI
             // update sprites
             _prev = _curr;
             _target = spriteGroup;
-            //_curr = _target.GetHighlightState(_thickness);
 
             // rotate cursor
             _cursor.RotateTo(_transition.Delta);
+            _cursorPrev.Rotation = _cursor.Rotation;
         }
 
         public void Update(GameTime time)
@@ -80,24 +71,21 @@ namespace EverythingUnder.GUI
                 _transition.Update(time);
 
                 // update position
+                _positionPrev = _position;
                 _position = _transition.Current;
 
                 // scale sprites
                 float dist2Start = _transition.Distance *
-                                   _transition.PercentComplete;
+                                   _transition.SinusoidalPercent;
                 float dist2End = _transition.Distance - dist2Start;
-
-                //_prev.Scale = Math.Max(
-                //                1f - (1.5f * dist2Start / _prev.Dimension.X),
-                //                0f);
-                //_curr.Scale = Math.Max(
-                //                1f - (1.5f * dist2End / _curr.Dimension.X),
-                //                0f);
 
                 _curr = _target.GetHighlightState(_thickness);
 
                 // scale and stretch cursor
-                float pct2Mid = Math.Abs(_transition.PercentComplete - 0.5f);
+                float pct2Mid = Math.Abs(_transition.SinusoidalPercent - 0.5f);
+
+                _cursorPrev.Scale = _cursor.Scale;
+                _cursorPrev.Stretch = _cursor.Stretch;
 
                 _cursor.Scale = Math.Max(pct2Mid * 2, 0.3f);
                 _cursor.Stretch = (_transition.Speed * 2f) -
@@ -124,6 +112,7 @@ namespace EverythingUnder.GUI
 
             if (_transition.IsAnimating)
             {
+                _cursorPrev.Draw(spriteBatch, _positionPrev, _color);
                 _cursor.Draw(spriteBatch, _position, _color);
             }
 

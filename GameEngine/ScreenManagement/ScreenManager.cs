@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace EverythingUnder.ScreenManagement
@@ -65,6 +66,12 @@ namespace EverythingUnder.ScreenManagement
         public override void Update(GameTime time)
         {
             InputState.Update();
+
+            // close the game
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Game.Exit();
+            }
 
             foreach (GameScreen screen in _screens)
             {

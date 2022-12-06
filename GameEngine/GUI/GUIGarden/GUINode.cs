@@ -42,6 +42,7 @@ namespace EverythingUnder.GUI
                 _isHovered = value;
                 if (_isActive && Sprite != null)
                 {
+                    //Sprite.IsHovered = value;
                     Sprite.Style = _isHovered ? SpriteStyle.Hover
                                               : SpriteStyle.Default;
                 }

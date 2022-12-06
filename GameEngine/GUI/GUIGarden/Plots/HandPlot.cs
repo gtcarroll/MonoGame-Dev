@@ -11,18 +11,20 @@ namespace EverythingUnder.GUI
     {
         private const int MaxHandSize = 10;
 
-        public static Point Size = new Point(770, 200);
+        public static Point Size = new Point(960, 256);
 
         private Point _downGap;
         private Point _upGap;
+
+        private Point _deckCenter;
 
         public List<CardSprite> Cards;
 
         public HandPlot(GameManager game, Point location) : base(game)
         {
             // initialize HandPlot params
-            _downGap = new Point(55, 90);
-            _upGap = new Point(55, -90);
+            _downGap = new Point(69, 112);//55, 90);
+            _upGap = new Point(69, -112);//55, -90);
 
             Cards = new List<CardSprite>();
 
@@ -47,6 +49,10 @@ namespace EverythingUnder.GUI
                 {
                     Nodes[i].RemoveSprite();
                 }
+                else if (i == 12)
+                {
+                    _deckCenter = nodePosition;
+                }
 
                 nodePosition += i % 2 == 0 ? _upGap : _downGap;
             }
@@ -54,8 +60,6 @@ namespace EverythingUnder.GUI
 
         public override void Update(GameTime time)
         {
-
-
             base.Update(time);
         }
 
@@ -70,6 +74,9 @@ namespace EverythingUnder.GUI
 
             Nodes[i].AddSprite(cardSprite);
             Nodes[i].LoadContent(Game);
+
+            // begin draw animation
+            cardSprite.BeginDrawAnimation(cardSprite.CurrentState.GetCopyAt(_deckCenter), cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
 
             return true;
         }
@@ -94,9 +101,9 @@ namespace EverythingUnder.GUI
             {
                 CardSprite cardSprite = Cards[i];
 
-                if (cardSprite.Center != nodePosition)
+                if (cardSprite.Anchor != nodePosition)
                 {
-                    cardSprite.Center = nodePosition;//CurrentState.GetCopyAt(nodePosition));
+                    cardSprite.Anchor = nodePosition;//CurrentState.GetCopyAt(nodePosition));
                     Nodes[3 + i].RemoveSprite();
                     Nodes[2 + i].AddSprite(cardSprite);
                 }

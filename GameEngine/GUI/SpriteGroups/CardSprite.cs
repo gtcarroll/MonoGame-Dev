@@ -10,11 +10,8 @@ namespace EverythingUnder.GUI
 {
     public class CardSprite : SpriteGroup
     {
-        public CardSprite(Point center) : base(center, 600f) { }
-        public CardSprite(Card card, Point center) : base(center, 600f)
-        {
-
-        }
+        public CardSprite(Point center) : base(center, 128f) { }
+        public CardSprite(Card card, Point center) : base(center, 128f) { }
 
         public override void LoadContent(ContentManager content)
         {
@@ -27,6 +24,7 @@ namespace EverythingUnder.GUI
             StyleStates.Add(SpriteStyle.Hover, GetHoverStyle());
             //StyleStates.Add(SpriteStyle.Highlight, GetHighlightStyle());
 
+            DefaultState = StyleStates[SpriteStyle.Default];
             CurrentState = GetNextState();
         }
 
@@ -34,7 +32,20 @@ namespace EverythingUnder.GUI
         {
             TargetState = endState;
             Transition = new SpriteGroupTransition(CurrentState, endState,
-                                                   TransitionDuration, new BounceFunction(TransitionDuration));
+                                                   128f, new SinusoidalFunction(128f));
+        }
+
+        public void BeginDrawAnimation(GroupState deckState, GroupState endState)
+        {
+            TargetState = endState;
+            Transition = new CardDrawTransition(deckState, endState);
+        }
+
+        public override void BeginRepositionAnimation(GroupState endState)
+        {
+            TargetState = endState;
+            Transition = new SpriteGroupTransition(CurrentState, endState,
+                                                   640f, new BounceFunction(640f));
         }
 
         private GroupState GetDefaultStyle()
@@ -46,7 +57,7 @@ namespace EverythingUnder.GUI
                                 new Rectangle(0, Sprites[0].Height - 223, Sprites[0].Width, 223)));
 
             spriteStates.Add(
-                new SpriteState(Sprites[1], new Rectangle(-50, -50, 100, 100)));
+                new SpriteState(Sprites[1], new Rectangle(-64, -64, 128, 128)));
 
             return new GroupState(spriteStates, new Point(0,0));
         }

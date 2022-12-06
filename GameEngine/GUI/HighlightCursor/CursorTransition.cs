@@ -18,6 +18,7 @@ namespace EverythingUnder.GUI
         // transition state
         public bool IsAnimating;
         public float PercentComplete;
+        public float SinusoidalPercent;
 
         // transition parameters
         public Point Start;
@@ -32,6 +33,7 @@ namespace EverythingUnder.GUI
 
             IsAnimating = false;
             PercentComplete = 0f;
+            SinusoidalPercent = 0f;
         }
 
         //public void StartTransitionTo(SelectableSprite sprite)
@@ -73,10 +75,13 @@ namespace EverythingUnder.GUI
             if (PercentComplete >= 1f) IsAnimating = false;
             PercentComplete = MathHelper.Clamp(PercentComplete, 0f, 1f);
 
+            // sinusoidal movement
+            SinusoidalPercent = 1 - (MathF.Cos(PercentComplete * MathHelper.Pi) + 1) / 2f;
+
             // update cursor state
             Point scaledDelta = new Point(
-                (int)(Delta.X * PercentComplete),
-                (int)(Delta.Y * PercentComplete));
+                (int)(Delta.X * SinusoidalPercent),//PercentComplete),
+                (int)(Delta.Y * SinusoidalPercent));//PercentComplete));
             Current = Start + scaledDelta;
         }
     }
