@@ -33,20 +33,11 @@ namespace EverythingUnder.GUI
             set { _isActive = value; }
         }
 
-        private bool _isHovered;
+        //private bool _isHovered;
         public bool IsHovered
         {
-            get { return _isHovered; }
-            set
-            {
-                _isHovered = value;
-                if (_isActive && Sprite != null)
-                {
-                    //Sprite.IsHovered = value;
-                    Sprite.Style = _isHovered ? SpriteStyle.Hover
-                                              : SpriteStyle.Default;
-                }
-            }
+            get { return Sprite.IsHovered; }
+            set { Sprite.IsHovered = value; }
         }
 
         // node graphics
@@ -61,7 +52,7 @@ namespace EverythingUnder.GUI
         public GUINode(Point center)
         {
             Neighbors = new Dictionary<InputDirection, GUINode>();
-            _isHovered = false;
+            //_isHovered = false;
             _isActive = false;
 
             Sprite = null;
@@ -89,6 +80,7 @@ namespace EverythingUnder.GUI
         }
         public void RemoveSprite()
         {
+            // TODO: check for null when updating hover state etc.
             Sprite = null;
             _isActive = false;
         }

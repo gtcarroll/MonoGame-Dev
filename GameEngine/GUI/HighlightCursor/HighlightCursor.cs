@@ -6,6 +6,8 @@ namespace EverythingUnder.GUI
 {
     public class HighlightCursor
     {
+        Effect effect;
+
         // cursor state
         private Point _position;
         private Point _positionPrev;
@@ -17,8 +19,8 @@ namespace EverythingUnder.GUI
         //private HighlightSprite _prev;
         private HighlightSprite _cursor;
         private HighlightSprite _cursorPrev;
-        private GroupState _curr;
-        private GroupState _prev;
+        private SpriteGroupState _curr;
+        private SpriteGroupState _prev;
         private SpriteGroup _target;
 
         // transition state
@@ -34,6 +36,8 @@ namespace EverythingUnder.GUI
             // set initial highlighted sprites
             // TODO: move load out of constructor
             Texture2D cursor = game.Content.Load<Texture2D>("Textures/simple-circle");
+            //effect = game.Content.Load<Effect>("MonoColorize");
+
             _curr = null;
             _prev = null;
             _cursor = new HighlightSprite(cursor, new Point(100));
@@ -92,7 +96,7 @@ namespace EverythingUnder.GUI
                                   (_transition.Speed * 2f - 1) *
                                   2 * Math.Max(pct2Mid, 0.1f);
             }
-            else if (_target != null && _target.Transition.IsAnimating)
+            else if (_target != null) //&& _target.Transition.IsAnimating)
             {
                 _curr = _target.GetHighlightState(_thickness);
             }

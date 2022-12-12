@@ -9,7 +9,7 @@ namespace EverythingUnder.GUI
     public class SpriteGroupTransition
     {
         // SpriteGroup state
-        public GroupState Current;
+        public SpriteGroupState Current;
         public float Duration;
 
         // transition state
@@ -20,14 +20,14 @@ namespace EverythingUnder.GUI
         public float PercentComplete;
 
         // transition parameters
-        public GroupState Start;
-        public GroupState Delta;
+        public SpriteGroupState Start;
+        public SpriteGroupState Delta;
 
         // timing function
         public TimingFunction TimingFunction;
 
-        public SpriteGroupTransition(GroupState start, GroupState end) : this(start, end, 128f, null) { }
-        public SpriteGroupTransition(GroupState start, GroupState end, float duration, TimingFunction timingFunction = null)
+        public SpriteGroupTransition(SpriteGroupState start, SpriteGroupState end) : this(start, end, 128f, null) { }
+        public SpriteGroupTransition(SpriteGroupState start, SpriteGroupState end, float duration, TimingFunction timingFunction = null)
         {
             Current = start;
             Duration = duration;
@@ -50,7 +50,7 @@ namespace EverythingUnder.GUI
             Current = GetUpdatedGroupState(TimingFunction.AnimationPosition, Start, Delta);
         }
 
-        protected GroupState GetUpdatedGroupState(float percentComplete, GroupState start, GroupState delta)
+        protected SpriteGroupState GetUpdatedGroupState(float percentComplete, SpriteGroupState start, SpriteGroupState delta)
         {
             List<SpriteState> newStates = new List<SpriteState>();
 
@@ -87,10 +87,10 @@ namespace EverythingUnder.GUI
                 (int)(delta.Center.X * percentComplete),
                 (int)(delta.Center.Y * percentComplete));
 
-            return new GroupState(newStates, Start.Center + scaledCenter);
+            return new SpriteGroupState(newStates, Start.Center + scaledCenter);
         }
 
-        protected GroupState GetDelta(GroupState start, GroupState end)
+        protected SpriteGroupState GetDelta(SpriteGroupState start, SpriteGroupState end)
         {
             List<SpriteState> deltaStates = new List<SpriteState>();
 
@@ -123,7 +123,7 @@ namespace EverythingUnder.GUI
                                                         deltaSource));
             }
 
-            return new GroupState(deltaStates, end.Center - start.Center);
+            return new SpriteGroupState(deltaStates, end.Center - start.Center);
         }
 
         protected Rectangle ScaleRectangle(Rectangle rectangle, float scale)

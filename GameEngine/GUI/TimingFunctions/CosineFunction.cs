@@ -6,9 +6,9 @@ namespace EverythingUnder.GUI
     /// <summary>
     /// Timing function for sinusoidal movement between start and end position
     /// </summary>
-    public class SinusoidalFunction : TimingFunction
+    public class CosineFunction : TimingFunction
     {
-        public SinusoidalFunction(float duration) : base(duration) { }
+        public CosineFunction(float duration) : base(duration) { }
 
         protected override float GetAnimationPosition()
         {

@@ -24,7 +24,7 @@ namespace EverythingUnder.GUI
         }
     }
 
-    public class GroupState
+    public class SpriteGroupState
     {
         public List<SpriteState> SpriteStates;
 
@@ -33,10 +33,10 @@ namespace EverythingUnder.GUI
         //public float Rotation;
         //public SpriteEffects SpriteEffects;
 
-        public GroupState(List<SpriteState> spriteStates, Point center)
+        public SpriteGroupState(List<SpriteState> spriteStates, Point center)
             : this(spriteStates, Color.White, center) { }
 
-        public GroupState(List<SpriteState> spriteStates, Color color,
+        public SpriteGroupState(List<SpriteState> spriteStates, Color color,
                                                           Point center)
         {
             SpriteStates = spriteStates;
@@ -61,7 +61,7 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public GroupState GetTransformedCopy(Point translate, Vector2 scale)
+        public SpriteGroupState GetTransformedCopy(Point translate, Vector2 scale)
         {
             List<SpriteState> newStates = new List<SpriteState>();
 
@@ -90,15 +90,15 @@ namespace EverythingUnder.GUI
                 newStates.Add(new SpriteState(state.Sprite, newDestination, state.Source));
             }
 
-            return new GroupState(newStates, Color, Center + translate);
+            return new SpriteGroupState(newStates, Color, Center + translate);
         }
 
-        public GroupState GetCopyAt(Point destination)
+        public SpriteGroupState GetCopyAt(Point destination)
         {
             return GetTranslatedCopy(destination - Center);
         }
 
-        public GroupState GetTranslatedCopy(Point translate)
+        public SpriteGroupState GetTranslatedCopy(Point translate)
         {
             List<SpriteState> newStates = new List<SpriteState>();
 
@@ -110,7 +110,7 @@ namespace EverythingUnder.GUI
                 newStates.Add(new SpriteState(state.Sprite, newDestination, state.Source));
             }
 
-            return new GroupState(newStates, Color, Center + translate);
+            return new SpriteGroupState(newStates, Color, Center + translate);
         }
     }
 }

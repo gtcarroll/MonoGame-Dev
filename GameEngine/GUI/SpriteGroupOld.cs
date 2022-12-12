@@ -14,17 +14,17 @@ namespace EverythingUnder.GUI
         //Highlight
     }
 
-    public abstract class SpriteGroup
+    public abstract class SpriteGroupOld
     {
-        public GroupState DefaultState;
+        public SpriteGroupState DefaultState;
 
         public List<Texture2D> Sprites;
-        public GroupState CurrentState;
-        public Dictionary<SpriteStyle, GroupState> StyleStates;
+        public SpriteGroupState CurrentState;
+        public Dictionary<SpriteStyle, SpriteGroupState> StyleStates;
 
         public SpriteGroupTransition Transition;
         public float TransitionDuration;
-        public GroupState TargetState;
+        public SpriteGroupState TargetState;
 
         public bool IsHovered;
 
@@ -50,10 +50,10 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public SpriteGroup(Point anchor, float transitionDuration = 120f)
+        public SpriteGroupOld(Point anchor, float transitionDuration = 120f)
         {
             Sprites = new List<Texture2D>();
-            StyleStates = new Dictionary<SpriteStyle, GroupState>();
+            StyleStates = new Dictionary<SpriteStyle, SpriteGroupState>();
 
             IsHovered = false;
 
@@ -63,14 +63,14 @@ namespace EverythingUnder.GUI
             TransitionDuration = transitionDuration;
         }
 
-        public virtual void BeginTransition(GroupState endState)
+        public virtual void BeginTransition(SpriteGroupState endState)
         {
             TargetState = endState;
             Transition = new SpriteGroupTransition(CurrentState, endState,
                                                    TransitionDuration);
         }
 
-        public virtual void BeginRepositionAnimation(GroupState endState)
+        public virtual void BeginRepositionAnimation(SpriteGroupState endState)
         {
             TargetState = endState;
             Transition = new SpriteGroupTransition(CurrentState, endState,
@@ -98,7 +98,7 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public GroupState GetNextState()
+        public SpriteGroupState GetNextState()
         {
             return StyleStates[_style].GetTranslatedCopy(_anchor);
         }
@@ -118,17 +118,17 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, GroupState state)
+        public virtual void Draw(SpriteBatch spriteBatch, SpriteGroupState state)
         {
             state.Draw(spriteBatch);
         }
 
-        public virtual GroupState GetBetweenState(GroupState prev, GroupState curr, float percentComplete)
+        public virtual SpriteGroupState GetBetweenState(SpriteGroupState prev, SpriteGroupState curr, float percentComplete)
         {
             throw new NotImplementedException();
         }
 
-        public virtual GroupState GetHighlightState(int thickness = 5)
+        public virtual SpriteGroupState GetHighlightState(int thickness = 5)
         {
             List<SpriteState> newStates = new List<SpriteState>();
 
@@ -144,7 +144,7 @@ namespace EverythingUnder.GUI
                                               spriteState.Source));
             }
 
-            return new GroupState(newStates, CurrentState.Center);
+            return new SpriteGroupState(newStates, CurrentState.Center);
         }
     }
 }

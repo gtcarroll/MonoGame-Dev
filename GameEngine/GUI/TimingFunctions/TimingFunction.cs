@@ -9,7 +9,7 @@ namespace EverythingUnder.GUI
     /// Usage:
     ///   - Call Update() function to progress animation values.
     ///   - Use AnimationPosition to get current position as a ratio of the
-    ///     delta between the start and end positions.
+    ///     delta between the start and target positions.
     ///   - Use IsAnimating to determine when animation is complete.
     /// </summary>
     public abstract class TimingFunction

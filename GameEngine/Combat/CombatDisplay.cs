@@ -25,7 +25,6 @@ namespace EverythingUnder.Combat
         private SpriteGroup _prev;
         private SpriteGroup _hovered;
 
-
         private GUIGarden _guiGarden;
 
         private HighlightCursor _cursor;
@@ -90,17 +89,17 @@ namespace EverythingUnder.Combat
 
         private void SetHovered()
         {
-            if (_hovered != null)
-            {
-                _hovered.Style = SpriteStyle.Default;
-                _prev = _hovered;
-            }
+            //if (_hovered != null)
+            //{
+            //    _hovered.Style = SpriteStyle.Default;
+            //    _prev = _hovered;
+            //}
 
-            _cursorIndex = (_cursorIndex + 1) % _sprites.Count;
+            //_cursorIndex = (_cursorIndex + 1) % _sprites.Count;
 
-            _hovered = _sprites[_cursorIndex];
-            _hovered.Style = SpriteStyle.Hover;
-            _cursor.AnimateTo(_hovered);
+            //_hovered = _sprites[_cursorIndex];
+            //_hovered.Style = SpriteStyle.Hover;
+            //_cursor.AnimateTo(_hovered);
         }
 
         #region Rendering Methods

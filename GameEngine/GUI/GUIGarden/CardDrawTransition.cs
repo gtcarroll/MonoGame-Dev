@@ -8,15 +8,15 @@ namespace EverythingUnder.GUI
 {
     public class CardDrawTransition : SpriteGroupTransition
     {
-        private GroupState _verticalDelta;
+        private SpriteGroupState _verticalDelta;
         private TimingFunction _verticalTransition;
 
-        private GroupState _verticalTarget;
+        private SpriteGroupState _verticalTarget;
 
-        private GroupState _horizontalDelta;
+        private SpriteGroupState _horizontalDelta;
         private TimingFunction _horizontalTransition;
 
-        public CardDrawTransition(GroupState start, GroupState end) : base(start, end, 128f, null)
+        public CardDrawTransition(SpriteGroupState start, SpriteGroupState end) : base(start, end, 128f, null)
         {
             Current = start;
 
@@ -29,7 +29,7 @@ namespace EverythingUnder.GUI
             _verticalTarget = start.GetCopyAt(verticalPoint);
 
             _verticalDelta = GetDelta(start, _verticalTarget);
-            _verticalTransition = new SinusoidalFunction(128f);
+            _verticalTransition = new CosineFunction(128f);
 
             _horizontalDelta = GetDelta(_verticalTarget, end);
             _horizontalTransition = new BounceFunction(640f);
