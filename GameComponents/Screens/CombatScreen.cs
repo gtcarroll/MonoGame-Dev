@@ -91,11 +91,11 @@ namespace EverythingUnder.Screens
             _garden.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _game.GraphicsDevice.Clear(Color.Black);
 
-            _garden.Draw();
+            _garden.Draw(spriteBatch);
         }
 
         #endregion

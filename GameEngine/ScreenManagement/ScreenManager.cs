@@ -10,13 +10,24 @@ namespace EverythingUnder.ScreenManagement
 {
     public class ScreenManager : DrawableGameComponent
     {
-        #region Properties
+        #region Fields
 
         private List<GameScreen> _screens = new List<GameScreen>();
         private Stack<GameScreen> _updateStack = new Stack<GameScreen>();
 
-        public SpriteBatch SpriteBatch;
+        private SpriteBatch _spriteBatch;
+
+        #endregion
+
+        #region Properties
+
+
+        public RenderTarget2D SafeArea;
+        public Rectangle SafeRectangle;
+        public bool WasResized;
+
         public InputState InputState;
+
 
         #endregion
 
@@ -26,6 +37,8 @@ namespace EverythingUnder.ScreenManagement
         {
             InputState = new InputState();
             TouchPanel.EnabledGestures = GestureType.None;
+
+            WasResized = true;
         }
 
         #endregion
@@ -43,7 +56,9 @@ namespace EverythingUnder.ScreenManagement
 
             ContentManager content = Game.Content;
 
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            SafeArea = new RenderTarget2D(GraphicsDevice, 1920, 1080, false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 
             foreach (GameScreen screen in _screens)
             {
@@ -106,12 +121,58 @@ namespace EverythingUnder.ScreenManagement
 
         public override void Draw(GameTime gameTime)
         {
+            // Draw foreground to resolution-locked render target
+            Game.GraphicsDevice.SetRenderTarget(SafeArea);
+            Game.GraphicsDevice.Clear(Color.Black);
+
+            _spriteBatch.Begin();
             foreach (GameScreen screen in _screens)
             {
                 if (!screen.IsCovered)
                 {
-                    screen.Draw(gameTime);
+                    screen.Draw(gameTime, _spriteBatch);
                 }
+            }
+            _spriteBatch.End();
+
+            // Draw background and render target to screen
+            Game.GraphicsDevice.SetRenderTarget(null);
+            Game.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            if (WasResized)
+            {
+                SafeRectangle = GetSafeAreaDestinationRectangle();
+                WasResized = false;
+            }
+
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(SafeArea, SafeRectangle, Color.White);
+            _spriteBatch.End();
+        }
+
+        private Rectangle GetSafeAreaDestinationRectangle()
+        {
+            float outputAspectRatio = Game.Window.ClientBounds.Width
+                                    / (float)Game.Window.ClientBounds.Height;
+            float preferredAspectRatio = SafeArea.Width / (float)SafeArea.Height;//SafeArea.Height / SafeArea.Width;
+
+            Console.WriteLine(Game.Window.ClientBounds);
+
+            if (outputAspectRatio <= preferredAspectRatio)
+            {
+                // output is taller
+                int presentHeight = (int)((Game.Window.ClientBounds.Width / preferredAspectRatio));
+                int barHeight = (Game.Window.ClientBounds.Height - presentHeight) / 2;
+
+                return new Rectangle(0, barHeight, Game.Window.ClientBounds.Width, presentHeight);
+            }
+            else
+            {
+                // output is wider
+                int presentWidth = (int)((Game.Window.ClientBounds.Height * preferredAspectRatio));
+                int barWidth = (Game.Window.ClientBounds.Width - presentWidth) / 2;
+
+                return new Rectangle(barWidth, 0, presentWidth, Game.Window.ClientBounds.Height);
             }
         }
 

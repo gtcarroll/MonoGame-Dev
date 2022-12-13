@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EverythingUnder.ScreenManagement
 {
@@ -62,7 +63,7 @@ namespace EverythingUnder.ScreenManagement
 
         public virtual void HandleInput(GameTime time, InputState input) { }
 
-        public virtual void Draw(GameTime gameTime) { }
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }
 
         #endregion
 

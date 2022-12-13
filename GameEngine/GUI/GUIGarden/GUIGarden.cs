@@ -51,7 +51,7 @@ namespace EverythingUnder.GUI
             }
         }
 
-        public virtual void UnLoadContent()
+        public virtual void UnloadContent()
         {
             foreach (GUIPlot plot in Plots)
             {
@@ -73,15 +73,15 @@ namespace EverythingUnder.GUI
             Cursor.Update(time);
         }
 
-        public virtual void Draw()
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            SpriteBatch.Begin();
+            //SpriteBatch.Begin();
 
-            DrawBG(SpriteBatch);
+            DrawBG(spriteBatch);
 
-            DrawFG(SpriteBatch);
+            DrawFG(spriteBatch);
 
-            SpriteBatch.End();
+            //SpriteBatch.End();
         }
 
         public virtual void DrawBG(SpriteBatch spriteBatch)

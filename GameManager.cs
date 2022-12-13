@@ -26,19 +26,30 @@ public class GameManager : Game
     {
         Content.RootDirectory = "Content";
 
-        _graphics = new GraphicsDeviceManager(this);
-        _graphics.PreferredBackBufferWidth = 1920;
-        _graphics.PreferredBackBufferHeight = 1080;
-        //_graphics.IsFullScreen = true;
-        _graphics.ApplyChanges();
-
         Random = new Random();
 
         IsMouseVisible = true;
 
+        // set up graphics device
+        _graphics = new GraphicsDeviceManager(this);
+        _graphics.PreferredBackBufferWidth = 1440;
+        _graphics.PreferredBackBufferHeight = 810;
+        _graphics.ApplyChanges();
+
+        // set up window properties
+        Window.Title = "Everything Under";
+        Window.AllowUserResizing = true;
+        Window.ClientSizeChanged += OnResize;
+
+        // add screen manager component
         ScreenManager = new ScreenManager(this);
         Components.Add(ScreenManager);
 
+    }
+
+    public void OnResize(Object sender, EventArgs e)
+    {
+        ScreenManager.WasResized = true;
     }
 
     #endregion

@@ -133,7 +133,7 @@ namespace EverythingUnder.Screens
             _camera.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _game.GraphicsDevice.Clear(Color.Black);
             _game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
