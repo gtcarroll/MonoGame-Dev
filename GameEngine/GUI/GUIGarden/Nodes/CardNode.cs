@@ -9,8 +9,8 @@ namespace EverythingUnder.GUI
 {
     public class CardNode : GUINode
     {
-        private int width = 100;
-        private int height = 100;
+        private int width = 128;
+        private int height = 128;
 
         public CardNode(Point center) : base(center)
         {

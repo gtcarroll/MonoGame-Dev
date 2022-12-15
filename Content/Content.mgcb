@@ -52,7 +52,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Models/sphere.fbx
 
-#begin Textures/card-banner.png
+#begin Textures/1k/card-art_empty.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -62,9 +62,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/card-banner.png
+/build:Textures/1k/card-art_empty.png
 
-#begin Textures/simple-circle.png
+#begin Textures/1k/card-back.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -74,9 +74,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/simple-circle.png
+/build:Textures/1k/card-back.png
 
-#begin Textures/simple-hex.png
+#begin Textures/1k/card-banner.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -86,9 +86,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/simple-hex.png
+/build:Textures/1k/card-banner.png
 
-#begin Textures/simple-rounded-square.png
+#begin Textures/1k/card-frame.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -98,9 +98,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/simple-rounded-square.png
+/build:Textures/1k/card-frame.png
 
-#begin Textures/simple-square.png
+#begin Textures/1k/circle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -110,9 +110,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/simple-square.png
+/build:Textures/1k/circle.png
 
-#begin Textures/simple-squashed-hex.png
+#begin Textures/1k/graveyard.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -122,5 +122,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/simple-squashed-hex.png
+/build:Textures/1k/graveyard.png
+
+#begin Textures/1k/mana-tile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/1k/mana-tile.png
 

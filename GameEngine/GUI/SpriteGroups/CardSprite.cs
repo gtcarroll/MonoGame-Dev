@@ -15,8 +15,9 @@ namespace EverythingUnder.GUI
 
         public override void LoadContent(ContentManager content)
         {
-            Sprites.Add(content.Load<Texture2D>("Textures/card-banner"));
-            Sprites.Add(content.Load<Texture2D>("Textures/simple-squashed-hex"));
+            Sprites.Add(content.Load<Texture2D>("Textures/1k/card-banner")); // 256 x 372
+            Sprites.Add(content.Load<Texture2D>("Textures/1k/card-art_empty")); // 256 x 256
+            Sprites.Add(content.Load<Texture2D>("Textures/1k/card-frame")); // 256 x 256
 
             DefaultState = GetDefaultStyle();
             HoverState = GetHoverStyle();
@@ -46,11 +47,13 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-46, 30, 92, 20),
-                                new Rectangle(0, Sprites[0].Height - 223, Sprites[0].Width, 223)));
+                new SpriteState(Sprites[0], new Rectangle(-64, 38, 128, 26),
+                                new Rectangle(0, Sprites[0].Height - 52, Sprites[0].Width, 52)));
 
             spriteStates.Add(
                 new SpriteState(Sprites[1], new Rectangle(-64, -64, 128, 128)));
+            spriteStates.Add(
+                new SpriteState(Sprites[2], new Rectangle(-64, -64, 128, 128)));
 
             return new SpriteGroupState(spriteStates, new Point(0,0));
         }
@@ -60,11 +63,13 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-46, -120, 92, 170),
-                                new Rectangle(0, Sprites[0].Height - 1893, Sprites[0].Width, 1893)));
+                new SpriteState(Sprites[0], new Rectangle(-128, -308, 256, 372),
+                                new Rectangle(0, 0, Sprites[0].Width, Sprites[0].Height)));
 
             spriteStates.Add(
-                new SpriteState(Sprites[1], new Rectangle(-64, -200, 128, 128)));
+                new SpriteState(Sprites[1], new Rectangle(-128, -512, 256, 256)));
+            spriteStates.Add(
+                new SpriteState(Sprites[2], new Rectangle(-128, -512, 256, 256)));
 
             return new SpriteGroupState(spriteStates, new Point(0, -75));
         }

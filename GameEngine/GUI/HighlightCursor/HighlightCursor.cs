@@ -35,7 +35,7 @@ namespace EverythingUnder.GUI
         {
             // set initial highlighted sprites
             // TODO: move load out of constructor
-            Texture2D cursor = game.Content.Load<Texture2D>("Textures/simple-circle");
+            Texture2D cursor = game.Content.Load<Texture2D>("Textures/1k/circle");
             //effect = game.Content.Load<Effect>("MonoColorize");
 
             _curr = null;
@@ -114,11 +114,11 @@ namespace EverythingUnder.GUI
                 _curr.Draw(spriteBatch, _color);
             }
 
-            if (_transition.IsAnimating)
-            {
-                _cursorPrev.Draw(spriteBatch, _positionPrev, _color);
-                _cursor.Draw(spriteBatch, _position, _color);
-            }
+            //if (_transition.IsAnimating)
+            //{
+            //    _cursorPrev.Draw(spriteBatch, _positionPrev, _color);
+            //    _cursor.Draw(spriteBatch, _position, _color);
+            //}
 
         }
     }

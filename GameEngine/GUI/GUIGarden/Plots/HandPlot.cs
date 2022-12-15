@@ -11,8 +11,9 @@ namespace EverythingUnder.GUI
     {
         private const int MaxHandSize = 10;
 
-        public static Point Size = new Point(960, 256);
+        public static Point Size = new Point(1024, 256);
 
+        private Point _initialDelta;
         private Point _downGap;
         private Point _upGap;
 
@@ -23,8 +24,9 @@ namespace EverythingUnder.GUI
         public HandPlot(GameManager game, Point location) : base(game)
         {
             // initialize HandPlot params
-            _downGap = new Point(69, 112);//55, 90);
-            _upGap = new Point(69, -112);//55, -90);
+            _initialDelta = new Point(-3, 64);
+            _downGap = new Point(67, 108);
+            _upGap = new Point(67, -108);
 
             Cards = new List<CardSprite>();
 
@@ -39,23 +41,48 @@ namespace EverythingUnder.GUI
 
         private void AddAllNodes()
         {
-            Point nodePosition = ScreenSpace.Location + _downGap;
+            Point nodePosition = GetNodePosition(0);
 
-            for (int i = 0; i < MaxHandSize + 3; i++)
+            // add graveyard
+            Nodes.Add(new GraveNode(nodePosition));
+            nodePosition += _upGap;
+
+            // add discard pile
+            Nodes.Add(new DeckNode(nodePosition));
+            nodePosition += _downGap;
+
+            // add card nodes
+            for (int i = 2; i < MaxHandSize + 2; i++)
             {
                 Nodes.Add(new CardNode(nodePosition));
-
-                if (i >= 2 && i < 12)
-                {
-                    Nodes[i].RemoveSprite();
-                }
-                else if (i == 12)
-                {
-                    _deckCenter = nodePosition;
-                }
+                Nodes[i].RemoveSprite();
 
                 nodePosition += i % 2 == 0 ? _upGap : _downGap;
             }
+
+            // add draw pile
+            _deckCenter = nodePosition;
+            Nodes.Add(new DeckNode(nodePosition));
+            nodePosition += _upGap;
+
+            // add mana pile
+            Nodes.Add(new ManaNode(nodePosition));
+
+            //for (int i = 0; i < MaxHandSize + 4; i++)
+            //{
+            //    Nodes.Add(new CardNode(nodePosition));
+
+            //    if (i >= 2 && i < 12)
+            //    {
+            //        Nodes[i].RemoveSprite();
+            //    }
+            //    else if (i == 12)
+            //    {
+            //        _deckCenter = nodePosition;
+            //    }
+
+            //    nodePosition += i % 2 == 0 ? _upGap : _downGap;
+            //}
         }
 
         public override void Update(GameTime time)
@@ -76,7 +103,9 @@ namespace EverythingUnder.GUI
             Nodes[i].LoadContent(Game);
 
             // begin draw animation
-            cardSprite.BeginDrawAnimation(cardSprite.CurrentState.GetCopyAt(_deckCenter), cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
+            cardSprite.BeginDrawAnimation(
+                cardSprite.CurrentState.GetCopyAt(_deckCenter),
+                cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
 
             return true;
         }
@@ -103,7 +132,7 @@ namespace EverythingUnder.GUI
 
                 if (cardSprite.Anchor != nodePosition)
                 {
-                    cardSprite.Anchor = nodePosition;//CurrentState.GetCopyAt(nodePosition));
+                    cardSprite.Anchor = nodePosition;
                     Nodes[3 + i].RemoveSprite();
                     Nodes[2 + i].AddSprite(cardSprite);
                 }
@@ -114,7 +143,7 @@ namespace EverythingUnder.GUI
 
         private Point GetNodePosition(int index)
         {
-            Point nodePosition = ScreenSpace.Location + _downGap;
+            Point nodePosition = ScreenSpace.Location + _initialDelta + _downGap;
 
             for (int i = 0; i < index; i++)
             {
@@ -123,18 +152,6 @@ namespace EverythingUnder.GUI
 
             return nodePosition;
         }
-
-        //private void UpdateCardSprites()
-        //{
-        //    Point nodePosition = ScreenSpace.Location + _downGap;
-
-        //    for (int i = 0; i < MaxHandSize; i++)
-        //    {
-        //        Nodes.Add(new CardNode(nodePosition));
-
-        //        nodePosition += i % 2 == 0 ? _upGap : _downGap;
-        //    }
-        //}
 
         private void ConnectAllNodes()
         {
@@ -157,15 +174,11 @@ namespace EverythingUnder.GUI
             // add neighbors of rightmost node
             Nodes[Nodes.Count - 1].SetNeighbor(InputDirection.Left,
                                                Nodes[Nodes.Count - 2]);
-            //Nodes[Nodes.Count - 1].SetNeighbor(InputDirection.Down,
-            //                                   Nodes[Nodes.Count - 2]);
         }
 
         // implement functions for adding/removing cards,
         // placing them relative to the plot,
         // and managing neighbors
-
-
     }
 }
 

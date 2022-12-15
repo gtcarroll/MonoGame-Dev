@@ -32,8 +32,7 @@ namespace EverythingUnder.GUI
 
         private void AddAllPlots()
         {
-            _handPlot = new HandPlot(Game, new Point(960 - 69, 1080 - HandPlot.Size.Y));//new Point(1920, 1080) - HandPlot.Size);//Game.GraphicsDevice.Viewport.Bounds.Size
-                                   //- HandPlot.Size);
+            _handPlot = new HandPlot(Game, new Point(1920, 1080) - HandPlot.Size);
             Plots.Add(_handPlot);
         }
 

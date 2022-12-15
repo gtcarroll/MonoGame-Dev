@@ -25,9 +25,10 @@
 /Users/gacarr/Documents/game-dev/HexMap/obj/Debug/net6.0/ref/HexMap.dll
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Models/hexagonal-prism.xnb
 /Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Models/sphere.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-circle.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-hex.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-rounded-square.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-square.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/simple-squashed-hex.xnb
-/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/card-banner.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/card-art_empty.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/card-banner.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/card-frame.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/circle.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/card-back.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/graveyard.xnb
+/Users/gacarr/Documents/game-dev/HexMap/bin/Debug/net6.0/Content/Textures/1k/mana-tile.xnb
