@@ -13,7 +13,7 @@ namespace EverythingUnder.GUI
 
         public override void LoadContent(ContentManager content)
         {
-            Sprites.Add(content.Load<Texture2D>("Textures/1k/graveyard")); // 128 x 148
+            Sprites.Add(content.Load<Texture2D>("Textures/1k/graveyard")); // 128 x 172
 
             DefaultState = GetDefaultStyle();
             HoverState = GetHoverStyle();
@@ -26,7 +26,7 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-64, -64, 128, 148)));
+                new SpriteState(Sprites[0], new Rectangle(-64, -64, 128, 172)));
 
             return new SpriteGroupState(spriteStates, new Point(0, 0));
         }
@@ -36,7 +36,7 @@ namespace EverythingUnder.GUI
             List<SpriteState> spriteStates = new List<SpriteState>();
 
             spriteStates.Add(
-                new SpriteState(Sprites[0], new Rectangle(-64, -88, 128, 148)));
+                new SpriteState(Sprites[0], new Rectangle(-64, -88, 128, 172)));
 
             return new SpriteGroupState(spriteStates, new Point(0, 0));
         }

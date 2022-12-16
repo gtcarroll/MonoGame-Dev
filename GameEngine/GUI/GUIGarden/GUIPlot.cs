@@ -99,7 +99,6 @@ namespace EverythingUnder.GUI
 
         public virtual void DrawFG(SpriteBatch spriteBatch)
         {
-
             foreach (GUINode node in Nodes)
             {
                 node.Draw(spriteBatch);

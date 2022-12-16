@@ -74,6 +74,11 @@ namespace EverythingUnder.GUI
                 _handPlot.RemoveCard(0);
                 _handPlot.RemoveCard(0);
             }
+
+            //if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.T))
+            //{
+            //    _handPlot.
+            //}
         }
     }
 }

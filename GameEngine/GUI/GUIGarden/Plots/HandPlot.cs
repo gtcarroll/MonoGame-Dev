@@ -21,6 +21,9 @@ namespace EverythingUnder.GUI
 
         public List<CardSprite> Cards;
 
+        public DeckNode DrawPile;
+        public DeckNode DiscardPile;
+
         public HandPlot(GameManager game, Point location) : base(game)
         {
             // initialize HandPlot params
@@ -39,6 +42,26 @@ namespace EverythingUnder.GUI
             ConnectAllNodes();
         }
 
+        public override void DrawFG(SpriteBatch spriteBatch)
+        {
+            // draw mana
+            Nodes[13].Draw(spriteBatch);
+
+            // draw discard
+            Nodes[1].Draw(spriteBatch);
+
+            // draw graveyard
+            Nodes[0].Draw(spriteBatch);
+
+            for (int i = 2; i < MaxHandSize + 2; i++)
+            {
+                Nodes[i].Draw(spriteBatch);
+            }
+
+            // draw deck
+            Nodes[12].Draw(spriteBatch);
+        }
+
         private void AddAllNodes()
         {
             Point nodePosition = GetNodePosition(0);
@@ -48,7 +71,8 @@ namespace EverythingUnder.GUI
             nodePosition += _upGap;
 
             // add discard pile
-            Nodes.Add(new DeckNode(nodePosition));
+            DiscardPile = new DeckNode(nodePosition);
+            Nodes.Add(DiscardPile);
             nodePosition += _downGap;
 
             // add card nodes
@@ -62,27 +86,12 @@ namespace EverythingUnder.GUI
 
             // add draw pile
             _deckCenter = nodePosition;
-            Nodes.Add(new DeckNode(nodePosition));
+            DrawPile = new DeckNode(_deckCenter);
+            Nodes.Add(DrawPile);
             nodePosition += _upGap;
 
             // add mana pile
             Nodes.Add(new ManaNode(nodePosition));
-
-            //for (int i = 0; i < MaxHandSize + 4; i++)
-            //{
-            //    Nodes.Add(new CardNode(nodePosition));
-
-            //    if (i >= 2 && i < 12)
-            //    {
-            //        Nodes[i].RemoveSprite();
-            //    }
-            //    else if (i == 12)
-            //    {
-            //        _deckCenter = nodePosition;
-            //    }
-
-            //    nodePosition += i % 2 == 0 ? _upGap : _downGap;
-            //}
         }
 
         public override void Update(GameTime time)

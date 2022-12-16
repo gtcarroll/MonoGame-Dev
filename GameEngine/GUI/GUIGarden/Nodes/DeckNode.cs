@@ -12,6 +12,11 @@ namespace EverythingUnder.GUI
         private int width = 128;
         private int height = 128;
 
+        //public int Size
+        //{
+        //    get { return Sprite.Size; }
+        //}
+
         public DeckNode(Point center) : base(center)
         {
             AddSprite(new DeckSprite(center));
