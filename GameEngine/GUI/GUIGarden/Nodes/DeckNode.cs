@@ -17,13 +17,19 @@ namespace EverythingUnder.GUI
         //    get { return Sprite.Size; }
         //}
 
-        public DeckNode(Point center) : base(center)
+        public DeckNode(Point center, bool isBottomRow = false) : base(center)
         {
             AddSprite(new DeckSprite(center));
 
-            ScreenSpace = new Rectangle(center.X - width / 2,
-                                        center.Y - height / 2,
-                                        width, height);
+            int topY = center.Y - height / 2;
+            int hitboxH = height - 10;
+            if (isBottomRow)
+            {
+                topY += 10;
+                hitboxH += 20;
+            }
+            ScreenSpace = new Rectangle(center.X - width / 2 - 2, topY,
+                                        width + 4, hitboxH);
         }
     }
 }

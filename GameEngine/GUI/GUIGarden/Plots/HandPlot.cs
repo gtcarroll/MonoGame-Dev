@@ -71,22 +71,23 @@ namespace EverythingUnder.GUI
             nodePosition += _upGap;
 
             // add discard pile
-            DiscardPile = new DeckNode(nodePosition);
+            DiscardPile = new DeckNode(nodePosition, false);
             Nodes.Add(DiscardPile);
             nodePosition += _downGap;
 
             // add card nodes
             for (int i = 2; i < MaxHandSize + 2; i++)
             {
-                Nodes.Add(new CardNode(nodePosition));
+                bool isBottomRow = i % 2 == 0;
+                Nodes.Add(new CardNode(nodePosition, isBottomRow));
                 Nodes[i].RemoveSprite();
 
-                nodePosition += i % 2 == 0 ? _upGap : _downGap;
+                nodePosition += isBottomRow ? _upGap : _downGap;
             }
 
             // add draw pile
             _deckCenter = nodePosition;
-            DrawPile = new DeckNode(_deckCenter);
+            DrawPile = new DeckNode(_deckCenter, true);
             Nodes.Add(DrawPile);
             nodePosition += _upGap;
 

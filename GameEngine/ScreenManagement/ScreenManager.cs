@@ -180,6 +180,43 @@ namespace EverythingUnder.ScreenManagement
 
         #region State Methods
 
+        public Point GetGamePosition(Vector2 mousePos)
+        {
+            float outputAspectRatio = Game.Window.ClientBounds.Width
+                                    / (float)Game.Window.ClientBounds.Height;
+            float preferredAspectRatio = SafeArea.Width / (float)SafeArea.Height;//SafeArea.Height / SafeArea.Width;
+
+            //Console.WriteLine(Game.Window.ClientBounds);
+
+            if (outputAspectRatio <= preferredAspectRatio)
+            {
+                // output is taller
+                int presentHeight = (int)((Game.Window.ClientBounds.Width / preferredAspectRatio));
+                int barHeight = (Game.Window.ClientBounds.Height - presentHeight) / 2;
+                int barWidth = 0;
+
+                //Console.WriteLine(mousePos.Y - barHeight);
+                //Console.WriteLine(Game.Window.ClientBounds.Height - 2 * barHeight);
+                //Console.WriteLine(SafeArea.Height);
+                int gameX = (int)((mousePos.X - barWidth) / ((Game.Window.ClientBounds.Width - 2 * barWidth) / (float)SafeArea.Width));
+                int gameY = (int)((mousePos.Y - barHeight) / ((Game.Window.ClientBounds.Height - 2 * barHeight) / (float)SafeArea.Height));
+
+                return new Point(gameX, gameY);
+            }
+            else
+            {
+                // output is wider
+                int presentWidth = (int)((Game.Window.ClientBounds.Height * preferredAspectRatio));
+                int barWidth = (Game.Window.ClientBounds.Width - presentWidth) / 2;
+                int barHeight = 0;
+
+                int gameX = (int)((mousePos.X - barWidth) / ((Game.Window.ClientBounds.Width - 2 * barWidth) / (float)SafeArea.Width));
+                int gameY = (int)((mousePos.Y - barHeight) / ((Game.Window.ClientBounds.Height - 2 * barHeight) / (float)SafeArea.Height));
+
+                return new Point(gameX, gameY);
+            }
+        }
+
         public void AddScreen(GameScreen screen, int player = -1)
         {
             screen.ControllingPlayer = player;

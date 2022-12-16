@@ -71,7 +71,7 @@ namespace EverythingUnder.GUI
             spriteStates.Add(
                 new SpriteState(Sprites[2], new Rectangle(-128, -512, 256, 256)));
 
-            return new SpriteGroupState(spriteStates, new Point(0, -75));
+            return new SpriteGroupState(spriteStates, new Point(0, 0));
         }
     }
 }

@@ -12,13 +12,14 @@ namespace EverythingUnder.GUI
         private int width = 128;
         private int height = 128;
 
-        public CardNode(Point center) : base(center)
+        public CardNode(Point center, bool isBottomRow = false) : base(center)
         {
             AddSprite(new CardSprite(center));
 
-            ScreenSpace = new Rectangle(center.X - width / 2,
-                                        center.Y - height / 2,
-                                        width, height);
+            int topY = center.Y - height / 2;
+            if (isBottomRow) topY += 10;
+            ScreenSpace = new Rectangle(center.X - width / 2 - 2, topY,
+                                        width + 4, height - 10);
         }
     }
 }

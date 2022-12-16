@@ -109,6 +109,11 @@ namespace EverythingUnder.GUI
 
         #region State Methods
 
+        public bool Contains(Point mousePos)
+        {
+            return ScreenSpace.Contains(mousePos);
+        }
+
         public void SetNeighbor(InputDirection direction, GUIPlot plot)
         {
             if (Neighbors.ContainsKey(direction))

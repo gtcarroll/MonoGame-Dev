@@ -139,6 +139,26 @@ namespace EverythingUnder.GUI
             {
                 TryToMoveTo(InputDirection.Left);
             }
+
+            // handle mouse
+            Vector2 mousePos = input.GetMousePosition();
+            foreach (GUIPlot plot in Plots)
+            {
+                Point gamePos = Game.ScreenManager.GetGamePosition(mousePos);
+                if (plot.Contains(gamePos))
+                {
+                    //Console.WriteLine(mousePos);
+                    //Console.WriteLine(Game.ScreenManager.GetGamePosition(mousePos));
+                    foreach (GUINode node in plot.Nodes)
+                    {
+                        if (node.Contains(gamePos))
+                        {
+                            //MoveToPlot(plot);
+                            MoveToNode(node);
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
@@ -172,16 +192,19 @@ namespace EverythingUnder.GUI
 
         private void MoveToNode(GUINode node)
         {
-            if (node == null) node = CurrNode;
+            if (node != CurrNode)
+            {
+                if (node == null) node = CurrNode;
 
-            CurrNode.IsHovered = false;
+                CurrNode.IsHovered = false;
 
-            PrevNode = CurrNode;
-            CurrNode = node;
+                PrevNode = CurrNode;
+                CurrNode = node;
 
-            CurrNode.IsHovered = true;
+                CurrNode.IsHovered = true;
 
-            Cursor.AnimateTo(CurrNode.Sprite);
+                Cursor.AnimateTo(CurrNode.Sprite);
+            }
         }
 
         #endregion

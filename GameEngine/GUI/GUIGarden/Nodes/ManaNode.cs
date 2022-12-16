@@ -16,9 +16,9 @@ namespace EverythingUnder.GUI
         {
             AddSprite(new ManaSprite(center));
 
-            ScreenSpace = new Rectangle(center.X - width / 2,
+            ScreenSpace = new Rectangle(center.X - width / 2 - 2,
                                         center.Y - height / 2,
-                                        width, height);
+                                        width + 4, height - 10);
         }
     }
 }

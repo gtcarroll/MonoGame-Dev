@@ -36,8 +36,12 @@ namespace EverythingUnder.GUI
         //private bool _isHovered;
         public bool IsHovered
         {
-            get { return Sprite.IsHovered; }
-            set { Sprite.IsHovered = value; }
+            get
+            {
+                if (Sprite != null) return Sprite.IsHovered;
+                else return false;
+            }
+            set { if (Sprite != null) Sprite.IsHovered = value; }
         }
 
         // node graphics
@@ -108,6 +112,11 @@ namespace EverythingUnder.GUI
         #endregion
 
         #region State Methods
+
+        public bool Contains(Point mousePos)
+        {
+            return ScreenSpace.Contains(mousePos);
+        }
 
         public void SetNeighbor(InputDirection direction, GUINode node)
         {
