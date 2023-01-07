@@ -7,10 +7,10 @@ namespace EverythingUnder.GUI
     /// Abstract class for an animation timing function.
     ///
     /// Usage:
-    ///   - Call Update() function to progress animation values.
-    ///   - Use AnimationPosition to get current position as a ratio of the
-    ///     delta between the start and target positions.
-    ///   - Use IsAnimating to determine when animation is complete.
+    ///   - Use Update() function to progress animation values.
+    ///   - Use CalcAnimationPosition() to calc current position as a ratio of
+    ///     the delta between the start and target positions.
+    ///   - Use IsAnimationCompleted() to determine when animation is completed.
     /// </summary>
     public abstract class TimingFunction
     {
@@ -45,32 +45,32 @@ namespace EverythingUnder.GUI
         /// <summary>
         /// Total duration of animation in ms.
         /// </summary>
-        protected float _duration;
-        public float Duration
+        protected int _duration;
+        public int Duration
         {
             get { return _duration; }
         }
 
         /// <summary>
-        /// True if animation is in progress,
+        /// True if animation isn't started or is in progress,
         /// False if animation is completed.
         /// </summary>
-        protected bool _isAnimating;
-        public bool IsAnimating
+        protected bool _isCompleted;
+        public bool IsCompleted
         {
-            get { return _isAnimating; }
+            get { return _isCompleted; }
         }
 
         #endregion
 
         #region Constructors
 
-        public TimingFunction(float duration = 128f)
+        public TimingFunction(int duration = 128)
         {
             _animationPosition = 0f;
             _animationPercent = 0f;
             _duration = duration;
-            _isAnimating = true;
+            _isCompleted = false;
         }
 
         #endregion
@@ -83,19 +83,19 @@ namespace EverythingUnder.GUI
         /// <param name="time">Game's time object</param>
         public virtual void Update(GameTime time)
         {
-            float deltaTime = time.ElapsedGameTime.Milliseconds;
+            int deltaTime = time.ElapsedGameTime.Milliseconds;
 
             // update animation percent
-            _animationPercent += deltaTime / _duration;
+            _animationPercent += deltaTime / (float)_duration;
 
             // toggle animation off if complete
-            if (IsAnimationComplete()) _isAnimating = false;
+            _isCompleted = IsAnimationCompleted();
 
             // clamp percent
             _animationPercent = MathHelper.Clamp(_animationPercent, 0f, 1f);
 
             // update animation position
-            _animationPosition = GetAnimationPosition();
+            _animationPosition = CalcAnimationPosition();
         }
 
         #endregion
@@ -106,13 +106,13 @@ namespace EverythingUnder.GUI
         /// Calculates the current animation position.
         /// </summary>
         /// <returns>Current animation position</returns>
-        protected abstract float GetAnimationPosition();
+        protected abstract float CalcAnimationPosition();
 
         /// <summary>
         /// Determines whether this animation is completed.
         /// </summary>
         /// <returns>True if animation is completed, false otherwise</returns>
-        protected virtual bool IsAnimationComplete()
+        protected virtual bool IsAnimationCompleted()
         {
             return _animationPercent >= 1f;
         }

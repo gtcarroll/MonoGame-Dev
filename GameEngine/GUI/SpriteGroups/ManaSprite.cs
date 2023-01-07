@@ -32,7 +32,7 @@ namespace EverythingUnder.GUI
         {
             Sprites.Add(content.Load<Texture2D>("Textures/1k/mana-tile")); // 128 x 56
 
-            _size = 3;
+            _size = 31;
 
             DefaultState = GetDefaultStyle();
             HoverState = GetHoverStyle();

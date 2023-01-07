@@ -27,19 +27,21 @@ namespace EverythingUnder.GUI
 
         protected override void BeginHoverAnimation(SpriteGroupState targetState)
         {
-            Transition = new SpriteGroupTransition(CurrentState, targetState,
-                                                   128f, new CosineFunction(128f));
+            Animation = new SpriteGroupAnimation(this, targetState,
+                                                 new CosineFunction(128));
         }
 
         protected override void BeginRepositionAnimation(SpriteGroupState targetState)
         {
-            Transition = new SpriteGroupTransition(CurrentState, targetState,
-                                                   640f, new BounceFunction(640f));
+            Animation = new SpriteGroupAnimation(this, targetState,
+                                                 new BounceFunction(640));
         }
 
-        public void BeginDrawAnimation(SpriteGroupState deckState, SpriteGroupState targetState)
+        public void BeginDrawAnimation(Point deckCenter, SpriteGroupState targetState)
         {
-            Transition = new CardDrawTransition(deckState, targetState);
+            // vertically flatten this card
+
+            Animation = new CardDrawAnimation(this, targetState, deckCenter);
         }
 
         private SpriteGroupState GetDefaultStyle()

@@ -15,14 +15,24 @@ namespace EverythingUnder.GUI
         /// </summary>
         protected List<Texture2D> Sprites;
 
-        /// <summary>
-        /// Transition used to interpolate between two SpriteGroupStates.
-        /// </summary>
-        protected SpriteGroupTransition Transition;
-
         #endregion
 
         #region Properties
+
+
+        /// <summary>
+        /// Animation used to interpolate between two SpriteGroupStates.
+        /// </summary>
+        public SpriteGroupAnimation Animation
+        {
+            get { return _animation; }
+            set
+            {
+                value.Begin();
+                _animation = value;
+            }
+        }
+        private SpriteGroupAnimation _animation;
 
         /// <summary>
         /// Current state of this SpriteGroup.
@@ -116,10 +126,10 @@ namespace EverythingUnder.GUI
         /// <param name="time">This game's GameTime object.</param>
         public virtual void Update(GameTime time)
         {
-            if (Transition != null && Transition.IsAnimating)
+            if (Animation != null && !Animation.IsCompleted)
             {
-                Transition.Update(time);
-                CurrentState = Transition.Current;
+                Animation.Update(time);
+                CurrentState = Animation.Current;
             }
         }
 
@@ -146,8 +156,8 @@ namespace EverythingUnder.GUI
         /// <param name="targetState">Target state of animation.</param>
         protected virtual void BeginHoverAnimation(SpriteGroupState targetState)
         {
-            Transition = new SpriteGroupTransition(CurrentState,
-                                                   targetState, 128f);
+            Animation = new SpriteGroupAnimation(this, targetState,
+                                                 new CosineFunction(128));
         }
 
         /// <summary>
@@ -157,8 +167,8 @@ namespace EverythingUnder.GUI
         /// <param name="targetState">Target state of animation.</param>
         protected virtual void BeginRepositionAnimation(SpriteGroupState targetState)
         {
-            Transition = new SpriteGroupTransition(CurrentState,
-                                                   targetState, 256f);
+            Animation = new SpriteGroupAnimation(this, targetState,
+                                                 new CosineFunction(256));
         }
 
         /// <summary>
@@ -180,6 +190,26 @@ namespace EverythingUnder.GUI
                     spriteState.Destination.Size.Y + 2 * thickness);
 
                 newStates.Add(new SpriteState(spriteState.Sprite, borderRect,
+                                              spriteState.Source));
+            }
+
+            return new SpriteGroupState(newStates, CurrentState.Center);
+        }
+
+        public virtual SpriteGroupState GetVerticallyFlattenedState()
+        {
+            List<SpriteState> newStates = new List<SpriteState>();
+
+            foreach (SpriteState spriteState in CurrentState.SpriteStates)
+            {
+                int halfW = spriteState.Destination.Width / 2;
+                Rectangle flatRect = new Rectangle(
+                    spriteState.Destination.Location.X + halfW,
+                    spriteState.Destination.Location.Y,
+                    0,
+                    spriteState.Destination.Size.Y);
+
+                newStates.Add(new SpriteState(spriteState.Sprite, flatRect,
                                               spriteState.Source));
             }
 

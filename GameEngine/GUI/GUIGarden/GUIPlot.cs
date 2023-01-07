@@ -27,6 +27,9 @@ namespace EverythingUnder.GUI
 
         public GameManager Game;
 
+        // parent object
+        //public GUIGarden Garden;
+
         // connected plots
         public Dictionary<InputDirection, GUIPlot> Neighbors;
 
@@ -50,6 +53,8 @@ namespace EverythingUnder.GUI
         public GUIPlot(GameManager game)
         {
             Game = game;
+
+            //Garden = garden;
 
             Neighbors = new Dictionary<InputDirection, GUIPlot>();
 

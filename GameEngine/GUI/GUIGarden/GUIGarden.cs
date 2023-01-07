@@ -24,6 +24,10 @@ namespace EverythingUnder.GUI
 
         // garden graphics
         public HighlightCursor Cursor;
+        public List<SpriteGroup> ActiveSprites;
+        public List<SpriteGroup> TempSprites;
+
+        public AnimationQueue AnimationQueue;
 
         #endregion
 
@@ -35,6 +39,9 @@ namespace EverythingUnder.GUI
             Plots = new List<GUIPlot>();
 
             Cursor = new HighlightCursor(game);
+
+            ActiveSprites = new List<SpriteGroup>();
+            TempSprites = new List<SpriteGroup>();
         }
 
         #endregion
@@ -58,6 +65,23 @@ namespace EverythingUnder.GUI
                 plot.UnloadContent(Game);
             }
         }
+
+        //public virtual void AddSprite(SpriteGroup sprite, bool isTemp = false)
+        //{
+        //    if (isTemp) TempSprites.Add(sprite);
+        //    else ActiveSprites.Add(sprite);
+        //}
+
+        //public virtual void RemoveSprite(SpriteGroup sprite)
+        //{
+        //    if (ActiveSprites.Contains(sprite))
+        //    {
+        //        if (AnimationQueue.Contains(sprite))
+        //        {
+
+        //        }
+        //    }
+        //}
 
         #endregion
 

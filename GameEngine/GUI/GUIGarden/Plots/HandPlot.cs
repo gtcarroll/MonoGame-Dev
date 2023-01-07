@@ -53,13 +53,14 @@ namespace EverythingUnder.GUI
             // draw graveyard
             Nodes[0].Draw(spriteBatch);
 
-            for (int i = 2; i < MaxHandSize + 2; i++)
+            // draw deck
+            Nodes[12].Draw(spriteBatch);
+
+            // draw cards
+            for (int i = MaxHandSize + 1; i > 1; i--)
             {
                 Nodes[i].Draw(spriteBatch);
             }
-
-            // draw deck
-            Nodes[12].Draw(spriteBatch);
         }
 
         private void AddAllNodes()
@@ -106,16 +107,33 @@ namespace EverythingUnder.GUI
 
             int i = 2 + Cards.Count;
 
+            // instantiate card sprite
             CardSprite cardSprite = new CardSprite(Nodes[i].Center);
             Cards.Add(cardSprite);
 
             Nodes[i].AddSprite(cardSprite);
             Nodes[i].LoadContent(Game);
 
-            // begin draw animation
+            // calc midpt between Node and _deckCenter
+            Point midPt = new Point(_deckCenter.X,
+                                    (Nodes[i].Center.Y + _deckCenter.Y) / 2);
+
+            // begin draw animation for card
             cardSprite.BeginDrawAnimation(
-                cardSprite.CurrentState.GetCopyAt(_deckCenter),
+                midPt,
                 cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
+
+            // instantiate card back sprite
+            CardBackSprite backSprite = new CardBackSprite(_deckCenter);
+            backSprite.LoadContent(Game.Content);
+
+            Nodes[i].BackSprites.Add(backSprite);
+
+            // begin draw animation for card back
+            backSprite.Animation =
+                new SpriteGroupAnimation(backSprite,
+                                         backSprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
+                                         new FlipFunction(256, false));
 
             return true;
         }

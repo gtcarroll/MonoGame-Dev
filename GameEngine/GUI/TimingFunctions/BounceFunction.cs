@@ -12,9 +12,9 @@ namespace EverythingUnder.GUI
         /// </summary>
         private float[] _bouncePoints = new float[] { 0.352f, 0.715f, 0.903f, 1f };
 
-        public BounceFunction(float duration) : base(duration) { }
+        public BounceFunction(int duration) : base(duration) { }
 
-        protected override float GetAnimationPosition()
+        protected override float CalcAnimationPosition()
         {
             float x = _animationPercent;
 

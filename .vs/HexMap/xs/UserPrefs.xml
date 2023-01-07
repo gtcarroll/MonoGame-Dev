@@ -1,13 +1,38 @@
 ﻿<Properties StartupConfiguration="{E441C119-16CF-42D8-AFD6-F74F38020ECE}|Default">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameEngine/ScreenManagement/ScreenManager.cs">
+    <Files>
+      <File FileName="GameEngine/ScreenManagement/ScreenManager.cs" Line="215" Column="1" IsPinned="True" />
+      <File FileName="GameManager.cs" Line="43" Column="1" IsPinned="True" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HexMap" expanded="True">
             <Node name="EverythingUnder" expanded="True">
-              <Node name="Content" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="GameEngine" expanded="True" />
+              <Node name="Content" expanded="True">
+                <Node name="Textures" expanded="True" />
+              </Node>
+              <Node name="GameComponents" expanded="True">
+                <Node name="Screens" expanded="True" />
+              </Node>
+              <Node name="GameEngine" expanded="True">
+                <Node name="GUI" expanded="True">
+                  <Node name="GUIGarden" expanded="True">
+                    <Node name="Gardens" expanded="True" />
+                    <Node name="Nodes" expanded="True" />
+                    <Node name="Plots" expanded="True" />
+                  </Node>
+                  <Node name="HighlightCursor" expanded="True" />
+                  <Node name="SpriteGroups" expanded="True" />
+                </Node>
+                <Node name="ScreenManagement" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -17,11 +42,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
 </Properties>

@@ -19,6 +19,10 @@ namespace EverythingUnder.GUI
     {
         #region Properties
 
+        // parent objects
+        //public GUIGarden Garden;
+        //public GUIPlot Plot;
+
         // connected nodes
         public Dictionary<InputDirection, GUINode> Neighbors;
 
@@ -49,15 +53,25 @@ namespace EverythingUnder.GUI
         public Point Center;
         public Rectangle ScreenSpace;
 
+        // other sprites
+        public List<SpriteGroup> FrontSprites;
+        public List<SpriteGroup> BackSprites;
+
         #endregion
 
         #region Constructors
 
         public GUINode(Point center)
         {
+            //Garden = plot.Garden;
+            //Plot = plot;
+
             Neighbors = new Dictionary<InputDirection, GUINode>();
             //_isHovered = false;
             _isActive = false;
+
+            FrontSprites = new List<SpriteGroup>();
+            BackSprites = new List<SpriteGroup>();
 
             Sprite = null;
             Center = center;
@@ -85,6 +99,8 @@ namespace EverythingUnder.GUI
         public void RemoveSprite()
         {
             // TODO: check for null when updating hover state etc.
+            //Garden.RemoveSprite(Sprite);
+
             Sprite = null;
             _isActive = false;
         }
@@ -95,23 +111,60 @@ namespace EverythingUnder.GUI
 
         public virtual void Update(GameTime time)
         {
+            RemoveNonAnimatingSprites(BackSprites);
+            RemoveNonAnimatingSprites(FrontSprites);
+
+            foreach (SpriteGroup backSprite in BackSprites)
+            {
+                backSprite.Update(time);
+            }
+
             if (Sprite != null)
             {
                 Sprite.Update(time);
+            }
+
+            foreach (SpriteGroup fronSprite in FrontSprites)
+            {
+                fronSprite.Update(time);
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            foreach (SpriteGroup backSprite in BackSprites)
+            {
+                backSprite.Draw(spriteBatch);
+            }
+
             if (Sprite != null)
             {
                 Sprite.Draw(spriteBatch);
+            }
+
+            foreach (SpriteGroup fronSprite in FrontSprites)
+            {
+                fronSprite.Draw(spriteBatch);
             }
         }
 
         #endregion
 
         #region State Methods
+
+        private void RemoveNonAnimatingSprites(List<SpriteGroup> sprites)
+        {
+            for (int i = 0; i < sprites.Count; i++)
+            {
+                SpriteGroupAnimation anim = sprites[i].Animation;
+
+                if (anim != null && anim.IsStarted && anim.IsCompleted)
+                {
+                    sprites.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
 
         public bool Contains(Point mousePos)
         {

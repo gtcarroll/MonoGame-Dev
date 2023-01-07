@@ -7,9 +7,9 @@ namespace EverythingUnder.GUI
     /// </summary>
     public class LinearFunction : TimingFunction
     {
-        public LinearFunction(float duration) : base(duration) { }
+        public LinearFunction(int duration) : base(duration) { }
 
-        protected override float GetAnimationPosition()
+        protected override float CalcAnimationPosition()
         {
             return _animationPercent;
         }

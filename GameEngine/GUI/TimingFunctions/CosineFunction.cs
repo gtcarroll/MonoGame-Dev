@@ -8,9 +8,9 @@ namespace EverythingUnder.GUI
     /// </summary>
     public class CosineFunction : TimingFunction
     {
-        public CosineFunction(float duration) : base(duration) { }
+        public CosineFunction(int duration) : base(duration) { }
 
-        protected override float GetAnimationPosition()
+        protected override float CalcAnimationPosition()
         {
             return 1 - (MathF.Cos(_animationPercent * MathHelper.Pi) + 1) / 2f;
         }
