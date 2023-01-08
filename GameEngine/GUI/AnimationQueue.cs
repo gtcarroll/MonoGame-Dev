@@ -47,6 +47,9 @@ namespace EverythingUnder.GUI
         {
             int elapsed = time.ElapsedGameTime.Milliseconds;
 
+            _queueEnd -= elapsed;
+            if (_queueEnd < 0) _queueEnd = 0;
+
             foreach (KeyValuePair<SpriteGroupAnimation, SpriteGroup> entry in _queued)
             {
                 entry.Key.Delay -= elapsed;
@@ -73,6 +76,7 @@ namespace EverythingUnder.GUI
         public void BeginFrame()
         {
             _frameStart = _queueEnd;
+            Console.WriteLine("BeginFrame: " + _queueEnd);
         }
 
         /// <summary>
@@ -81,6 +85,7 @@ namespace EverythingUnder.GUI
         public void EndFrame()
         {
             _frameStart = 0;
+            Console.WriteLine("EndFrame");
         }
 
         /// <summary>
@@ -92,6 +97,7 @@ namespace EverythingUnder.GUI
         {
             // update delay and add to queue
             animation.Delay += _frameStart;
+
             _queued.Add(animation, sprite);
 
             // update _queueEnd

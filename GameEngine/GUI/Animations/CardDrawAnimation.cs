@@ -19,7 +19,7 @@ namespace EverythingUnder.GUI
 
         public CardDrawAnimation(SpriteGroup sprite, SpriteGroupState target,
                                  Point midPoint)
-            : base(sprite, target, 256 + 640)
+            : base(sprite, target, 256)
         {
             _midPoint = midPoint;
 

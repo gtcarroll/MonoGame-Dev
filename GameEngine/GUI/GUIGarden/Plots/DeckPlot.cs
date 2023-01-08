@@ -9,11 +9,12 @@ namespace EverythingUnder.GUI
 {
     public class DeckPlot : GUIPlot
     {
-        private int _maxDeckNodes;
-        private bool _isBottomRow;
-
         private Point _initialPosition;
         private Point _cardGap;
+
+        private int _maxDeckNodes;
+
+        private bool _isBottomRow;
 
         public int DeckSize
         {
@@ -23,21 +24,23 @@ namespace EverythingUnder.GUI
 
         public static Point Size = new Point(128, 256);
 
-        public CardSprite TopCard;
-        public List<DeckSprite> OtherCards;
-
-        public DeckPlot(GameManager game, Point location, int maxNodes = 9, bool isBottom = false, int deckSize = 0) : base(game)
+        public DeckPlot(GameManager game, AnimationQueue animationQueue,
+                        Point location, int maxNodes = 9, bool isBottom = false,
+                        int deckSize = 0)
+            : base(game, animationQueue)
         {
-            // initialize DeckPlot fields
-            _maxDeckNodes = maxNodes + 1;
-            _isBottomRow = isBottom;
+            // positioning fields
             _initialPosition = new Point(64, 64);
             _cardGap = new Point(0, 6);
+
+            // size fields
+            _maxDeckNodes = maxNodes + 1;
             _deckSize = deckSize;
 
-            OtherCards = new List<DeckSprite>();
+            // screenspace fields
+            _isBottomRow = isBottom;
 
-            // initialize GUIPlot params
+            // GUIPlot params
             Direction = PlotDirection.Column;
             ScreenSpace = new Rectangle(location, Size);
 
@@ -94,39 +97,65 @@ namespace EverythingUnder.GUI
         {
             _deckSize++;
 
+            // shift existing nodes down
             for (int i = Nodes.Count - 1; i > 0; i--)
             {
-                Nodes[i].AddSprite(Nodes[i - 1].Sprite);
-                Nodes[i - 1].RemoveSprite();
+                if (Nodes[i - 1].Sprite != null)
+                {
+                    Nodes[i].AddSprite(Nodes[i - 1].Sprite);
+                    Nodes[i - 1].RemoveSprite();
+
+                    AnimationQueue.Add(
+                        Nodes[i].Sprite,
+                        Nodes[i].Sprite.RepositionAnimation(Nodes[i].Center));
+                }
             }
 
             SpriteGroup sprite = node.Sprite;
+            //sprite.Animation = null;
 
             // calc midpt between node and this deck
+            Console.WriteLine(sprite.CurrentState.Center);
             Point midPt = new Point(
                 (Nodes[0].Center.X + sprite.CurrentState.Center.X) / 2,
                 (Nodes[0].Center.Y + sprite.CurrentState.Center.Y) / 2);
 
             // animate node's sprite flipping down
             Nodes[0].BackSprites.Add(sprite);
-            sprite.Animation =
+
+            AnimationQueue.Add(
+                sprite,
                 new SpriteGroupAnimation(
                     sprite,
                     sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-                    new FlipFunction(256, false));
+                    new FlipFunction(256, false)));
+
+            //sprite.Animation =
+            //    new SpriteGroupAnimation(
+            //        sprite,
+            //        sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
+            //        new FlipFunction(256, false));
 
             // instantiate card back sprite
-            CardBackSprite next = new CardBackSprite(midPt);
+            CardBackSprite next = new CardBackSprite(
+                Nodes[Nodes.Count - 1].Center + _cardGap, true);
             next.LoadContent(Game.Content);
             Nodes[0].AddSprite(next);
 
             // animate card back flipping up
             next.CurrentState = next.GetVerticallyFlattenedState().GetCopyAt(midPt);
-            next.Animation =
+            AnimationQueue.Add(
+                next,
                 new SpriteGroupAnimation(
                     next,
                     next.DefaultState.GetCopyAt(Nodes[0].Center),
-                    new FlipFunction(256, true));
+                    new FlipFunction(256, true)));
+
+            //next.Animation =
+            //    new SpriteGroupAnimation(
+            //        next,
+            //        next.DefaultState.GetCopyAt(Nodes[0].Center),
+            //        new FlipFunction(256, true));
         }
 
         public override void Update(GameTime time)
@@ -139,19 +168,23 @@ namespace EverythingUnder.GUI
             // shuffle all sprites up one node
             for (int i = 0; i < Nodes.Count - 1; i++)
             {
-                if (Nodes[i].Sprite == null)
+                if (Nodes[i].Sprite == null
+                    && Nodes[i + 1].Sprite != null)
                 {
                     Nodes[i].AddSprite(Nodes[i + 1].Sprite);
                     Nodes[i + 1].RemoveSprite();
+
+                    AnimationQueue.Add(
+                        Nodes[i].Sprite,
+                        Nodes[i].Sprite.RepositionAnimation(Nodes[i].Center));
                 }
             }
 
             // if deck has more cards, add another sprite on bottom
             if (_deckSize >= _maxDeckNodes)
             {
-                Nodes[Nodes.Count - 1].AddSprite(new CardBackSprite(Point.Zero));
+                Nodes[Nodes.Count - 1].AddSprite(new CardBackSprite());
                 Nodes[Nodes.Count - 1].LoadContent(Game);
-
             }
         }
     }

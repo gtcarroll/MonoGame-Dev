@@ -10,7 +10,10 @@ namespace EverythingUnder.GUI
 {
     public class CardSprite : SpriteGroup
     {
-        public CardSprite(Point center) : base(center) { }
+        //public CardSprite() : base() { }
+        //public CardSprite(Card card) : base() { }
+        public CardSprite(Point center, bool isHidden = false)
+            : base(center, isHidden) { }
         public CardSprite(Card card, Point center) : base(center) { }
 
         public override void LoadContent(ContentManager content)

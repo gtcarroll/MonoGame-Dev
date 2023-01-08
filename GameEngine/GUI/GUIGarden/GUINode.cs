@@ -128,9 +128,9 @@ namespace EverythingUnder.GUI
                 Sprite.Update(time);
             }
 
-            foreach (SpriteGroup fronSprite in FrontSprites)
+            foreach (SpriteGroup frontSprite in FrontSprites)
             {
-                fronSprite.Update(time);
+                frontSprite.Update(time);
             }
         }
 
@@ -146,10 +146,15 @@ namespace EverythingUnder.GUI
                 Sprite.Draw(spriteBatch);
             }
 
-            foreach (SpriteGroup fronSprite in FrontSprites)
+            for (int i = FrontSprites.Count - 1; i >= 0; i--)
             {
-                fronSprite.Draw(spriteBatch);
+                FrontSprites[i].Draw(spriteBatch);
             }
+
+            //foreach (SpriteGroup frontSprite in FrontSprites)
+            //{
+            //    frontSprite.Draw(spriteBatch);
+            //}
         }
 
         #endregion
@@ -160,13 +165,13 @@ namespace EverythingUnder.GUI
         {
             for (int i = 0; i < sprites.Count; i++)
             {
-                SpriteGroupAnimation anim = sprites[i].Animation;
+                //SpriteGroupAnimation anim = sprites[i].Animation;
 
-                if (anim != null && anim.IsStarted && anim.IsCompleted)
-                {
-                    sprites.RemoveAt(i);
-                    i--;
-                }
+                //if (anim != null && anim.IsStarted && anim.IsCompleted)
+                //{
+                //    sprites.RemoveAt(i);
+                //    i--;
+                //}
             }
         }
 

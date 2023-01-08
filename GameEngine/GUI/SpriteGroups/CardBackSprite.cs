@@ -8,7 +8,8 @@ namespace EverythingUnder.GUI
 {
     public class CardBackSprite : SpriteGroup
     {
-        public CardBackSprite(Point center) : base(center) { }
+        public CardBackSprite() : base() { }
+        public CardBackSprite(Point center, bool isHidden = false) : base(center, isHidden) { }
 
         public override void LoadContent(ContentManager content)
         {

@@ -26,9 +26,7 @@ namespace EverythingUnder.GUI
         #region Properties
 
         public GameManager Game;
-
-        // parent object
-        //public GUIGarden Garden;
+        public AnimationQueue AnimationQueue;
 
         // connected plots
         public Dictionary<InputDirection, GUIPlot> Neighbors;
@@ -50,11 +48,10 @@ namespace EverythingUnder.GUI
 
         #region Constructors
 
-        public GUIPlot(GameManager game)
+        public GUIPlot(GameManager game, AnimationQueue animationQueue)
         {
             Game = game;
-
-            //Garden = garden;
+            AnimationQueue = animationQueue;
 
             Neighbors = new Dictionary<InputDirection, GUIPlot>();
 

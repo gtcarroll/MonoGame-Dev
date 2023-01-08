@@ -28,7 +28,11 @@ namespace EverythingUnder.GUI
             get { return _animation; }
             set
             {
-                value.Begin();
+                if (value != null)
+                {
+                    IsHidden = false;
+                    value.Begin();
+                }
                 _animation = value;
             }
         }
@@ -93,20 +97,25 @@ namespace EverythingUnder.GUI
                 _anchor = value;
                 if (DefaultState != null)
                 {
-                    BeginRepositionAnimation(DefaultState.GetTranslatedCopy(_anchor));
+                    //BeginRepositionAnimation(DefaultState.GetTranslatedCopy(_anchor));
                 }
             }
         }
         private Point _anchor;
 
+        public bool IsHidden;
+
         #endregion
 
         #region Constructors
 
-        public SpriteGroup(Point anchor)
+        public SpriteGroup() : this(new Point(-9999, -9999)) { }
+        public SpriteGroup(Point anchor, bool isHidden = false)
         {
             Sprites = new List<Texture2D>();
             _anchor = anchor;
+
+            IsHidden = isHidden;
         }
 
         #endregion
@@ -129,7 +138,7 @@ namespace EverythingUnder.GUI
         /// <param name="time">This game's GameTime object.</param>
         public virtual void Update(GameTime time)
         {
-            if (Animation != null && !Animation.IsCompleted)
+            if (Animation != null)
             {
                 Animation.Update(time);
                 CurrentState = Animation.Current;
@@ -142,7 +151,7 @@ namespace EverythingUnder.GUI
         /// <param name="spriteBatch">SpriteBatch object to draw to.</param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (CurrentState != null)
+            if (!IsHidden && CurrentState != null)
             {
                 CurrentState.Draw(spriteBatch);
             }
@@ -172,6 +181,13 @@ namespace EverythingUnder.GUI
         {
             Animation = new SpriteGroupAnimation(this, targetState,
                                                  new CosineFunction(256));
+        }
+
+        public virtual SpriteGroupAnimation RepositionAnimation(Point target)
+        {
+            return new SpriteGroupAnimation(this,
+                                            DefaultState.GetCopyAt(target),
+                                            new CosineFunction(256));
         }
 
         /// <summary>

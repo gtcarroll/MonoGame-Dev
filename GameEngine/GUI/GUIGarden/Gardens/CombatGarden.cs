@@ -37,13 +37,16 @@ namespace EverythingUnder.GUI
 
         private void AddAllPlots()
         {
-            _drawPlot = new DeckPlot(Game, new Point(1700, 932), 9, true, 12);
-            Plots.Add(_drawPlot);
-
-            _discardPlot = new DeckPlot(Game, new Point(963, 824), 27, false, 0);
+            _discardPlot = new DeckPlot(Game, AnimationQueue,
+                                        new Point(963, 824), 27, false, 0);
             Plots.Add(_discardPlot);
 
-            _handPlot = new HandPlot(Game, new Point(1920, 1080) - HandPlot.Size);
+            _drawPlot = new DeckPlot(Game, AnimationQueue,
+                                     new Point(1700, 932), 9, true, 12);
+            Plots.Add(_drawPlot);
+
+            _handPlot = new HandPlot(Game, AnimationQueue,
+                                     new Point(1920, 1080) - HandPlot.Size);
             Plots.Add(_handPlot);
 
             Console.WriteLine(Plots);
@@ -97,13 +100,7 @@ namespace EverythingUnder.GUI
             if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad6))
             {
                 _handPlot.RemoveCard(0, _drawPlot);
-                //_handPlot.RemoveCard(0, _drawPlot);
             }
-
-            //if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.T))
-            //{
-            //    _handPlot.
-            //}
         }
     }
 }

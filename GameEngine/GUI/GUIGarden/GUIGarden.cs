@@ -39,6 +39,8 @@ namespace EverythingUnder.GUI
         public GUIGarden(GameManager game)
         {
             Game = game;
+            AnimationQueue = new AnimationQueue();
+
             Plots = new List<GUIPlot>();
 
             Cursor = new HighlightCursor(game);
@@ -92,6 +94,8 @@ namespace EverythingUnder.GUI
 
         public virtual void Update(GameTime time)
         {
+            AnimationQueue.Update(time);
+
             foreach (GUIPlot plot in Plots)
             {
                 plot.Update(time);

@@ -19,19 +19,24 @@ namespace EverythingUnder.GUI
 
         private Point _deckCenter;
 
-        public List<CardSprite> Cards;
+        private int _numCards;
+
+        //public List<CardSprite> Cards;
 
         //public DeckNode DrawPile;
         //public DeckNode DiscardPile;
 
-        public HandPlot(GameManager game, Point location) : base(game)
+        public HandPlot(GameManager game, AnimationQueue animationQueue,
+                        Point location)
+            : base(game, animationQueue)
         {
             // initialize HandPlot params
             _initialDelta = new Point(3, 64);
             _downGap = new Point(67, 108);
             _upGap = new Point(67, -108);
 
-            Cards = new List<CardSprite>();
+            //Cards = new List<CardSprite>();
+            _numCards = 0;
 
             // initialize GUIPlot params
             Direction = PlotDirection.Row;
@@ -103,72 +108,107 @@ namespace EverythingUnder.GUI
 
         public bool DrawCard(DeckPlot deck)
         {
-            if (Cards.Count >= MaxHandSize) return false;
+            if (_numCards >= MaxHandSize) return false;
 
-            int i = Cards.Count;
+            int i = _numCards;
+
+            AnimationQueue.BeginFrame();
 
             // retrieve card back sprite from deck
             SpriteGroup backSprite = deck.Pop();
 
-            if (backSprite == null) return false;
+            if (backSprite == null)
+            {
+                AnimationQueue.EndFrame();
+                return false;
+            }
 
             // instantiate and add card sprite
-            CardSprite cardSprite = new CardSprite(Nodes[i].Center);
-            Cards.Add(cardSprite);
+            CardSprite cardSprite = new CardSprite(Nodes[i].Center, true);
+            cardSprite.LoadContent(Game.Content);
+
             Nodes[i].AddSprite(cardSprite);
-            Nodes[i].LoadContent(Game);
 
             // calc midpt between Node and _deckCenter
             Point midPt = new Point(backSprite.CurrentState.Center.X,
                 (Nodes[i].Center.Y + backSprite.CurrentState.Center.Y) / 2);
 
-            // begin draw animation for card
-            cardSprite.BeginDrawAnimation(
-                midPt,
-                cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
 
-            // begin draw animation for card back
-            Nodes[i].BackSprites.Add(backSprite);
-            backSprite.Animation =
+            // queue draw animation for card
+            AnimationQueue.Add(
+                cardSprite,
+                new CardDrawAnimation(
+                    cardSprite,
+                    cardSprite.DefaultState.GetCopyAt(Nodes[i].Center),
+                    midPt));
+
+            // queue draw animation for card back
+            deck.Nodes[0].FrontSprites.Add(backSprite);
+            //Nodes[i].BackSprites.Add(backSprite);
+            AnimationQueue.Add(
+                backSprite,
                 new SpriteGroupAnimation(
                     backSprite,
                     backSprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-                    new FlipFunction(256, false));
+                    new FlipFunction(256, false)));
 
+
+            _numCards++;
+            AnimationQueue.EndFrame();
             return true;
         }
 
-        public bool RemoveCard(int i, DeckPlot discardLocation)
+        public bool RemoveCard(int i, DeckPlot discardPile)
         {
-            if (Cards.Count <= i) return false;
+            if (_numCards <= i) return false;
 
-            discardLocation.Push(Nodes[i]);
+            AnimationQueue.BeginFrame();
 
-            Cards.RemoveAt(i);
+            discardPile.Push(Nodes[i]);
+
+            //Cards.RemoveAt(i);
             Nodes[i].RemoveSprite();
+            _numCards--;
 
             UpdateCardPositions();
+
+            AnimationQueue.EndFrame();
 
             return true;
         }
 
         private void UpdateCardPositions()
         {
-            Point nodePosition = GetNodePosition(2);
-
-            for (int i = 0; i < Cards.Count; i++)
+            // shuffle all sprites up one node
+            for (int i = 0; i < Nodes.Count - 1; i++)
             {
-                CardSprite cardSprite = Cards[i];
-
-                if (cardSprite.Anchor != nodePosition)
+                if (Nodes[i].Sprite == null
+                    && Nodes[i + 1].Sprite != null)
                 {
-                    //cardSprite.Anchor = nodePosition;
+                    Nodes[i].AddSprite(Nodes[i + 1].Sprite);
                     Nodes[i + 1].RemoveSprite();
-                    Nodes[i].AddSprite(cardSprite);
-                }
 
-                nodePosition += i % 2 == 0 ? _upGap : _downGap;
+                    AnimationQueue.Add(
+                        Nodes[i].Sprite,
+                        Nodes[i].Sprite.RepositionAnimation(Nodes[i].Center));
+                }
             }
+
+            //Point nodePosition = GetNodePosition(2);
+
+            //for (int i = 0; i < _numCards; i++)
+            //{
+            //    SpriteGroup cardSprite = Nodes[i].Sprite;
+
+            //    if (cardSprite.Anchor != nodePosition)
+            //    {
+            //        //cardSprite.Anchor = nodePosition;
+            //        Nodes[i + 1].RemoveSprite();
+            //        Nodes[i].AddSprite(cardSprite);
+            //    }
+
+            //    nodePosition += i % 2 == 0 ? _upGap : _downGap;
+            //}
         }
 
         private Point GetNodePosition(int index)
