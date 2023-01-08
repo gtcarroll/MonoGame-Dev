@@ -15,18 +15,25 @@ namespace EverythingUnder.GUI
         private Point _initialPosition;
         private Point _cardGap;
 
+        public int DeckSize
+        {
+            get { return _deckSize; }
+        }
+        private int _deckSize;
+
         public static Point Size = new Point(128, 256);
 
         public CardSprite TopCard;
         public List<DeckSprite> OtherCards;
 
-        public DeckPlot(GameManager game, Point location, int maxNodes = 9, bool isBottom = false) : base(game)
+        public DeckPlot(GameManager game, Point location, int maxNodes = 9, bool isBottom = false, int deckSize = 0) : base(game)
         {
             // initialize DeckPlot fields
             _maxDeckNodes = maxNodes + 1;
             _isBottomRow = isBottom;
             _initialPosition = new Point(64, 64);
             _cardGap = new Point(0, 6);
+            _deckSize = deckSize;
 
             OtherCards = new List<DeckSprite>();
 
@@ -58,6 +65,7 @@ namespace EverythingUnder.GUI
 
             Nodes.Add(new CardNode(nodePosition, _isBottomRow, false));
             Nodes[0].LoadContent(Game);
+            if (_deckSize < 1) Nodes[0].RemoveSprite();
             //Nodes[0].RemoveSprite();
 
             for (int i = 1; i < _maxDeckNodes; i++)
@@ -65,12 +73,17 @@ namespace EverythingUnder.GUI
                 nodePosition += _cardGap;
 
                 Nodes.Add(new DeckNode(nodePosition));
+                if (_deckSize < i + 1) Nodes[i].RemoveSprite();
                 Nodes[i].LoadContent(Game);
             }
         }
 
         public SpriteGroup Pop()
         {
+            if (_deckSize <= 0) { return null; }
+
+            _deckSize--;
+
             SpriteGroup topCard = Nodes[0].Sprite;
             Nodes[0].RemoveSprite();
             UpdateCardPositions();
@@ -79,16 +92,41 @@ namespace EverythingUnder.GUI
 
         public void Push(GUINode node)
         {
+            _deckSize++;
+
             for (int i = Nodes.Count - 1; i > 0; i--)
             {
                 Nodes[i].AddSprite(Nodes[i - 1].Sprite);
                 Nodes[i - 1].RemoveSprite();
             }
 
-            CardBackSprite next = new CardBackSprite(node.Sprite.CurrentState.Center);
+            SpriteGroup sprite = node.Sprite;
+
+            // calc midpt between node and this deck
+            Point midPt = new Point(
+                (Nodes[0].Center.X + sprite.CurrentState.Center.X) / 2,
+                (Nodes[0].Center.Y + sprite.CurrentState.Center.Y) / 2);
+
+            // animate node's sprite flipping down
+            Nodes[0].BackSprites.Add(sprite);
+            sprite.Animation =
+                new SpriteGroupAnimation(
+                    sprite,
+                    sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
+                    new FlipFunction(256, false));
+
+            // instantiate card back sprite
+            CardBackSprite next = new CardBackSprite(midPt);
             next.LoadContent(Game.Content);
             Nodes[0].AddSprite(next);
-                
+
+            // animate card back flipping up
+            next.CurrentState = next.GetVerticallyFlattenedState().GetCopyAt(midPt);
+            next.Animation =
+                new SpriteGroupAnimation(
+                    next,
+                    next.DefaultState.GetCopyAt(Nodes[0].Center),
+                    new FlipFunction(256, true));
         }
 
         public override void Update(GameTime time)
@@ -98,6 +136,7 @@ namespace EverythingUnder.GUI
 
         private void UpdateCardPositions()
         {
+            // shuffle all sprites up one node
             for (int i = 0; i < Nodes.Count - 1; i++)
             {
                 if (Nodes[i].Sprite == null)
@@ -105,6 +144,14 @@ namespace EverythingUnder.GUI
                     Nodes[i].AddSprite(Nodes[i + 1].Sprite);
                     Nodes[i + 1].RemoveSprite();
                 }
+            }
+
+            // if deck has more cards, add another sprite on bottom
+            if (_deckSize >= _maxDeckNodes)
+            {
+                Nodes[Nodes.Count - 1].AddSprite(new CardBackSprite(Point.Zero));
+                Nodes[Nodes.Count - 1].LoadContent(Game);
+
             }
         }
     }

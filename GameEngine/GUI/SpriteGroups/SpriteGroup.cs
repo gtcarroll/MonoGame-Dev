@@ -40,7 +40,7 @@ namespace EverythingUnder.GUI
         public SpriteGroupState CurrentState
         {
             get { return _currentState; }
-            protected set { _currentState = value; }
+            set { _currentState = value; }
         }
         private SpriteGroupState _currentState;
 

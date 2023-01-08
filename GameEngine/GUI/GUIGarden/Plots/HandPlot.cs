@@ -107,16 +107,14 @@ namespace EverythingUnder.GUI
 
             int i = Cards.Count;
 
-            // instantiate card sprite
-            CardSprite cardSprite = new CardSprite(Nodes[i].Center);
-            Cards.Add(cardSprite);
-
-            // instantiate card back sprite
-            SpriteGroup backSprite = deck.Pop();//new CardBackSprite(_deckCenter);
-            //backSprite.LoadContent(Game.Content);
+            // retrieve card back sprite from deck
+            SpriteGroup backSprite = deck.Pop();
 
             if (backSprite == null) return false;
 
+            // instantiate and add card sprite
+            CardSprite cardSprite = new CardSprite(Nodes[i].Center);
+            Cards.Add(cardSprite);
             Nodes[i].AddSprite(cardSprite);
             Nodes[i].LoadContent(Game);
 
@@ -129,14 +127,13 @@ namespace EverythingUnder.GUI
                 midPt,
                 cardSprite.DefaultState.GetCopyAt(Nodes[i].Center));
 
-
-            Nodes[i].BackSprites.Add(backSprite);
-
             // begin draw animation for card back
+            Nodes[i].BackSprites.Add(backSprite);
             backSprite.Animation =
-                new SpriteGroupAnimation(backSprite,
-                                         backSprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-                                         new FlipFunction(256, false));
+                new SpriteGroupAnimation(
+                    backSprite,
+                    backSprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
+                    new FlipFunction(256, false));
 
             return true;
         }
