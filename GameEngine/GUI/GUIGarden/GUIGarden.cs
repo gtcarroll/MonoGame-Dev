@@ -11,6 +11,9 @@ namespace EverythingUnder.GUI
     {
         #region Properties
 
+        private Vector2 _prevMousePos;
+        //private bool _mouseChangedLastFrame;
+
         // game reference
         public GameManager Game;
         public SpriteBatch SpriteBatch;
@@ -166,19 +169,22 @@ namespace EverythingUnder.GUI
 
             // handle mouse
             Vector2 mousePos = input.GetMousePosition();
+            if (mousePos == _prevMousePos) { return; }
+
+            _prevMousePos = mousePos;
             foreach (GUIPlot plot in Plots)
             {
                 Point gamePos = Game.ScreenManager.GetGamePosition(mousePos);
                 if (plot.Contains(gamePos))
                 {
-                    //Console.WriteLine(mousePos);
-                    //Console.WriteLine(Game.ScreenManager.GetGamePosition(mousePos));
                     foreach (GUINode node in plot.Nodes)
                     {
                         if (node.Contains(gamePos))
                         {
+                            //_mouseChangedLastFrame = true;
                             //MoveToPlot(plot);
                             MoveToNode(node);
+                            return;
                         }
                     }
                 }
@@ -191,13 +197,26 @@ namespace EverythingUnder.GUI
 
         private void TryToMoveTo(InputDirection direction)
         {
-            if (CurrNode.Neighbors.ContainsKey(direction))
+            if (CurrNode.Neighbors.ContainsKey(direction)
+                && CurrNode.Neighbors[direction].IsActive)
             {
                 MoveToNode(CurrNode.GetNeighbor(direction));
             }
-            else if (CurrPlot.Neighbors.ContainsKey(direction))
+            else
             {
-                MoveToPlot(CurrPlot.Neighbors[direction]);
+                GUIPlot targetPlot = CurrPlot;
+                GUINode targetNode;
+                while (targetPlot.Neighbors.ContainsKey(direction))
+                {
+                    targetPlot = targetPlot.Neighbors[direction];
+                    targetNode = targetPlot.GetNearestNode(CurrNode.Center);
+
+                    if (targetNode != null)
+                    {
+                        MoveToPlot(targetPlot);
+                        return;
+                    }
+                }
             }
         }
 

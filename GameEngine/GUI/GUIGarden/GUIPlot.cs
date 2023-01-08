@@ -136,7 +136,7 @@ namespace EverythingUnder.GUI
             Neighbors.Remove(direction);
         }
 
-        public GUINode GetNearestNode(Point point)
+        public virtual GUINode GetNearestNode(Point point)
         {
             if (Nodes.Count == 0) return null;
 
@@ -145,20 +145,23 @@ namespace EverythingUnder.GUI
 
             for (int i = 1; i < Nodes.Count; i++)
             {
-                int distance = GetDistanceTo(Nodes[i], point);
-
-                if (distance > minDistance)
+                if (Nodes[i].IsActive)
                 {
-                    // we are moving away from the nearest node and can return
-                    return nearestNode;
-                }
+                    int distance = GetDistanceTo(Nodes[i], point);
 
-                // we are moving toward the nearest node and can continue
-                nearestNode = Nodes[i];
-                minDistance = distance;
+                    if (distance >= minDistance)
+                    {
+                        // we are moving away from the nearest node and can return
+                        return nearestNode;
+                    }
+
+                    // we are moving toward the nearest node and can continue
+                    nearestNode = Nodes[i];
+                    minDistance = distance;
+                }
             }
 
-            return nearestNode;
+            return nearestNode.IsActive ? nearestNode : null;
         }
 
         #endregion

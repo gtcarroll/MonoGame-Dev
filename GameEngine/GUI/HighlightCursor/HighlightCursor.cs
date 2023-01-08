@@ -83,18 +83,18 @@ namespace EverythingUnder.GUI
                                    _transition.SinusoidalPercent;
                 float dist2End = _transition.Distance - dist2Start;
 
-                _curr = _target.GetHighlightState(_thickness);
+                _curr = _target != null ? _target.GetHighlightState(_thickness) : null;
 
                 // scale and stretch cursor
-                float pct2Mid = Math.Abs(_transition.SinusoidalPercent - 0.5f);
+                //float pct2Mid = Math.Abs(_transition.SinusoidalPercent - 0.5f);
 
-                _cursorPrev.Scale = _cursor.Scale;
-                _cursorPrev.Stretch = _cursor.Stretch;
+                //_cursorPrev.Scale = _cursor.Scale;
+                //_cursorPrev.Stretch = _cursor.Stretch;
 
-                _cursor.Scale = Math.Max(pct2Mid * 2, 0.3f);
-                _cursor.Stretch = (_transition.Speed * 2f) -
-                                  (_transition.Speed * 2f - 1) *
-                                  2 * Math.Max(pct2Mid, 0.1f);
+                //_cursor.Scale = Math.Max(pct2Mid * 2, 0.3f);
+                //_cursor.Stretch = (_transition.Speed * 2f) -
+                //                  (_transition.Speed * 2f - 1) *
+                //                  2 * Math.Max(pct2Mid, 0.1f);
             }
             else if (_target != null) //&& _target.Transition.IsAnimating)
             {
@@ -103,7 +103,7 @@ namespace EverythingUnder.GUI
             else if (_wasAnimatingLastFrame)
             {
                 _wasAnimatingLastFrame = false;
-                _curr = _target.GetHighlightState(_thickness);
+                //_curr = _target.GetHighlightState(_thickness);
             }
         }
 

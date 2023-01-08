@@ -12,14 +12,9 @@ namespace EverythingUnder.GUI
         private int width = 128;
         private int height = 128;
 
-        //public int Size
-        //{
-        //    get { return Sprite.Size; }
-        //}
-
         public DeckNode(Point center, bool isBottomRow = false) : base(center)
         {
-            AddSprite(new DeckSprite(center));
+            AddSprite(new CardBackSprite(center));
 
             int topY = center.Y - height / 2;
             int hitboxH = height - 10;
@@ -29,7 +24,7 @@ namespace EverythingUnder.GUI
                 hitboxH += 20;
             }
             ScreenSpace = new Rectangle(center.X - width / 2 - 2, topY,
-                                        width + 4, hitboxH);
+                                        0, 0); //width + 4, hitboxH);
         }
     }
 }

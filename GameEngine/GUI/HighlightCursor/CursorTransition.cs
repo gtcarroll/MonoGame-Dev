@@ -56,10 +56,13 @@ namespace EverythingUnder.GUI
             // set transition parameters
             Duration = 128f;//spriteGroup.TransitionDuration;
 
-            Start = Current;
-            Delta = spriteGroup.HoverState.Center - Start;
-            Distance = MathF.Sqrt(Delta.X * Delta.X + Delta.Y * Delta.Y);
-            Speed = MathHelper.Clamp(Distance / Duration, MinSpeed, MaxSpeed);
+            if (spriteGroup != null)
+            {
+                Start = Current;
+                Delta = spriteGroup.HoverState.Center - Start;
+                Distance = MathF.Sqrt(Delta.X * Delta.X + Delta.Y * Delta.Y);
+                Speed = MathHelper.Clamp(Distance / Duration, MinSpeed, MaxSpeed);
+            }
 
             // set initial transition state
             IsAnimating = true;

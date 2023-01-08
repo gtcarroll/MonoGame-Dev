@@ -11,17 +11,17 @@ namespace EverythingUnder.GUI
         private SpriteGroupState _verticalDelta;
         private TimingFunction _verticalTransition;
 
-        private Point _deckCenter;
+        private Point _midPoint;
         private SpriteGroupState _verticalTarget;
 
         private SpriteGroupState _horizontalDelta;
         private TimingFunction _horizontalTransition;
 
         public CardDrawAnimation(SpriteGroup sprite, SpriteGroupState target,
-                                 Point deckCenter)
-            : base(sprite, target, 128 + 640)
+                                 Point midPoint)
+            : base(sprite, target, 256 + 640)
         {
-            _deckCenter = deckCenter;
+            _midPoint = midPoint;
 
             _verticalTransition = new FlipFunction(256, true);
             _horizontalTransition = new BounceFunction(640);
@@ -33,7 +33,7 @@ namespace EverythingUnder.GUI
 
             //TODO: calc midpoint and use that instead of _deckCenter
             Current =
-                Sprite.GetVerticallyFlattenedState().GetCopyAt(_deckCenter);
+                Sprite.GetVerticallyFlattenedState().GetCopyAt(_midPoint);
             Start = Current;
 
             Point verticalPoint = new Point(Start.Center.X, Target.Center.Y);

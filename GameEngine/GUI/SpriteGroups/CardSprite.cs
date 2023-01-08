@@ -39,8 +39,6 @@ namespace EverythingUnder.GUI
 
         public void BeginDrawAnimation(Point deckCenter, SpriteGroupState targetState)
         {
-            // vertically flatten this card
-
             Animation = new CardDrawAnimation(this, targetState, deckCenter);
         }
 

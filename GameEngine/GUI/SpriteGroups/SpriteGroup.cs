@@ -91,7 +91,10 @@ namespace EverythingUnder.GUI
             set
             {
                 _anchor = value;
-                BeginRepositionAnimation(DefaultState.GetTranslatedCopy(_anchor));
+                if (DefaultState != null)
+                {
+                    BeginRepositionAnimation(DefaultState.GetTranslatedCopy(_anchor));
+                }
             }
         }
         private Point _anchor;

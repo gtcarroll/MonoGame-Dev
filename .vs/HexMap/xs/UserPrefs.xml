@@ -1,14 +1,20 @@
 ﻿<Properties StartupConfiguration="{E441C119-16CF-42D8-AFD6-F74F38020ECE}|Default">
-  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameEngine/ScreenManagement/ScreenManager.cs">
+  <MonoDevelop.Ide.ItemProperties.EverythingUnder PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameEngine/GUI/SpriteGroups/ManaSprite.cs">
     <Files>
-      <File FileName="GameEngine/ScreenManagement/ScreenManager.cs" Line="215" Column="1" IsPinned="True" />
       <File FileName="GameManager.cs" Line="43" Column="1" IsPinned="True" />
+      <File FileName="GameEngine/GUI/GUIGarden/Nodes/DeckNode.cs" Line="22" Column="32" />
+      <File FileName="GameEngine/GUI/SpriteGroups/DeckSprite.cs" Line="37" Column="23" />
+      <File FileName="GameEngine/GUI/GUIGarden/Plots/HandPlot.cs" Line="60" Column="48" />
+      <File FileName="GameEngine/GUI/AnimationQueue.cs" Line="33" Column="27" />
+      <File FileName="GameEngine/GUI/GUIGarden/Nodes/ManaNode.cs" Line="17" Column="31" />
+      <File FileName="GameEngine/GUI/SpriteGroups/ManaSprite.cs" Line="20" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,15 +29,14 @@
               </Node>
               <Node name="GameEngine" expanded="True">
                 <Node name="GUI" expanded="True">
+                  <Node name="Animations" expanded="True" />
                   <Node name="GUIGarden" expanded="True">
-                    <Node name="Gardens" expanded="True" />
                     <Node name="Nodes" expanded="True" />
                     <Node name="Plots" expanded="True" />
                   </Node>
                   <Node name="HighlightCursor" expanded="True" />
                   <Node name="SpriteGroups" expanded="True" />
                 </Node>
-                <Node name="ScreenManagement" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -42,5 +47,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
 </Properties>

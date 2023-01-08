@@ -31,6 +31,7 @@
     <None Remove="GameEngine\GUI\GUIGarden\Nodes\" />
     <None Remove="GameEngine\GUI\GUIGarden\Gardens\" />
     <None Remove="GameEngine\GUI\SpriteGroups\" />
+    <None Remove="GameEngine\GUI\Animations\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -58,6 +59,7 @@
     <Folder Include="GameEngine\GUI\GUIGarden\Nodes\" />
     <Folder Include="GameEngine\GUI\GUIGarden\Gardens\" />
     <Folder Include="GameEngine\GUI\SpriteGroups\" />
+    <Folder Include="GameEngine\GUI\Animations\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

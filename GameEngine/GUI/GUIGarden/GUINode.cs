@@ -30,11 +30,11 @@ namespace EverythingUnder.GUI
         public Action OnSelected;
 
         // node state
-        private bool _isActive;
+        //private bool _isActive;
         public bool IsActive
         {
-            get { return _isActive; }
-            set { _isActive = value; }
+            get { return Sprite != null; }
+            //set { _isActive = value; }
         }
 
         //private bool _isHovered;
@@ -68,7 +68,7 @@ namespace EverythingUnder.GUI
 
             Neighbors = new Dictionary<InputDirection, GUINode>();
             //_isHovered = false;
-            _isActive = false;
+            //_isActive = false;
 
             FrontSprites = new List<SpriteGroup>();
             BackSprites = new List<SpriteGroup>();
@@ -94,7 +94,11 @@ namespace EverythingUnder.GUI
         public void AddSprite(SpriteGroup sprite)
         {
             Sprite = sprite;
-            _isActive = true;
+            if (Sprite != null)
+            {
+                Sprite.Anchor = Center;
+            }
+            //_isActive = true;
         }
         public void RemoveSprite()
         {
@@ -102,7 +106,7 @@ namespace EverythingUnder.GUI
             //Garden.RemoveSprite(Sprite);
 
             Sprite = null;
-            _isActive = false;
+            //_isActive = false;
         }
 
         #endregion

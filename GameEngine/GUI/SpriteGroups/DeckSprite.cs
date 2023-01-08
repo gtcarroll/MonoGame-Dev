@@ -34,7 +34,7 @@ namespace EverythingUnder.GUI
         {
             Sprites.Add(content.Load<Texture2D>("Textures/1k/card-back")); // 256 x 256
 
-            _size = 0;
+            _size = 3;
 
             DefaultState = GetDefaultStyle();
             HoverState = GetHoverStyle();
