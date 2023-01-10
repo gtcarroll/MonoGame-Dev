@@ -136,9 +136,10 @@ namespace EverythingUnder.GUI
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach (SpriteGroup backSprite in BackSprites)
+            // drawn in reverse, maintains order of sprites in a stack of cards
+            for (int i = BackSprites.Count - 1; i >= 0; i--)
             {
-                backSprite.Draw(spriteBatch);
+                BackSprites[i].Draw(spriteBatch);
             }
 
             if (Sprite != null)
@@ -146,15 +147,11 @@ namespace EverythingUnder.GUI
                 Sprite.Draw(spriteBatch);
             }
 
+            // drawn in reverse, maintains order of sprites in a stack of cards
             for (int i = FrontSprites.Count - 1; i >= 0; i--)
             {
                 FrontSprites[i].Draw(spriteBatch);
             }
-
-            //foreach (SpriteGroup frontSprite in FrontSprites)
-            //{
-            //    frontSprite.Draw(spriteBatch);
-            //}
         }
 
         #endregion

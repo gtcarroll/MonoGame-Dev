@@ -16,6 +16,8 @@ namespace EverythingUnder.GUI
 
         DeckPlot _discardPlot;
 
+        bool _debugCombatStart = true;
+
         public CombatGarden(GameManager game) : base(game)
         {
             // initialize state
@@ -42,7 +44,7 @@ namespace EverythingUnder.GUI
             Plots.Add(_discardPlot);
 
             _drawPlot = new DeckPlot(Game, AnimationQueue,
-                                     new Point(1700, 932), 9, true, 12);
+                                     new Point(1700, 932), 9, true, 0);
             Plots.Add(_drawPlot);
 
             _handPlot = new HandPlot(Game, AnimationQueue,
@@ -68,36 +70,58 @@ namespace EverythingUnder.GUI
         {
             base.HandleInput(input);
 
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.Q))
+            if (_debugCombatStart)
             {
-                _handPlot.DrawCard(_drawPlot);
+                _debugCombatStart = false;
+                _handPlot.InitDeck(_drawPlot, 12);
             }
 
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad0))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.Q))
+            {
+                if (!_handPlot.DrawCard(_drawPlot))
+                {
+                    _handPlot.ShuffleInto(_discardPlot, _drawPlot);
+                    _handPlot.DrawCard(_drawPlot);
+                }
+            }
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.Z))
+            {
+                for (int i = 0; i < 10; i++) _handPlot.DrawCard(_drawPlot);
+            }
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.X))
+            {
+                for (int i = 0; i < 10; i++) _handPlot.RemoveCard(0, _discardPlot);
+            }
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.C))
+            {
+                _handPlot.ShuffleInto(_discardPlot, _drawPlot);
+            }
+
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D0))
             {
                 _handPlot.RemoveCard(0, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad1))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D1))
             {
                 _handPlot.RemoveCard(1, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad2))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D2))
             {
                 _handPlot.RemoveCard(2, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad3))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D3))
             {
                 _handPlot.RemoveCard(3, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad4))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D4))
             {
                 _handPlot.RemoveCard(4, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad5))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D5))
             {
                 _handPlot.RemoveCard(5, _discardPlot);
             }
-            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.NumPad6))
+            if (input.WasPressed(Microsoft.Xna.Framework.Input.Keys.D6))
             {
                 _handPlot.RemoveCard(0, _drawPlot);
             }

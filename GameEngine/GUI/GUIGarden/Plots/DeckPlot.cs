@@ -11,6 +11,7 @@ namespace EverythingUnder.GUI
     {
         private Point _initialPosition;
         private Point _cardGap;
+        private Point _dropDelta;
 
         private int _maxDeckNodes;
 
@@ -32,6 +33,7 @@ namespace EverythingUnder.GUI
             // positioning fields
             _initialPosition = new Point(64, 64);
             _cardGap = new Point(0, 6);
+            _dropDelta = new Point(0, 256);
 
             // size fields
             _maxDeckNodes = maxNodes + 1;
@@ -112,29 +114,22 @@ namespace EverythingUnder.GUI
             }
 
             SpriteGroup sprite = node.Sprite;
-            //sprite.Animation = null;
 
             // calc midpt between node and this deck
-            Console.WriteLine(sprite.CurrentState.Center);
-            Point midPt = new Point(
-                (Nodes[0].Center.X + sprite.CurrentState.Center.X) / 2,
-                (Nodes[0].Center.Y + sprite.CurrentState.Center.Y) / 2);
+            //Console.WriteLine(sprite.CurrentState.Center);
+            //Point midPt = new Point(
+            //    (Nodes[0].Center.X + sprite.CurrentState.Center.X) / 2,
+            //    (Nodes[0].Center.Y + sprite.CurrentState.Center.Y) / 2);
 
             // animate node's sprite flipping down
             Nodes[0].BackSprites.Add(sprite);
-
             AnimationQueue.Add(
                 sprite,
-                new SpriteGroupAnimation(
-                    sprite,
-                    sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-                    new FlipFunction(256, false)));
-
-            //sprite.Animation =
-            //    new SpriteGroupAnimation(
-            //        sprite,
-            //        sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-            //        new FlipFunction(256, false));
+                new FlipDownAnimation(sprite, Nodes[0].Center));
+                //new SpriteGroupAnimation(
+                //    sprite,
+                //    sprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
+                //    new FlipFunction(256, false)));
 
             // instantiate card back sprite
             CardBackSprite next = new CardBackSprite(
@@ -143,19 +138,104 @@ namespace EverythingUnder.GUI
             Nodes[0].AddSprite(next);
 
             // animate card back flipping up
-            next.CurrentState = next.GetVerticallyFlattenedState().GetCopyAt(midPt);
+            //next.CurrentState = next.GetVerticallyFlattenedState().GetCopyAt(midPt);
             AnimationQueue.Add(
                 next,
-                new SpriteGroupAnimation(
+                new FlipUpAnimation(
                     next,
                     next.DefaultState.GetCopyAt(Nodes[0].Center),
-                    new FlipFunction(256, true)));
+                    sprite));
+                //new SpriteGroupAnimation(
+                //    next,
+                //    next.DefaultState.GetCopyAt(Nodes[0].Center),
+                //    new FlipFunction(256, true)));
+        }
 
-            //next.Animation =
-            //    new SpriteGroupAnimation(
-            //        next,
-            //        next.DefaultState.GetCopyAt(Nodes[0].Center),
-            //        new FlipFunction(256, true));
+        public List<SpriteGroup> Flush()
+        {
+            List<SpriteGroup> sprites = new List<SpriteGroup>();
+
+            int delay = 0;
+
+            // remove all sprites
+            for (int i = Nodes.Count - 1; i >= 0; i--)
+            {
+                SpriteGroup sprite = Nodes[i].Sprite;
+                if (sprite != null)
+                {
+                    sprites.Add(sprite);
+                    Nodes[i].RemoveSprite();
+                    Nodes[i].BackSprites.Add(sprite);
+
+                    // animate them falling down
+                    AnimationQueue.Add(
+                        sprite,
+                        new SpriteGroupAnimation(
+                            sprite,
+                            sprite.DefaultState.GetCopyAt(Nodes[i].Center + _dropDelta),
+                            new FallFunction(256),
+                            delay));
+
+                    delay += 64;
+                }
+            }
+
+            return sprites;
+        }
+
+        public void Fill(int numSprites)
+        {
+            int delay = 0;
+
+            // add all sprites to available nodes
+            int n = 0;
+            int s = 0;
+            while (n < Nodes.Count && s < numSprites)
+            {
+                if (Nodes[n].Sprite == null)
+                {
+                    SpriteGroup sprite =
+                        new CardBackSprite(Nodes[n].Center + _dropDelta);
+                    sprite.LoadContent(Game.Content);
+                    Nodes[n].AddSprite(sprite);
+
+                    // animate them rising up
+                    AnimationQueue.Add(
+                        sprite,
+                        new SpriteGroupAnimation(
+                            sprite,
+                            sprite.DefaultState.GetCopyAt(Nodes[n].Center),
+                            new FallFunction(256, false),
+                            delay));
+
+                    delay += 64;
+                    s++;
+                }
+                n++;
+            }
+
+            _deckSize += numSprites;
+
+            //for (int i = 0; i < Nodes.Count; i++)
+            //{
+            //    if (Nodes[i].Sprite == null)
+            //    {
+            //        SpriteGroup sprite =
+            //            new CardBackSprite(Nodes[i].Center + _dropDelta);
+            //        Nodes[i].AddSprite(sprite);
+
+            //        // animate them rising up
+            //        AnimationQueue.Add(
+            //            sprite,
+            //            new SpriteGroupAnimation(
+            //                sprite,
+            //                sprite.CurrentState.GetCopyAt(Nodes[i].Center),
+            //                new FallFunction(256, false),
+            //                delay));
+
+            //        delay += 64;
+            //    }
+            //}
         }
 
         public override void Update(GameTime time)

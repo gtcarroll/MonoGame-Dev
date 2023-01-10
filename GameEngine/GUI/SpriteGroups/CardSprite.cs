@@ -40,10 +40,10 @@ namespace EverythingUnder.GUI
                                                  new BounceFunction(640));
         }
 
-        public void BeginDrawAnimation(Point deckCenter, SpriteGroupState targetState)
-        {
-            Animation = new CardDrawAnimation(this, targetState, deckCenter);
-        }
+        //public void BeginDrawAnimation(Point deckCenter, SpriteGroupState targetState)
+        //{
+        //    Animation = new CardDrawAnimation(this, targetState, deckCenter);
+        //}
 
         private SpriteGroupState GetDefaultStyle()
         {

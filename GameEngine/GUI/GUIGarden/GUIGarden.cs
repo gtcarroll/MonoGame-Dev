@@ -130,12 +130,12 @@ namespace EverythingUnder.GUI
                 plot.DrawFG(spriteBatch);
             }
 
-            Cursor.Draw(spriteBatch);
+            //Cursor.Draw(spriteBatch);
 
-            if (PrevNode != null && Cursor.IsAnimating)
-            {
-                PrevNode.Draw(spriteBatch);
-            }
+            //if (PrevNode != null && Cursor.IsAnimating)
+            //{
+            //    PrevNode.Draw(spriteBatch);
+            //}
 
             CurrNode.Draw(spriteBatch);
         }

@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 
 namespace EverythingUnder.GUI
 {
     public class CardDrawAnimation : SpriteGroupAnimation
     {
+        private SpriteGroup _startSprite;
+
         private SpriteGroupState _verticalDelta;
         private TimingFunction _verticalTransition;
 
-        private Point _midPoint;
         private SpriteGroupState _verticalTarget;
 
         private SpriteGroupState _horizontalDelta;
         private TimingFunction _horizontalTransition;
 
         public CardDrawAnimation(SpriteGroup sprite, SpriteGroupState target,
-                                 Point midPoint)
+                                 SpriteGroup startSprite)
             : base(sprite, target, 256)
         {
-            _midPoint = midPoint;
+            _startSprite = startSprite;
 
             _verticalTransition = new FlipFunction(256, true);
             _horizontalTransition = new BounceFunction(640);
@@ -31,12 +28,19 @@ namespace EverythingUnder.GUI
         {
             IsStarted = true;
 
-            //TODO: calc midpoint and use that instead of _deckCenter
-            Current =
-                Sprite.GetVerticallyFlattenedState().GetCopyAt(_midPoint);
+            // calc vertical point above start
+            Point startingPt = _startSprite.CurrentState.Center;
+            Point verticalPoint = new Point(startingPt.X, Target.Center.Y);
+
+            // calc midpt of vertical animation
+            Point midPoint = startingPt + verticalPoint;
+            midPoint = new Point(midPoint.X / 2, midPoint.Y / 2);
+
+            // set starting SpriteGroupStates
+            Current = Sprite.GetVerticallyFlattenedState().GetCopyAt(midPoint);
             Start = Current;
 
-            Point verticalPoint = new Point(Start.Center.X, Target.Center.Y);
+            // calc animation deltas
             _verticalTarget = Sprite.DefaultState.GetCopyAt(verticalPoint);
 
             _verticalDelta = GetDelta(Start, _verticalTarget);
@@ -54,7 +58,8 @@ namespace EverythingUnder.GUI
             {
                 _horizontalTransition.Update(time);
                 Current = CalcCurrentState(_horizontalTransition.AnimationPosition, _verticalTarget, _horizontalDelta);
-            } else
+            }
+            else
             {
                 IsCompleted = true;
             }

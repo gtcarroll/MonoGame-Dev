@@ -106,6 +106,29 @@ namespace EverythingUnder.GUI
             base.Update(time);
         }
 
+        public void ShuffleInto(DeckPlot discard, DeckPlot draw)
+        {
+
+            AnimationQueue.BeginFrame();
+
+            List<SpriteGroup> sprites = discard.Flush();
+
+            AnimationQueue.BeginFrame();
+
+            draw.Fill(sprites.Count);
+
+            AnimationQueue.EndFrame();
+        }
+
+        public void InitDeck(DeckPlot deck, int size)
+        {
+            AnimationQueue.BeginFrame();
+
+            deck.Fill(size);
+
+            AnimationQueue.EndFrame();
+        }
+
         public bool DrawCard(DeckPlot deck)
         {
             if (_numCards >= MaxHandSize) return false;
@@ -130,8 +153,8 @@ namespace EverythingUnder.GUI
             Nodes[i].AddSprite(cardSprite);
 
             // calc midpt between Node and _deckCenter
-            Point midPt = new Point(backSprite.CurrentState.Center.X,
-                (Nodes[i].Center.Y + backSprite.CurrentState.Center.Y) / 2);
+            //Point midPt = new Point(backSprite.CurrentState.Center.X,
+            //    (Nodes[i].Center.Y + backSprite.CurrentState.Center.Y) / 2);
 
 
             // queue draw animation for card
@@ -140,18 +163,15 @@ namespace EverythingUnder.GUI
                 new CardDrawAnimation(
                     cardSprite,
                     cardSprite.DefaultState.GetCopyAt(Nodes[i].Center),
-                    midPt));
+                    backSprite));
 
             // queue draw animation for card back
             deck.Nodes[0].FrontSprites.Add(backSprite);
-            //Nodes[i].BackSprites.Add(backSprite);
+            Point verticalPoint = new Point(backSprite.CurrentState.Center.X,
+                                            Nodes[i].Center.Y);
             AnimationQueue.Add(
                 backSprite,
-                new SpriteGroupAnimation(
-                    backSprite,
-                    backSprite.GetVerticallyFlattenedState().GetCopyAt(midPt),
-                    new FlipFunction(256, false)));
-
+                new FlipDownAnimation(backSprite, verticalPoint));
 
             _numCards++;
             AnimationQueue.EndFrame();
